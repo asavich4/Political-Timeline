@@ -1,8 +1,6 @@
 Unity compilation passed.
 9 campaign rule checks passed.
 Deck valid: 18 cards ready to play.
-Portrait renders and safe-area checks passed at 390x844, 375x667 and 430x932.
-Both choice buttons, restart, both swipe directions, canceled gestures and help overlay checks passed.
-Portrait orientation locked; iPhone target configured.
+SDF text, full-card artwork, safe areas and text fit verified at 375x667, 390x844, 430x932 and 1170x2532.
+Directional hold previews, delayed commit, release threshold, canceled gestures, restart and help checks passed.
 Physical iPhone testing and an iOS build have not been performed.
-200 simulated runs (choices favor support near 50): 200 completed campaigns; average 32.0 decisions. This is a balancing aid, not a prediction of player results.

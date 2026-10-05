@@ -3,6 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 namespace PoliticalTimeline.Editor
 {
@@ -15,32 +16,52 @@ namespace PoliticalTimeline.Editor
             var game=Object.FindFirstObjectByType<PresidencyGame>();
             game.Initialize();
             Check(game.portrait.sprite!=null && game.briefing.text!="", "Card presentation");
+            Check(game.choiceOverlay.alpha==0,"Choices hidden at rest");
             Capture("PresidencyPreview.png",390,844,new Rect(0,34,390,763));
             Capture("PresidencyCompactPreview.png",375,667,new Rect(0,0,375,647));
             Capture("PresidencyTallPreview.png",430,932,new Rect(0,34,430,839));
-            game.leftButton.onClick.Invoke(); Check(game.Decisions==1,"Left choice");
-            game.restartButton.onClick.Invoke(); Check(game.Decisions==0,"Restart");
+            Capture("PresidencyRetinaPreview.png",1170,2532,new Rect(0,102,1170,2289));
+            var current=game.campaign.cards.Find(c=>c.briefing==game.briefing.text);
+            var drag=Hold(game,new Vector2(-45,0));
+            Check(game.choiceLabel.text==current.left.label && game.choiceOverlay.alpha>0,"Left hold reveals left choice");
+            Check(game.Decisions==0,"Holding does not commit");
+            Capture("PresidencyLeftPreview.png",390,844,new Rect(0,34,390,763));
+            game.EndDrag(drag); Check(game.Decisions==0 && game.choiceOverlay.alpha==0,"Short hold cancels and hides overlay");
+            drag=Hold(game,new Vector2(45,0));
+            Check(game.choiceLabel.text==current.right.label && game.choiceOverlay.alpha>0,"Right hold reveals right choice");
+            Capture("PresidencyRightPreview.png",390,844,new Rect(0,34,390,763));
+            game.EndDrag(drag);
+            drag=Hold(game,new Vector2(110,0));
+            var parent=(RectTransform)game.cardTransform.parent;
+            drag.position=RectTransformUtility.WorldToScreenPoint(null,parent.TransformPoint(new Vector2(-110,0)));
+            game.Drag(drag);
+            Check(game.choiceLabel.text==current.left.label && game.Decisions==0,"Changing direction replaces the choice");
+            drag.position=RectTransformUtility.WorldToScreenPoint(null,parent.TransformPoint(Vector3.zero));
+            game.Drag(drag); game.EndDrag(drag);
+            Check(game.choiceOverlay.alpha==0 && game.Decisions==0,"Returning to center cancels");
             Swipe(game,new Vector2(20,0)); Check(game.Decisions==0,"Short drag cancels");
             Swipe(game,new Vector2(100,180)); Check(game.Decisions==0,"Vertical gesture cancels");
-            Swipe(game,new Vector2(110,0)); Check(game.Decisions==1,"Right swipe");
-            game.Restart(); Swipe(game,new Vector2(-110,0)); Check(game.Decisions==1,"Left swipe");
-            game.Restart(); game.rightButton.onClick.Invoke(); Check(game.Decisions==1,"Right choice");
-            game.Restart(); game.helpButton.onClick.Invoke();
-            Check(game.helpPanel.activeSelf,"Help opens");
-            game.leftButton.onClick.Invoke(); Swipe(game,new Vector2(110,0)); Check(game.Decisions==0,"Help blocks gameplay");
-            game.closeHelpButton.onClick.Invoke(); game.rightButton.onClick.Invoke(); Check(game.Decisions==1,"Help closes and play resumes");
-            Check(PlayerSettings.defaultInterfaceOrientation==UIOrientation.Portrait && !PlayerSettings.allowedAutorotateToLandscapeLeft && !PlayerSettings.allowedAutorotateToLandscapeRight,"Portrait orientation lock");
-            File.AppendAllText("Validation.txt","\nPortrait renders and safe-area checks passed at 390x844, 375x667 and 430x932.\nBoth choice buttons, restart, both swipe directions, canceled gestures and help overlay checks passed.\nPortrait orientation locked; iPhone target configured.\nPhysical iPhone testing and an iOS build have not been performed.\n"+ContentWorkshop.Simulate(game.campaign));
+            drag=Hold(game,new Vector2(110,0));
+            Check(game.commitIndicator.enabled && game.Decisions==0,"Threshold indicates ready without early commit");
+            game.EndDrag(drag); Check(game.Decisions==1 && game.choiceOverlay.alpha==0,"Right release commits and clears overlay");
+            game.restartButton.onClick.Invoke(); Check(game.Decisions==0,"Restart");
+            Swipe(game,new Vector2(-110,0)); Check(game.Decisions==1,"Left swipe commits");
+            game.Restart(); game.helpButton.onClick.Invoke(); Check(game.helpPanel.activeSelf,"Help opens");
+            Swipe(game,new Vector2(110,0)); Check(game.Decisions==0,"Help blocks swipes");
+            game.closeHelpButton.onClick.Invoke(); Swipe(game,new Vector2(110,0)); Check(game.Decisions==1,"Help closes and play resumes");
+            Check(PlayerSettings.defaultInterfaceOrientation==UIOrientation.Portrait,"Portrait orientation lock");
+            File.AppendAllText("Validation.txt","\nSDF text, full-card artwork, safe areas and text fit verified at 375x667, 390x844, 430x932 and 1170x2532.\nDirectional hold previews, delayed commit, release threshold, canceled gestures, restart and help checks passed.\nPhysical iPhone testing and an iOS build have not been performed.");
         }
 
-        static void Swipe(PresidencyGame game,Vector2 localDelta)
+        static PointerEventData Hold(PresidencyGame game,Vector2 localDelta)
         {
             var parent=(RectTransform)game.cardTransform.parent;
             Vector2 origin=RectTransformUtility.WorldToScreenPoint(null,parent.TransformPoint(Vector3.zero));
             Vector2 end=RectTransformUtility.WorldToScreenPoint(null,parent.TransformPoint(localDelta));
             var drag=new PointerEventData(EventSystem.current) { position=origin };
-            game.BeginDrag(drag); drag.position=end; game.Drag(drag); game.EndDrag(drag);
+            game.BeginDrag(drag); drag.position=end; game.Drag(drag); return drag;
         }
+        static void Swipe(PresidencyGame game,Vector2 delta) { var drag=Hold(game,delta); game.EndDrag(drag); }
         static void Check(bool success,string message) { if(!success) throw new System.Exception("Portrait check failed: "+message); }
 
         static void Capture(string path,int width,int height,Rect safePixels)
@@ -52,6 +73,9 @@ namespace PoliticalTimeline.Editor
             var texture=new RenderTexture(width,height,24);
             var image=new Texture2D(width,height,TextureFormat.RGB24,false);
             var previous=RenderTexture.active;
+            float previousScale=canvas.scaleFactor;
+            Vector2 previousMin=layout.safeArea.anchorMin, previousMax=layout.safeArea.anchorMax;
+            Vector3 previousBoardScale=layout.content.localScale;
             var pipeline=UnityEngine.Rendering.GraphicsSettings.defaultRenderPipeline;
             var qualityPipeline=QualitySettings.renderPipeline;
             try
@@ -62,6 +86,7 @@ namespace PoliticalTimeline.Editor
                 camera.targetTexture=texture; canvas.renderMode=RenderMode.ScreenSpaceCamera; canvas.worldCamera=camera; canvas.planeDistance=1;
                 canvas.scaleFactor=width/390f;
                 Canvas.ForceUpdateCanvases(); layout.Apply(safePixels,new Vector2(width,height)); Canvas.ForceUpdateCanvases();
+                foreach(var label in game.GetComponentsInChildren<TMP_Text>()) label.ForceMeshUpdate();
                 camera.Render(); RenderTexture.active=texture;
                 image.ReadPixels(new Rect(0,0,width,height),0,0); image.Apply(); File.WriteAllBytes(path,image.EncodeToPNG());
                 var corners=new Vector3[4]; layout.content.GetWorldCorners(corners);
@@ -70,40 +95,32 @@ namespace PoliticalTimeline.Editor
                     var pixel=camera.WorldToScreenPoint(point);
                     Check(pixel.x>=safePixels.xMin-1 && pixel.x<=safePixels.xMax+1 && pixel.y>=safePixels.yMin-1 && pixel.y<=safePixels.yMax+1,"Board fits safe area at "+width+"x"+height);
                 }
-                var buttonCorners=new Vector3[4]; game.leftButton.GetComponent<RectTransform>().GetWorldCorners(buttonCorners);
-                float pixelHeight=Vector3.Distance(camera.WorldToScreenPoint(buttonCorners[0]),camera.WorldToScreenPoint(buttonCorners[1]));
-                Check(pixelHeight>=44,"Choice tap target at "+width+"x"+height);
-                game.helpButton.GetComponent<RectTransform>().GetWorldCorners(buttonCorners);
-                pixelHeight=Vector3.Distance(camera.WorldToScreenPoint(buttonCorners[0]),camera.WorldToScreenPoint(buttonCorners[1]));
-                Check(pixelHeight>=44,"Help tap target at "+width+"x"+height);
-                Check(game.briefing.fontSize * layout.content.localScale.x * canvas.scaleFactor >= 25, "Question remains large on compact phones");
-                VerifyCardText(game);
+                Check(game.portrait.rectTransform.rect.size==game.cardTransform.rect.size,"Portrait fills card");
+                Check(game.briefing.fontSize * layout.content.localScale.x * canvas.scaleFactor >= 25,"Question remains large");
+                Check(game.briefing.font!=null && game.briefing.font.atlasTexture!=null,"SDF font available");
+                foreach(var card in game.campaign.cards)
+                {
+                    Fits(game.briefing,card.briefing,card.id);
+                    Fits(game.choiceLabel,card.left.label,card.id);
+                    Fits(game.choiceLabel,card.right.label,card.id);
+                }
             }
             finally
             {
                 canvas.renderMode=RenderMode.ScreenSpaceOverlay; canvas.worldCamera=null;
                 camera.targetTexture=null; RenderTexture.active=previous;
+                canvas.scaleFactor=previousScale;
+                layout.safeArea.anchorMin=previousMin; layout.safeArea.anchorMax=previousMax;
+                layout.content.localScale=previousBoardScale;
+                Canvas.ForceUpdateCanvases();
                 UnityEngine.Rendering.GraphicsSettings.defaultRenderPipeline=pipeline; QualitySettings.renderPipeline=qualityPipeline;
                 Object.DestroyImmediate(image); texture.Release(); Object.DestroyImmediate(texture);
             }
         }
-        static void VerifyCardText(PresidencyGame game)
+        static void Fits(TMP_Text text,string value,string id)
         {
-            // Check every authored card at the same layout, not only the randomly drawn preview.
-            foreach(var card in game.campaign.cards)
-            {
-
-                Fits(game.briefing,card.briefing,card.id);
-                Fits(game.leftLabel,card.left.label,card.id);
-                Fits(game.rightLabel,card.right.label,card.id);
-            }
-        }
-        static void Fits(Text text,string value,string id)
-        {
-            var settings=text.GetGenerationSettings(text.rectTransform.rect.size);
-            if(text.resizeTextForBestFit) { settings.resizeTextForBestFit=false; settings.fontSize=text.resizeTextMinSize; }
-            float needed=new TextGenerator().GetPreferredHeight(value,settings)/text.pixelsPerUnit;
-            Check(needed<=text.rectTransform.rect.height+1,id+" / "+text.name+" fits ("+needed+")");
+            Vector2 needed=text.GetPreferredValues(value,text.rectTransform.rect.width,Mathf.Infinity);
+            Check(needed.y<=text.rectTransform.rect.height+1,id+" / "+text.name+" fits ("+needed.y+")");
         }
     }
 }

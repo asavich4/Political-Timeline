@@ -4,9 +4,9 @@ A presidency told through difficult choices. Keep workers, the middle class, sec
 
 ## Play in Unity
 
-Choose **Political Timeline > Preview iPhone Portrait**, then press Play. This opens `Assets/Scenes/Presidency.unity`, selects a 390 × 844 Game view and maximizes that panel so the phone preview is readable. Press Shift+Space over the Game view to return to the normal editor layout. Swipe the card or tap one of the two full-width choices. Arrow keys and A/D still work in the editor. Short or mostly vertical drags cancel. The original `Main.unity` remains intact.
+Choose **Political Timeline > Preview iPhone Portrait**, then press Play. This opens `Assets/Scenes/Presidency.unity`, selects a 1170 × 2532 Retina Game view and maximizes that panel. Press Shift+Space over the Game view to return to the normal editor layout. Hold the card left or right to reveal that choice over the portrait. Release after the gold line appears to commit; return to the center to cancel. Short or mostly vertical drags also cancel. Hold and release arrow keys or A/D for the same preview-and-choose behavior in the editor. The original `Main.unity` remains intact.
 
-The iPhone layout keeps the card and controls inside the screen safe area. The main screen contains four support bars, a character, one bold question and two stacked choices. There is no title, turn counter, adviser caption, extra headline or instruction text. Questions use fixed 28-point text and choices use 23-point text; the shorter layout avoids squeezing everything down on compact phones. Small +/− indicators preview support direction while dragging and briefly confirm changes afterward. Tap the support bars for rules, term and approval. Opening details pauses decision input.
+The iPhone layout keeps the card and controls inside the screen safe area. The main screen contains four support bars, one bold question and an edge-to-edge portrait card. Choice text stays hidden until the card is held to either side. There is no title, turn counter, adviser caption, white text panel or permanent choice buttons. All labels use TextMesh Pro distance-field fonts for sharper scaling. Both questions and revealed choices use fixed 28-point text. Small +/− indicators preview support direction while dragging and briefly confirm changes afterward. Tap the support bars for rules, term and approval. Opening details pauses decision input.
 
 The four groups begin at 50. Each decision changes their support. Reaching either 0 or 100 ends the administration: abandonment at the low end, institutional capture or an uncontrollable mandate at the high end. This is an abstract game mechanic, not a political simulation.
 
@@ -16,7 +16,7 @@ After 16 decisions, an average support of at least 45 wins reelection. Surviving
 
 1. Open **Political Timeline > Content Workshop**.
 2. Choose **New Card** or **Duplicate Selected**. The card is automatically added to the current campaign.
-3. Write the briefing as a single question of about 50 characters and keep choice labels around 20 characters. The question is the only card text shown during play. Headline, adviser and category remain available for organizing content. Drag a portrait Sprite from the existing Sprites folder onto Portrait; expand the image asset if needed to see its Sprite.
+3. Write the briefing as a single question of about 50 characters and keep choice labels around 20 characters. The question sits above the card; a choice label appears over the image while holding it left or right. Headline, adviser and category remain available for organizing content. Drag a square portrait Sprite from the existing Sprites folder onto Portrait; expand the image asset if needed to see its Sprite. Square portraits fill the card without cropping or stretching.
 4. Give each choice a short label, a consequence, and changes to all four groups. Positive numbers add support; negative numbers remove it.
 5. Optionally assign a Follow Up card to either choice. Follow-ups are forced narrative branches and bypass normal availability, weight and once-per-run selection rules. Avoid unintended cycles.
 6. Use Earliest Decision to delay ordinary draws, Weight to change draw frequency, and Once Per Run for unique incidents.
@@ -28,8 +28,8 @@ The workshop edits real ScriptableObject assets in `Assets/Content/Presidency`. 
 
 - 18 playable policy cards covering jobs, infrastructure, taxation, health, security, housing, trade, education, diplomacy and public trust.
 - Existing flat geometric character artwork retained and assigned to advisers.
-- Editable portrait scene hierarchy: typography, portraits, support bars, decision card and choice buttons are visible outside Play mode. Rules and current progress are available by tapping the support bars; written consequences remain in the editable card assets.
-- Mouse/touch card dragging, keyboard and button controls.
+- Editable portrait scene hierarchy: typography, full-card portraits, support bars and a directional choice overlay. Rules and current progress are available by tapping the support bars; written consequences remain in the editable card assets.
+- Mouse/touch hold-and-release decisions and equivalent keyboard controls.
 - Nine constituency/election/legacy endings, election defeat and deck exhaustion handling.
 - Restart after a completed run; configurable campaign rules; branching follow-up cards.
 - Content validation and repeatable campaign rule checks from the workshop.

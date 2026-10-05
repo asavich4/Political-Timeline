@@ -3,6 +3,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
 
@@ -14,7 +15,7 @@ namespace PoliticalTimeline.Editor
         static readonly Color Ink = new Color(.13f,.18f,.19f);
         static readonly Color Paper = new Color(.96f,.93f,.83f);
         static readonly Color Gold = new Color(.70f,.56f,.31f);
-        static Font font;
+        static TMP_FontAsset font;
 
         [MenuItem("Political Timeline/Create Starter Scene")]
         public static void Build()
@@ -24,11 +25,11 @@ namespace PoliticalTimeline.Editor
             var campaign = PresidencyContent.CreateStarter();
             EnsureMeterSprite();
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>("Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF.asset");
             var cam = new GameObject("Main Camera", typeof(Camera)); cam.tag = "MainCamera";
             cam.GetComponent<Camera>().backgroundColor = Ink; cam.GetComponent<Camera>().clearFlags = CameraClearFlags.SolidColor;
             var canvasObject = new GameObject("Presidency • Portrait", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
-            var canvas = canvasObject.GetComponent<Canvas>(); canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            var canvas = canvasObject.GetComponent<Canvas>(); canvas.renderMode = RenderMode.ScreenSpaceOverlay; canvas.pixelPerfect=true;
             var scaler = canvasObject.GetComponent<CanvasScaler>(); scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(390,844); scaler.matchWidthOrHeight = 0;
             var game = canvasObject.AddComponent<PresidencyGame>(); game.campaign = campaign;
@@ -46,7 +47,7 @@ namespace PoliticalTimeline.Editor
             var meterHit=meters.gameObject.AddComponent<Image>(); meterHit.color=Color.clear;
             meterButton.targetGraphic=meterHit; game.helpButton=meterButton;
             game.supportFills = new Image[4];
-            game.supportChanges = new Text[4];
+            game.supportChanges = new TMP_Text[4];
             string[] names = { "Workers", "Middle\nclass", "Security", "Elites" };
             for(int i=0;i<4;i++)
             {
@@ -59,19 +60,27 @@ namespace PoliticalTimeline.Editor
                 game.supportFills[i]=fill;
                 game.supportChanges[i]=Label(meters,"Change "+i,x,57,80,22,"",18,Paper,TextAnchor.MiddleCenter);
             }
-            var card=Panel(root,"Decision Card",20,86,350,392,Paper);
+            game.briefing=Label(root,"Question",20,88,350,140,campaign.cards[0].briefing,28,Paper,TextAnchor.MiddleCenter);
+            game.briefing.fontStyle=FontStyles.Bold;
+            var card=Panel(root,"Decision Card",20,246,350,350,Color.clear);
+            card.rectTransform.pivot=new Vector2(.5f,.5f);
+            card.rectTransform.anchoredPosition+=new Vector2(175,-175);
             game.cardTransform=card.rectTransform; card.gameObject.AddComponent<CardDrag>().game=game;
-            var portrait=Panel(card.transform,"Character",65,14,220,220,Color.white);
-            portrait.sprite=campaign.cards[0].portrait; portrait.preserveAspect=true; portrait.raycastTarget=false; game.portrait=portrait;
-            game.briefing=Label(card.transform,"Question",22,254,306,124,campaign.cards[0].briefing,28,Ink,TextAnchor.MiddleCenter);
-            game.briefing.fontStyle=FontStyle.Bold;
-            game.leftButton=Choice(root,"Left Choice",20,494,350,64,campaign.cards[0].left.label,out game.leftLabel);
-            game.rightButton=Choice(root,"Right Choice",20,570,350,64,campaign.cards[0].right.label,out game.rightLabel);
-            game.restartButton=Choice(root,"New Administration",20,514,350,76,"Try again",out _); game.restartButton.gameObject.SetActive(false);
-
+            // Square portraits fill the card edge to edge. No cream frame or text area.
+            var portrait=Panel(card.transform,"Character",0,0,350,350,Color.white);
+            portrait.sprite=campaign.cards[0].portrait; portrait.preserveAspect=false; portrait.raycastTarget=false; game.portrait=portrait;
+            var stamp=Panel(card.transform,"Choice • revealed while holding",0,0,350,116,new Color(.06f,.09f,.10f,.94f));
+            stamp.raycastTarget=false;
+            game.choiceOverlay=stamp.gameObject.AddComponent<CanvasGroup>();
+            game.choiceOverlay.alpha=0; game.choiceOverlay.blocksRaycasts=false; game.choiceOverlay.interactable=false;
+            game.choiceLabel=Label(stamp.transform,"Held Choice",20,12,310,88,"",28,Color.white,TextAnchor.MiddleCenter);
+            game.choiceLabel.fontStyle=FontStyles.Bold;
+            game.commitIndicator=Panel(stamp.transform,"Release Threshold",0,110,350,6,Gold);
+            game.commitIndicator.raycastTarget=false;
+            game.restartButton=Choice(root,"New Administration",20,550,350,76,"Try again",out _); game.restartButton.gameObject.SetActive(false);
             var help=Panel(root,"Details",0,0,390,640,Ink); game.helpPanel=help.gameObject;
             Label(help.transform,"Help Heading",20,26,350,44,"Keep the balance",28,Paper,TextAnchor.MiddleCenter);
-            game.helpText=Label(help.transform,"Help Text",28,105,334,402,"Keep every group between 0 and 100.\n\nSwipe or tap a choice.",23,Paper,TextAnchor.UpperLeft);
+            game.helpText=Label(help.transform,"Help Text",28,105,334,402,"Keep every group between 0 and 100.\n\nHold left or right, then release.",23,Paper,TextAnchor.UpperLeft);
             game.closeHelpButton=Choice(help.transform,"Close Help",20,552,350,76,"Back to the card",out _);
             help.gameObject.SetActive(false);
             new GameObject("Event System",typeof(EventSystem),typeof(InputSystemUIInputModule));
@@ -114,9 +123,18 @@ namespace PoliticalTimeline.Editor
         }
         static Image Panel(Transform p,string n,float x,float y,float w,float h,Color color)
         { var r=Rect(p,n,x,y,w,h); var image=r.gameObject.AddComponent<Image>(); image.color=color; return image; }
-        static Text Label(Transform p,string n,float x,float y,float w,float h,string value,int size,Color color,TextAnchor alignment=TextAnchor.UpperLeft)
-        { var r=Rect(p,n,x,y,w,h); var text=r.gameObject.AddComponent<Text>(); text.font=font; text.text=value; text.fontSize=size; text.color=color; text.alignment=alignment; text.supportRichText=true; text.raycastTarget=false; return text; }
-        static Button Choice(Transform p,string n,float x,float y,float w,float h,string value,out Text label)
+        static TMP_Text Label(Transform p,string n,float x,float y,float w,float h,string value,int size,Color color,TextAnchor alignment=TextAnchor.UpperLeft)
+        { var r=Rect(p,n,x,y,w,h); var text=r.gameObject.AddComponent<TextMeshProUGUI>(); text.font=font; text.text=value; text.fontSize=size; text.color=color; text.alignment=Align(alignment); text.enableAutoSizing=false; text.richText=true; text.raycastTarget=false; return text; }
+        static TextAlignmentOptions Align(TextAnchor alignment)
+        {
+            switch(alignment)
+            {
+                case TextAnchor.MiddleCenter: return TextAlignmentOptions.Center;
+                case TextAnchor.UpperCenter: return TextAlignmentOptions.Top;
+                default: return TextAlignmentOptions.TopLeft;
+            }
+        }
+        static Button Choice(Transform p,string n,float x,float y,float w,float h,string value,out TMP_Text label)
         {
             var panel=Panel(p,n,x,y,w,h,new Color(.26f,.32f,.31f)); var button=panel.gameObject.AddComponent<Button>(); button.targetGraphic=panel;
             var colors=button.colors; colors.highlightedColor=new Color(1,.9f,.65f); colors.pressedColor=new Color(.7f,.7f,.6f); button.colors=colors;

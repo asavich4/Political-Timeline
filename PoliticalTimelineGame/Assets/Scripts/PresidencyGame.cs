@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 
@@ -8,17 +9,19 @@ namespace PoliticalTimeline
     public class PresidencyGame : MonoBehaviour
     {
         public CampaignDefinition campaign;
-        public Text briefing, leftLabel, rightLabel, helpText;
-        public Text[] supportChanges;
+        public TMP_Text briefing, choiceLabel, helpText;
+        public CanvasGroup choiceOverlay;
+        public Image commitIndicator;
+        public TMP_Text[] supportChanges;
         public Image[] supportFills;
         public Image portrait;
         public RectTransform cardTransform;
-        public Button leftButton, rightButton, restartButton, helpButton, closeHelpButton;
+        public Button restartButton, helpButton, closeHelpButton;
         public GameObject helpPanel;
         CampaignState state;
         Vector2 home;
         bool dragging, initialized;
-        int pointerId;
+        int pointerId, keyboardDirection;
         Vector2 dragStart;
         float inputReady, feedbackUntil;
         public int Decisions => state == null ? 0 : state.decisions;
@@ -32,8 +35,6 @@ namespace PoliticalTimeline
             if (initialized) return;
             initialized = true;
             home = cardTransform.anchoredPosition;
-            leftButton.onClick.AddListener(() => Decide(false));
-            rightButton.onClick.AddListener(() => Decide(true));
             restartButton.onClick.AddListener(Restart);
             helpButton.onClick.AddListener(() => SetHelp(true));
             closeHelpButton.onClick.AddListener(() => SetHelp(false));
@@ -43,7 +44,7 @@ namespace PoliticalTimeline
         public void Restart()
         {
             if (campaign == null) { briefing.text = "Assign a campaign in the Inspector"; return; }
-            inputReady = 0; feedbackUntil = 0; dragging = false;
+            inputReady = 0; feedbackUntil = 0; dragging = false; keyboardDirection = 0;
             ResetCard(); ClearFeedback(); helpPanel.SetActive(false);
             state = new CampaignState(campaign, System.Environment.TickCount);
             Render();
@@ -56,8 +57,11 @@ namespace PoliticalTimeline
             var keyboard = Keyboard.current;
             if (keyboard != null)
             {
-                if (keyboard.leftArrowKey.wasPressedThisFrame || keyboard.aKey.wasPressedThisFrame) Decide(false);
-                else if (keyboard.rightArrowKey.wasPressedThisFrame || keyboard.dKey.wasPressedThisFrame) Decide(true);
+                if (keyboard.leftArrowKey.wasPressedThisFrame || keyboard.aKey.wasPressedThisFrame) keyboardDirection = -1;
+                else if (keyboard.rightArrowKey.wasPressedThisFrame || keyboard.dKey.wasPressedThisFrame) keyboardDirection = 1;
+                bool held = keyboardDirection < 0 ? keyboard.leftArrowKey.isPressed || keyboard.aKey.isPressed : keyboard.rightArrowKey.isPressed || keyboard.dKey.isPressed;
+                if (keyboardDirection != 0 && held) PreviewDirection(keyboardDirection * (SwipeThreshold + 5));
+                else if (keyboardDirection != 0) { bool right = keyboardDirection > 0; keyboardDirection = 0; Decide(right); }
             }
         }
 
@@ -70,20 +74,29 @@ namespace PoliticalTimeline
         public void BeginDrag(PointerEventData data)
         {
             if (state == null || state.ended || HelpOpen || dragging || Time.unscaledTime < inputReady) return;
-            dragging = true; pointerId = data.pointerId; dragStart = LocalPoint(data);
+            keyboardDirection = 0; dragging = true; pointerId = data.pointerId; dragStart = LocalPoint(data);
         }
         public void Drag(PointerEventData data)
         {
             if (!dragging || pointerId != data.pointerId) return;
             float delta = LocalPoint(data).x - dragStart.x;
-            cardTransform.anchoredPosition = home + new Vector2(Mathf.Clamp(delta * .55f,-140,140), 0);
-            cardTransform.localRotation = Quaternion.Euler(0, 0, Mathf.Clamp(-delta * .04f,-12,12));
-            if (Mathf.Abs(delta) > 20)
+            PreviewDirection(delta);
+        }
+
+        void PreviewDirection(float delta)
+        {
+            cardTransform.anchoredPosition = home + new Vector2(Mathf.Clamp(delta * .45f,-110,110), 0);
+            cardTransform.localRotation = Quaternion.Euler(0, 0, Mathf.Clamp(-delta * .06f,-12,12));
+            float distance = Mathf.Abs(delta);
+            choiceOverlay.alpha = Mathf.Clamp01((distance - 8) / 28f);
+            commitIndicator.enabled = distance > SwipeThreshold;
+            if (distance > 8)
             {
                 var choice = delta > 0 ? state.current.right : state.current.left;
+                choiceLabel.text = choice.label;
                 ShowFeedback(choice.change, false);
             }
-            else ClearFeedback();
+            else { choiceLabel.text = ""; ClearFeedback(); }
         }
         public void EndDrag(PointerEventData data)
         {
@@ -93,10 +106,10 @@ namespace PoliticalTimeline
             if (Mathf.Abs(delta.x) > SwipeThreshold && Mathf.Abs(delta.x) > Mathf.Abs(delta.y)) Decide(delta.x > 0);
             
         }
-        void ResetCard() { cardTransform.anchoredPosition = home; cardTransform.localRotation = Quaternion.identity; }
+        void ResetCard() { cardTransform.anchoredPosition = home; cardTransform.localRotation = Quaternion.identity; choiceOverlay.alpha = 0; choiceLabel.text = ""; commitIndicator.enabled = false; }
         void OnApplicationFocus(bool focused) { if (!focused && initialized) CancelDrag(); }
         void OnDisable() { if (initialized) CancelDrag(); }
-        void CancelDrag() { dragging = false; ResetCard(); ClearFeedback(); }
+        void CancelDrag() { keyboardDirection = 0; dragging = false; ResetCard(); ClearFeedback(); }
 
         public void Decide(bool right)
         {
@@ -113,7 +126,7 @@ namespace PoliticalTimeline
             helpPanel.SetActive(visible);
             if (state == null) return;
             helpText.text = "Keep every group above 0 and below 100.\n\n"
-                + "Swipe the card or tap a choice.\n\n"
+                + "Hold the card left or right to see a choice. Release to choose.\n\n"
                 + $"Win reelection with {campaign.electionThreshold}% approval.\n\n"
                 + $"Term {state.Term}  ·  Approval {state.Approval}%";
         }
@@ -125,8 +138,8 @@ namespace PoliticalTimeline
                 supportFills[i].fillAmount = state.support[i] / 100f;
                 supportFills[i].color = state.support[i] < 20 || state.support[i] > 80 ? new Color(.83f,.36f,.29f) : new Color(.72f,.62f,.39f);
             }
-            leftButton.gameObject.SetActive(!state.ended);
-            rightButton.gameObject.SetActive(!state.ended);
+            portrait.gameObject.SetActive(!state.ended);
+            cardTransform.gameObject.SetActive(!state.ended);
             restartButton.gameObject.SetActive(state.ended);
             if (state.ended)
             {
@@ -136,7 +149,6 @@ namespace PoliticalTimeline
             var c = state.current;
             briefing.text = c.briefing;
             portrait.sprite = c.portrait; portrait.enabled = c.portrait != null;
-            leftLabel.text = c.left.label; rightLabel.text = c.right.label;
         }
 
         void ShowFeedback(SupportChange change, bool committed)

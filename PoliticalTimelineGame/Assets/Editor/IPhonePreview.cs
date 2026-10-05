@@ -23,7 +23,7 @@ namespace PoliticalTimeline.Editor
             }
             catch(Exception)
             {
-                UnityEngine.Debug.LogWarning("Set the Game view to 390 x 844 portrait using its resolution dropdown. The preview preset API is unavailable in this editor version.");
+                UnityEngine.Debug.LogWarning("Set the Game view to 1170 x 2532 portrait using its resolution dropdown. The preview preset API is unavailable in this editor version.");
             }
             window.Show(); window.maximized=true; window.Focus();
         }
@@ -42,11 +42,11 @@ namespace PoliticalTimeline.Editor
             for(int i=0;i<count;i++)
             {
                 var size=type.GetMethod("GetGameViewSize").Invoke(group,new object[]{i});
-                if((int)size.GetType().GetProperty("width").GetValue(size)==390 && (int)size.GetType().GetProperty("height").GetValue(size)==844) return i;
+                if((int)size.GetType().GetProperty("width").GetValue(size)==1170 && (int)size.GetType().GetProperty("height").GetValue(size)==2532) return i;
             }
             var sizeType=assembly.GetType("UnityEditor.GameViewSize");
             var modeType=assembly.GetType("UnityEditor.GameViewSizeType");
-            var custom=Activator.CreateInstance(sizeType,new object[]{Enum.Parse(modeType,"FixedResolution"),390,844,"iPhone Portrait"});
+            var custom=Activator.CreateInstance(sizeType,new object[]{Enum.Parse(modeType,"FixedResolution"),1170,2532,"iPhone Retina Portrait"});
             type.GetMethod("AddCustomSize").Invoke(group,new[]{custom});
             return count;
         }

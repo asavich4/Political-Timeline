@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 419f0aa0370f329488c33c094f0c53c2, type: 3}
+  m_Name: budget
+  m_EditorClassIdentifier: 
+  id: budget
+  advisor: Treasury Secretary
+  category: THE ECONOMY
+  headline: Midnight on Capitol Hill
+  briefing: A shutdown looms. Accept a compromise?
+  portrait: {fileID: 21300000, guid: abe362ac3a5c97c4ea2232f303ffa20f, type: 3}
+  earliestDecision: 1
+  weight: 1
+  oncePerRun: 0
+  left:
+    label: Accept the deal
+    consequence: Government stays open. Security leaders demand guarantees.
+    change:
+      workers: 5
+      middleClass: 7
+      security: -9
+      elites: -3
+    followUp: {fileID: 0}
+  right:
+    label: Hold your ground
+    consequence: Your allies praise your resolve as services close.
+    change:
+      workers: -6
+      middleClass: -8
+      security: 8
+      elites: 5
+    followUp: {fileID: 0}

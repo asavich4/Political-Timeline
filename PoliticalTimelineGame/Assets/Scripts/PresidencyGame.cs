@@ -9,7 +9,8 @@ namespace PoliticalTimeline
     public class PresidencyGame : MonoBehaviour
     {
         public CampaignDefinition campaign;
-        public TMP_Text briefing, choiceLabel, helpText;
+        public TMP_Text briefing, choiceLabel, helpText, helpTitle;
+        public Button[] powerButtons;
         public CanvasGroup choiceOverlay;
         public Image commitIndicator;
         public TMP_Text[] supportChanges;
@@ -36,7 +37,11 @@ namespace PoliticalTimeline
             initialized = true;
             home = cardTransform.anchoredPosition;
             restartButton.onClick.AddListener(Restart);
-            helpButton.onClick.AddListener(() => SetHelp(true));
+            for(int i=0;i<powerButtons.Length;i++)
+            {
+                int power=i;
+                powerButtons[i].onClick.AddListener(() => ShowPower(power));
+            }
             closeHelpButton.onClick.AddListener(() => SetHelp(false));
             Restart();
         }
@@ -125,10 +130,21 @@ namespace PoliticalTimeline
             if (visible) CancelDrag();
             helpPanel.SetActive(visible);
             if (state == null) return;
+            helpTitle.text="Keys of power";
             helpText.text = "Keep every group above 0 and below 100.\n\n"
                 + "Hold the card left or right to see a choice. Release to choose.\n\n"
                 + $"Win reelection with {campaign.electionThreshold}% approval.\n\n"
                 + $"Term {state.Term}  ·  Approval {state.Approval}%";
+        }
+
+        public void ShowPower(int index)
+        {
+            if(state==null || index<0 || index>=4) return;
+            SetHelp(true);
+            string[] names={ "Workers", "Middle class", "Security", "Elites" };
+            string[] descriptions={ "Workers and unions.", "Families and the middle class.", "Military and security services.", "Wealthy donors and business leaders." };
+            helpTitle.text=names[index];
+            helpText.text=descriptions[index]+$"\n\nSupport: {state.support[index]} / 100\n\nKeep this group above 0 and below 100.\n\nTerm {state.Term} · Approval {state.Approval}%";
         }
 
         void Render()

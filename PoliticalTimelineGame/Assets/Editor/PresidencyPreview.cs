@@ -13,10 +13,20 @@ namespace PoliticalTimeline.Editor
         {
             PresidencySetup.BatchSetup();
             Check(IPhonePreview.EnsureSize()>=0,"Portrait Game view preset");
+            IPhonePreview.ValidatePreviewApi();
             var game=Object.FindFirstObjectByType<PresidencyGame>();
             game.Initialize();
+            Check(game.GetComponentsInChildren<PowerIcon>().Length==4,"Four power pictograms");
+            string[] powerNames={"Workers","Middle class","Security","Elites"};
+            for(int i=0;i<4;i++)
+            {
+                game.powerButtons[i].onClick.Invoke();
+                Check(game.helpTitle.text==powerNames[i] && game.helpText.text.Contains("50 / 100"),"Correct power details");
+                game.closeHelpButton.onClick.Invoke();
+            }
             Check(game.portrait.sprite!=null && game.briefing.text!="", "Card presentation");
             Check(game.choiceOverlay.alpha==0,"Choices hidden at rest");
+            Check(game.briefing.fontSharedMaterial.GetFloat("_Sharpness")>.3f,"Sharp text material applied");
             Capture("PresidencyPreview.png",390,844,new Rect(0,34,390,763));
             Capture("PresidencyCompactPreview.png",375,667,new Rect(0,0,375,647));
             Capture("PresidencyTallPreview.png",430,932,new Rect(0,34,430,839));

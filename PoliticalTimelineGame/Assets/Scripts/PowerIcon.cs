@@ -4,9 +4,11 @@ using UnityEngine.UI;
 namespace PoliticalTimeline
 {
     // Small, filled pictograms drawn directly as UI geometry: crisp at every screen size.
+    [ExecuteAlways, RequireComponent(typeof(CanvasRenderer))]
     public class PowerIcon : MaskableGraphic
     {
-        public enum Symbol { Hammer, Home, Shield, Coins }
+        protected PowerIcon() { useLegacyMeshGeneration=false; }
+        public enum Symbol { Hammer, Home, Economy, Coins }
         public Symbol symbol;
         protected override void OnPopulateMesh(VertexHelper mesh)
         {
@@ -21,14 +23,20 @@ namespace PoliticalTimeline
                     Polygon(mesh,new Vector2(4,33),new Vector2(32,57),new Vector2(60,33),new Vector2(54,27),new Vector2(32,46),new Vector2(10,27));
                     Box(mesh,13,8,15,27); Box(mesh,37,8,14,27); Box(mesh,27,26,11,13);
                     break;
-                case Symbol.Shield:
-                    Polygon(mesh,new Vector2(8,53),new Vector2(32,59),new Vector2(56,53),new Vector2(53,25),new Vector2(44,13),new Vector2(32,5),new Vector2(20,13),new Vector2(11,25));
+                case Symbol.Economy:
+                    Box(mesh,7,7,11,17); Box(mesh,26,7,11,29); Box(mesh,45,7,11,43);
                     break;
                 case Symbol.Coins:
-                    Box(mesh,7,9,25,7); Box(mesh,7,20,25,7); Box(mesh,7,31,25,7);
-                    Box(mesh,36,9,22,7); Box(mesh,36,20,22,7); Box(mesh,36,31,22,7); Box(mesh,36,42,22,7);
+                    for(int i=0;i<3;i++) Coin(mesh,18,12+i*11,12);
+                    for(int i=0;i<4;i++) Coin(mesh,46,12+i*11,11);
                     break;
             }
+        }
+        void Coin(VertexHelper mesh,float x,float y,float radius)
+        {
+            var points=new Vector2[20];
+            for(int i=0;i<points.Length;i++) { float angle=i*Mathf.PI*2/points.Length; points[i]=new Vector2(x+Mathf.Cos(angle)*radius,y+Mathf.Sin(angle)*4); }
+            Polygon(mesh,points);
         }
         void Box(VertexHelper mesh,float x,float y,float w,float h) => Polygon(mesh,new Vector2(x,y),new Vector2(x+w,y),new Vector2(x+w,y+h),new Vector2(x,y+h));
         void Polygon(VertexHelper mesh,params Vector2[] points)

@@ -6,9 +6,19 @@ using UnityEngine;
 
 namespace PoliticalTimeline.Editor
 {
+    [InitializeOnLoad]
     public static class IPhonePreview
     {
         const BindingFlags Flags=BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Instance;
+        static IPhonePreview()
+        {
+            if(Application.isBatchMode) return;
+            EditorApplication.playModeStateChanged += state =>
+            {
+                if(state==PlayModeStateChange.EnteredPlayMode && UnityEngine.Object.FindFirstObjectByType<PresidencyGame>()!=null)
+                    EditorApplication.delayCall += FixSharpness;
+            };
+        }
 
         [MenuItem("Political Timeline/Preview iPhone Portrait")]
         public static void Open()

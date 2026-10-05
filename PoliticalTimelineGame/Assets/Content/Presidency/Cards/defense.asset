@@ -27,7 +27,7 @@ MonoBehaviour:
     change:
       workers: 3
       middleClass: 7
-      security: -8
+      economy: -8
       elites: -5
     followUp: {fileID: 0}
   right:
@@ -36,6 +36,6 @@ MonoBehaviour:
     change:
       workers: -5
       middleClass: -6
-      security: 9
+      economy: 9
       elites: 7
     followUp: {fileID: 0}

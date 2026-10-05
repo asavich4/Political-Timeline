@@ -17,6 +17,8 @@ namespace PoliticalTimeline.Editor
 
         [MenuItem("Political Timeline/Content Workshop")]
         public static void Open() => GetWindow<ContentWorkshop>("Content Workshop");
+        [MenuItem("Political Timeline/National Simulation Settings")]
+        public static void OpenNation() => Selection.activeObject=AssetDatabase.LoadAssetAtPath<NationalDefinition>(PresidencyContent.Root+"/Nation.asset");
         void OnEnable() { minSize=new Vector2(760,540); campaign=AssetDatabase.LoadAssetAtPath<CampaignDefinition>(PresidencyContent.Root+"/FirstAdministration.asset"); }
         void OnDisable() { if(cardEditor != null) DestroyImmediate(cardEditor); }
         void OnGUI()
@@ -77,6 +79,22 @@ namespace PoliticalTimeline.Editor
         {
             var errors=new System.Collections.Generic.List<string>();
             if(campaign.cards.Count==0) errors.Add("Campaign has no cards.");
+            if(campaign.startYear<2001 || campaign.startYear%4!=1) errors.Add("Start year should follow a presidential election (for example 2025).");
+            if(campaign.nation!=null)
+            {
+                var states=campaign.nation.states;
+                if(states==null || states.Length!=51) errors.Add("National simulation needs 50 states plus DC.");
+                else
+                {
+                    if(states.Any(s=>s==null)) errors.Add("Missing state profile.");
+                    else
+                    {
+                        if(states.Sum(s=>s.electoralVotes)!=538) errors.Add("Electoral votes must total 538.");
+                        if(states.Select(s=>s.abbreviation).Distinct().Count()!=51) errors.Add("Duplicate state abbreviation.");
+                        if(states.Any(s=>s.interests.x+s.interests.y+s.interests.z+s.interests.w<=0)) errors.Add("State interest weights must have a positive total.");
+                    }
+                }
+            }
             var ids=new System.Collections.Generic.HashSet<string>();
             foreach(var c in campaign.cards)
             {
@@ -98,6 +116,7 @@ namespace PoliticalTimeline.Editor
                 var state=new CampaignState(campaign,seed);
                 while(!state.ended && state.decisions<1000)
                 {
+                    if(state.ElectionPending) state.AcknowledgeElection();
                     int left=Score(state.support,state.current.left.change), right=Score(state.support,state.current.right.change);
                     state.Choose(right<left); // Simple policy: keep the coalition near its midpoint.
                 }

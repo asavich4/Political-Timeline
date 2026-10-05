@@ -32,6 +32,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c885cc218c2e582449f1da6a320240d4, type: 2}
   - {fileID: 11400000, guid: 4cb9a8d574bcecc4592ffa42f12de932, type: 2}
   startingSupport: 50
-  decisionsPerTerm: 16
-  electionThreshold: 45
+  startYear: 2025
+  nation: {fileID: 11400000, guid: fa31a48ce04320c49ac2ae7a8d033be0, type: 2}
   termLimit: 2

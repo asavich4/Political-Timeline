@@ -16,8 +16,10 @@ namespace PoliticalTimeline.Editor
             IPhonePreview.ValidatePreviewApi();
             var game=Object.FindFirstObjectByType<PresidencyGame>();
             game.Initialize();
-            Check(game.GetComponentsInChildren<PowerIcon>().Length==4,"Four power pictograms");
-            string[] powerNames={"Workers","Middle class","Security","Elites"};
+            Check(game.powerIcons.Length==4,"Four illustrated power images");
+            foreach(var icon in game.powerIcons) Check(icon.sprite!=null,"Power image sprite assigned");
+            Check(game.briefing.font.atlasWidth==2048,"High-resolution font atlas");
+            string[] powerNames={"Workers","Middle class","Economy","Elites"};
             for(int i=0;i<4;i++)
             {
                 game.powerButtons[i].onClick.Invoke();
@@ -60,7 +62,68 @@ namespace PoliticalTimeline.Editor
             Swipe(game,new Vector2(110,0)); Check(game.Decisions==0,"Help blocks swipes");
             game.closeHelpButton.onClick.Invoke(); Swipe(game,new Vector2(110,0)); Check(game.Decisions==1,"Help closes and play resumes");
             Check(PlayerSettings.defaultInterfaceOrientation==UIOrientation.Portrait,"Portrait orientation lock");
+            CheckNationalViews(game);
             File.AppendAllText("Validation.txt","\nSDF text, full-card artwork, safe areas and text fit verified at 375x667, 390x844, 430x932 and 1170x2532.\nDirectional hold previews, delayed commit, release threshold, canceled gestures, restart and help checks passed.\nPhysical iPhone testing and an iOS build have not been performed.");
+        }
+
+        static void CheckNationalViews(PresidencyGame game)
+        {
+            game.Restart();
+            game.nationalPanels.navigation[0].onClick.Invoke();
+            foreach(var tile in game.nationalPanels.mapTiles)
+                Check(tile.sprite!=null && tile.alphaHitTestMinimumThreshold>0,"Geographic state sprite and shape hit test");
+            for(int i=0;i<game.nationalPanels.stateShortcuts.Length;i++)
+            {
+                game.nationalPanels.stateShortcuts[i].onClick.Invoke();
+                Check(game.nationalPanels.mapDetail.text.Contains(game.State.nation.states[game.nationalPanels.shortcutStates[i]].stateName),"Small state shortcut selects correct state");
+            }
+            Check(game.nationalPanels.mapGroup.activeSelf && game.nationalPanels.mapTiles.Length==51,"State map opens");
+            game.nationalPanels.mapButtons[4].onClick.Invoke();
+            Check(game.nationalPanels.mapDetail.text.Contains("California"),"State selection");
+            Capture("StateMapPreview.png",390,844,new Rect(0,34,390,763));
+            game.nationalPanels.closeButton.onClick.Invoke();
+            game.nationalPanels.navigation[1].onClick.Invoke();
+            Capture("CongressPreview.png",390,844,new Rect(0,34,390,763));
+            game.nationalPanels.closeButton.onClick.Invoke();
+            game.nationalPanels.navigation[2].onClick.Invoke();
+            Capture("CourtPreview.png",390,844,new Rect(0,34,390,763));
+            game.nationalPanels.closeButton.onClick.Invoke();
+            for(int month=1;month<=47;month++)
+            {
+                for(int key=0;key<4;key++) game.State.support[key]=70;
+                if(month==47)
+                {
+                    game.Decide(false);
+                    Check(game.State.ElectionPending && game.nationalPanels.IsOpen,"November automatically opens election results");
+                }
+                else { game.State.Choose(false); game.Refresh(); }
+                Check(!game.State.ended,"Stable test administration survives");
+                if(month==12)
+                {
+                    Check(game.background.color.r>.95f && game.briefing.color.r<.2f,"Election year white theme and dark text");
+                    Capture("ElectionYearPreview.png",390,844,new Rect(0,34,390,763));
+                }
+                if(month==18)
+                {
+                    game.nationalPanels.navigation[2].onClick.Invoke();
+                    Check(game.nationalPanels.actionButton.interactable,"Nomination available");
+                    game.nationalPanels.actionButton.onClick.Invoke();
+                    Check(game.State.nation.Vacancy<0,"Nomination fills vacancy");
+                    game.nationalPanels.closeButton.onClick.Invoke();
+                }
+                if(game.State.ElectionPending)
+                {
+                    game.nationalPanels.OpenElection();
+                    if(month==47) Capture("ElectionResultsPreview.png",390,844,new Rect(0,34,390,763));
+                    int before=game.Decisions; game.Decide(true); Check(game.Decisions==before,"Results block decisions");
+                    game.nationalPanels.actionButton.onClick.Invoke();
+                    Check(game.nationalPanels.congressGroup.activeSelf,"Results continue to Congress");
+                    if(month==47) Capture("ElectionCongressPreview.png",390,844,new Rect(0,34,390,763));
+                    game.nationalPanels.actionButton.onClick.Invoke();
+                    Check(!game.State.ElectionPending && !game.nationalPanels.IsOpen,"Results return to cards");
+                }
+            }
+            File.AppendAllText("Validation.txt","\nMap, state selection, Congress, court nominations, annual theme and automatic November result flow verified.");
         }
 
         static PointerEventData Hold(PresidencyGame game,Vector2 localDelta)

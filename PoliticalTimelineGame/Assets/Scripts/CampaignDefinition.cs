@@ -8,8 +8,8 @@ namespace PoliticalTimeline
     {
         public List<DecisionCard> cards = new List<DecisionCard>();
         [Range(1, 99)] public int startingSupport = 50;
-        [Min(1)] public int decisionsPerTerm = 16;
-        [Range(1, 99)] public int electionThreshold = 45;
+        [Min(2001)] public int startYear = 2025;
+        public NationalDefinition nation;
         [Min(1)] public int termLimit = 2;
     }
 }

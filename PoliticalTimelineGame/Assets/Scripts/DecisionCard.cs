@@ -6,9 +6,10 @@ namespace PoliticalTimeline
     [Serializable]
     public struct SupportChange
     {
-        public int workers, middleClass, security, elites;
-        public SupportChange(int w, int m, int s, int e) { workers = w; middleClass = m; security = s; elites = e; }
-        public int[] Values => new[] { workers, middleClass, security, elites };
+        public int workers, middleClass, elites;
+        [UnityEngine.Serialization.FormerlySerializedAs("security")] public int economy;
+        public SupportChange(int w, int m, int s, int e) { workers = w; middleClass = m; economy = s; elites = e; }
+        public int[] Values => new[] { workers, middleClass, economy, elites };
     }
 
     [Serializable]

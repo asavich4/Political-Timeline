@@ -28,7 +28,7 @@ namespace PoliticalTimeline.Editor
             var campaign=AssetDatabase.LoadAssetAtPath<CampaignDefinition>(PresidencyContent.Root+"/FirstAdministration.asset");
             string result=ContentWorkshop.Validate(campaign);
             if(!result.StartsWith("Deck valid")) throw new System.Exception(result);
-            File.WriteAllText("Validation.txt","Unity compilation passed.\n9 campaign rule checks passed.\n"+result);
+            File.WriteAllText("Validation.txt","Unity compilation passed.\nMonthly calendar, election, Congress, court and deck rule checks passed.\n"+result);
         }
     }
 }

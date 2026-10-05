@@ -1,0 +1,374 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18d4a56b34a661c4cb1bc67fb103253b, type: 3}
+  m_Name: Nation
+  m_EditorClassIdentifier: 
+  states:
+  - abbreviation: AL
+    stateName: Alabama
+    electoralVotes: 9
+    column: 6
+    row: 6
+    startingLean: -12
+    interests: {x: 1, y: 2, z: 3, w: 2}
+  - abbreviation: AK
+    stateName: Alaska
+    electoralVotes: 3
+    column: 0
+    row: 0
+    startingLean: 5
+    interests: {x: 2, y: 3, z: 4, w: 1}
+  - abbreviation: AZ
+    stateName: Arizona
+    electoralVotes: 11
+    column: 2
+    row: 5
+    startingLean: -3
+    interests: {x: 3, y: 1, z: 1, w: 2}
+  - abbreviation: AR
+    stateName: Arkansas
+    electoralVotes: 6
+    column: 5
+    row: 5
+    startingLean: -11
+    interests: {x: 1, y: 2, z: 2, w: 1}
+  - abbreviation: CA
+    stateName: California
+    electoralVotes: 54
+    column: 0
+    row: 4
+    startingLean: 6
+    interests: {x: 2, y: 3, z: 3, w: 2}
+  - abbreviation: CO
+    stateName: Colorado
+    electoralVotes: 10
+    column: 3
+    row: 4
+    startingLean: -2
+    interests: {x: 3, y: 1, z: 4, w: 1}
+  - abbreviation: CT
+    stateName: Connecticut
+    electoralVotes: 7
+    column: 10
+    row: 2
+    startingLean: -10
+    interests: {x: 1, y: 2, z: 1, w: 2}
+  - abbreviation: DE
+    stateName: Delaware
+    electoralVotes: 3
+    column: 10
+    row: 4
+    startingLean: 7
+    interests: {x: 2, y: 3, z: 2, w: 1}
+  - abbreviation: DC
+    stateName: District of Columbia
+    electoralVotes: 3
+    column: 11
+    row: 5
+    startingLean: -1
+    interests: {x: 3, y: 1, z: 3, w: 2}
+  - abbreviation: FL
+    stateName: Florida
+    electoralVotes: 30
+    column: 8
+    row: 7
+    startingLean: -9
+    interests: {x: 1, y: 2, z: 4, w: 1}
+  - abbreviation: GA
+    stateName: Georgia
+    electoralVotes: 16
+    column: 7
+    row: 6
+    startingLean: 8
+    interests: {x: 2, y: 3, z: 1, w: 2}
+  - abbreviation: HI
+    stateName: Hawaii
+    electoralVotes: 4
+    column: 0
+    row: 7
+    startingLean: 0
+    interests: {x: 3, y: 1, z: 2, w: 1}
+  - abbreviation: ID
+    stateName: Idaho
+    electoralVotes: 4
+    column: 2
+    row: 2
+    startingLean: -8
+    interests: {x: 1, y: 2, z: 3, w: 2}
+  - abbreviation: IL
+    stateName: Illinois
+    electoralVotes: 19
+    column: 6
+    row: 3
+    startingLean: 9
+    interests: {x: 2, y: 3, z: 4, w: 1}
+  - abbreviation: IN
+    stateName: Indiana
+    electoralVotes: 11
+    column: 7
+    row: 3
+    startingLean: 1
+    interests: {x: 3, y: 1, z: 1, w: 2}
+  - abbreviation: IA
+    stateName: Iowa
+    electoralVotes: 6
+    column: 5
+    row: 3
+    startingLean: -7
+    interests: {x: 1, y: 2, z: 2, w: 1}
+  - abbreviation: KS
+    stateName: Kansas
+    electoralVotes: 6
+    column: 4
+    row: 4
+    startingLean: 10
+    interests: {x: 2, y: 3, z: 3, w: 2}
+  - abbreviation: KY
+    stateName: Kentucky
+    electoralVotes: 8
+    column: 7
+    row: 4
+    startingLean: 2
+    interests: {x: 3, y: 1, z: 4, w: 1}
+  - abbreviation: LA
+    stateName: Louisiana
+    electoralVotes: 8
+    column: 5
+    row: 6
+    startingLean: -6
+    interests: {x: 1, y: 2, z: 1, w: 2}
+  - abbreviation: ME
+    stateName: Maine
+    electoralVotes: 4
+    column: 11
+    row: 0
+    startingLean: 11
+    interests: {x: 2, y: 3, z: 2, w: 1}
+  - abbreviation: MD
+    stateName: Maryland
+    electoralVotes: 10
+    column: 9
+    row: 5
+    startingLean: 3
+    interests: {x: 3, y: 1, z: 3, w: 2}
+  - abbreviation: MA
+    stateName: Massachusetts
+    electoralVotes: 11
+    column: 11
+    row: 2
+    startingLean: -5
+    interests: {x: 1, y: 2, z: 4, w: 1}
+  - abbreviation: MI
+    stateName: Michigan
+    electoralVotes: 15
+    column: 7
+    row: 2
+    startingLean: 12
+    interests: {x: 2, y: 3, z: 1, w: 2}
+  - abbreviation: MN
+    stateName: Minnesota
+    electoralVotes: 10
+    column: 5
+    row: 1
+    startingLean: 4
+    interests: {x: 3, y: 1, z: 2, w: 1}
+  - abbreviation: MS
+    stateName: Mississippi
+    electoralVotes: 6
+    column: 6
+    row: 5
+    startingLean: -4
+    interests: {x: 1, y: 2, z: 3, w: 2}
+  - abbreviation: MO
+    stateName: Missouri
+    electoralVotes: 10
+    column: 5
+    row: 4
+    startingLean: -12
+    interests: {x: 2, y: 3, z: 4, w: 1}
+  - abbreviation: MT
+    stateName: Montana
+    electoralVotes: 4
+    column: 3
+    row: 1
+    startingLean: 5
+    interests: {x: 3, y: 1, z: 1, w: 2}
+  - abbreviation: NE
+    stateName: Nebraska
+    electoralVotes: 5
+    column: 4
+    row: 3
+    startingLean: -3
+    interests: {x: 1, y: 2, z: 2, w: 1}
+  - abbreviation: NV
+    stateName: Nevada
+    electoralVotes: 6
+    column: 1
+    row: 3
+    startingLean: -11
+    interests: {x: 2, y: 3, z: 3, w: 2}
+  - abbreviation: NH
+    stateName: New Hampshire
+    electoralVotes: 4
+    column: 11
+    row: 1
+    startingLean: 6
+    interests: {x: 3, y: 1, z: 4, w: 1}
+  - abbreviation: NJ
+    stateName: New Jersey
+    electoralVotes: 14
+    column: 10
+    row: 3
+    startingLean: -2
+    interests: {x: 1, y: 2, z: 1, w: 2}
+  - abbreviation: NM
+    stateName: New Mexico
+    electoralVotes: 5
+    column: 3
+    row: 5
+    startingLean: -10
+    interests: {x: 2, y: 3, z: 2, w: 1}
+  - abbreviation: NY
+    stateName: New York
+    electoralVotes: 28
+    column: 9
+    row: 2
+    startingLean: 7
+    interests: {x: 3, y: 1, z: 3, w: 2}
+  - abbreviation: NC
+    stateName: North Carolina
+    electoralVotes: 16
+    column: 9
+    row: 6
+    startingLean: -1
+    interests: {x: 1, y: 2, z: 4, w: 1}
+  - abbreviation: ND
+    stateName: North Dakota
+    electoralVotes: 3
+    column: 4
+    row: 1
+    startingLean: -9
+    interests: {x: 2, y: 3, z: 1, w: 2}
+  - abbreviation: OH
+    stateName: Ohio
+    electoralVotes: 17
+    column: 8
+    row: 3
+    startingLean: 8
+    interests: {x: 3, y: 1, z: 2, w: 1}
+  - abbreviation: OK
+    stateName: Oklahoma
+    electoralVotes: 7
+    column: 4
+    row: 5
+    startingLean: 0
+    interests: {x: 1, y: 2, z: 3, w: 2}
+  - abbreviation: OR
+    stateName: Oregon
+    electoralVotes: 8
+    column: 1
+    row: 2
+    startingLean: -8
+    interests: {x: 2, y: 3, z: 4, w: 1}
+  - abbreviation: PA
+    stateName: Pennsylvania
+    electoralVotes: 19
+    column: 9
+    row: 3
+    startingLean: 9
+    interests: {x: 3, y: 1, z: 1, w: 2}
+  - abbreviation: RI
+    stateName: Rhode Island
+    electoralVotes: 4
+    column: 12
+    row: 2
+    startingLean: 1
+    interests: {x: 1, y: 2, z: 2, w: 1}
+  - abbreviation: SC
+    stateName: South Carolina
+    electoralVotes: 9
+    column: 8
+    row: 6
+    startingLean: -7
+    interests: {x: 2, y: 3, z: 3, w: 2}
+  - abbreviation: SD
+    stateName: South Dakota
+    electoralVotes: 3
+    column: 4
+    row: 2
+    startingLean: 10
+    interests: {x: 3, y: 1, z: 4, w: 1}
+  - abbreviation: TN
+    stateName: Tennessee
+    electoralVotes: 11
+    column: 7
+    row: 5
+    startingLean: 2
+    interests: {x: 1, y: 2, z: 1, w: 2}
+  - abbreviation: TX
+    stateName: Texas
+    electoralVotes: 40
+    column: 4
+    row: 6
+    startingLean: -6
+    interests: {x: 2, y: 3, z: 2, w: 1}
+  - abbreviation: UT
+    stateName: Utah
+    electoralVotes: 6
+    column: 2
+    row: 3
+    startingLean: 11
+    interests: {x: 3, y: 1, z: 3, w: 2}
+  - abbreviation: VT
+    stateName: Vermont
+    electoralVotes: 3
+    column: 10
+    row: 1
+    startingLean: 3
+    interests: {x: 1, y: 2, z: 4, w: 1}
+  - abbreviation: VA
+    stateName: Virginia
+    electoralVotes: 13
+    column: 9
+    row: 4
+    startingLean: -5
+    interests: {x: 2, y: 3, z: 1, w: 2}
+  - abbreviation: WA
+    stateName: Washington
+    electoralVotes: 12
+    column: 1
+    row: 1
+    startingLean: 12
+    interests: {x: 3, y: 1, z: 2, w: 1}
+  - abbreviation: WV
+    stateName: West Virginia
+    electoralVotes: 4
+    column: 8
+    row: 4
+    startingLean: 4
+    interests: {x: 1, y: 2, z: 3, w: 2}
+  - abbreviation: WI
+    stateName: Wisconsin
+    electoralVotes: 10
+    column: 6
+    row: 2
+    startingLean: -4
+    interests: {x: 2, y: 3, z: 4, w: 1}
+  - abbreviation: WY
+    stateName: Wyoming
+    electoralVotes: 3
+    column: 3
+    row: 2
+    startingLean: -12
+    interests: {x: 3, y: 1, z: 1, w: 2}
+  incumbentAdvantage: 2
+  courtRetirementMonths: 18

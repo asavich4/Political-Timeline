@@ -1,54 +1,48 @@
 # Political Timeline
 
-A presidency told through difficult choices. Keep workers, the middle class, security and elites in a fragile coalition, win reelection, and finish two terms.
+A portrait card-swiping game about holding the US presidency. The four keys of power are **Workers, Middle class, Economy and Elites**, shown as illustrated hard-hat, house, rising-coins and briefcase images.
 
-## Play in Unity
+## Play and preview
 
-Choose **Political Timeline > Preview iPhone Portrait**, then press Play. This opens `Assets/Scenes/Presidency.unity`, selects a 1170 × 2532 Retina Game view and maximizes that panel. Press Shift+Space over the Game view to return to the normal editor layout. Hold the card left or right to reveal that choice over the portrait. Release after the gold line appears to commit; return to the center to cancel. Short or mostly vertical drags also cancel. Hold and release arrow keys or A/D for the same preview-and-choose behavior in the editor. The original `Main.unity` remains intact.
+Choose **Political Timeline > Preview iPhone Portrait**, then press Play. The preview uses the phone's portrait aspect ratio at the available Game-view resolution. **Political Timeline > Fix Game View Sharpness** disables low-resolution aspect ratios and resets zoom; it also works during Play mode. Shift+Space returns from the maximized Game view.
 
-The iPhone layout keeps the card and controls inside the screen safe area. The main screen contains four support bars, one bold question and an edge-to-edge portrait card. Choice text stays hidden until the card is held to either side. There is no title, turn counter, adviser caption, white text panel or permanent choice buttons. All labels use TextMesh Pro distance-field fonts for sharper scaling. Both questions and revealed choices use fixed 28-point text. Small +/− indicators preview support direction while dragging and briefly confirm changes afterward. Tap the support bars for rules, term and approval. Opening details pauses decision input.
+Hold a card left or right to reveal the choice. Release beyond the gold threshold line to choose. Return to the center to cancel. Arrow keys and A/D support the same hold-and-release interaction. One completed choice advances **one calendar month**, beginning in January 2025. Opening a panel or canceling a swipe does not advance time.
 
-The four groups begin at 50. Each decision changes their support. Reaching either 0 or 100 ends the administration: abandonment at the low end, institutional capture or an uncontrollable mandate at the high end. This is an abstract game mechanic, not a political simulation.
+The image fills the card. The short question stays above it. All text uses a dedicated 2048-pixel font atlas sampled at 120 points and a sharp TextMesh Pro material. Entering Play mode in the Presidency scene automatically applies the native-resolution portrait Game view settings. Tap a power image to see the group's meaning and current support. Support must stay strictly between 0 and 100; an empty or completely full meter ends the administration.
 
-After 16 decisions, an average support of at least 45 wins reelection. Surviving 32 decisions completes two terms. Each card represents a major policy episode, rather than a literal day. Cards are drawn with weights and avoid immediate repetition when another eligible card exists.
+## Map, Congress and Supreme Court
 
-## Add content without coding
+Three buttons at the bottom open separate views so the main card stays uncluttered:
 
-1. Open **Political Timeline > Content Workshop**.
-2. Choose **New Card** or **Duplicate Selected**. The card is automatically added to the current campaign.
-3. Write the briefing as a single question of about 50 characters and keep choice labels around 20 characters. The question sits above the card; a choice label appears over the image while holding it left or right. Headline, adviser and category remain available for organizing content. Drag a square portrait Sprite from the existing Sprites folder onto Portrait; expand the image asset if needed to see its Sprite. Square portraits fill the card without cropping or stretching.
-4. Give each choice a short label, a consequence, and changes to all four groups. Positive numbers add support; negative numbers remove it.
-5. Optionally assign a Follow Up card to either choice. Follow-ups are forced narrative branches and bypass normal availability, weight and once-per-run selection rules. Avoid unintended cycles.
-6. Use Earliest Decision to delay ordinary draws, Weight to change draw frequency, and Once Per Run for unique incidents.
-7. Choose **Validate Deck**, then **Save Content**. Play again to load your changes.
+- **Map:** geographic outlines of all 50 states and DC, with Alaska and Hawaii inset. Teal favors your coalition, red favors the opposition, and gray means a close race. Tap a state for its electoral votes and projected margin. Larger shortcuts below the map select DC, DE, RI, CT, NJ and MA. These are fictional game projections, not real polling or party affiliations.
+- **Congress:** current allied House and Senate seats. The House needs 218 seats for a majority; the simplified Senate confirmation rule needs 51. Composition changes at November elections. These seat totals do not yet gate policy cards.
+- **Court:** nine fictional seats marked aligned, independent, opposed or vacant. A retirement creates a vacancy every 18 months if one is not already open. With at least 51 allied senators, the nomination button confirms an aligned replacement. Nominations do not consume an extra month. Court alignment is currently tracked for future judicial story content; it does not yet veto policy cards.
 
-The workshop edits real ScriptableObject assets in `Assets/Content/Presidency`. Campaign Settings exposes the deck, starting support, election threshold, decisions per term and term limit. Remove cards from that list to retire them without deleting their files. Unity's Inspector also supports direct editing and undo.
+State leans and support weights are intentionally fictional and editable. Economic support affects state projections alongside workers, the middle class and elites. The old Security meter has been migrated to Economy without losing the authored effect values.
 
-## Current foundation
+## Election calendar
 
-- 18 playable policy cards covering jobs, infrastructure, taxation, health, security, housing, trade, education, diplomacy and public trust.
-- Existing flat geometric character artwork retained and assigned to advisers.
-- Editable portrait scene hierarchy: typography, full-card portraits, support bars and a directional choice overlay. Rules and current progress are available by tapping the support bars; written consequences remain in the editable card assets.
-- Mouse/touch hold-and-release decisions and equivalent keyboard controls.
-- Nine constituency/election/legacy endings, election defeat and deck exhaustion handling.
-- Restart after a completed run; configurable campaign rules; branching follow-up cards.
-- Content validation and repeatable campaign rule checks from the workshop.
-- Balance Preview runs 200 simulated campaigns using choices that favor support near 50, providing a quick check on difficulty as you add cards.
+- Every even-numbered year switches the main background to warm white, with dark text. Power illustrations keep their original colors.
+- November 2026 and 2030 are midterms. November 2028 is the reelection contest.
+- November 2032 is the succession election; the player is completing the second and final term.
+- Elections automatically pause decisions and open the result map. **View Congress** shows the new chambers, and **Continue** returns to the cards (or the ending after an election defeat).
+- Reelection requires at least 270 electoral votes. Falling short, including a tie, ends this game's administration. Surviving 96 months completes two four-year terms.
+- At every election, all House seats are recalculated and one third of the modeled Senate seats are contested. State margins derive from their starting lean and the player's four support levels. Results are deterministic for the same support and configuration.
 
-## Art direction
+The state electoral weights use the [National Archives' 2024/2028 allocations](https://www.archives.gov/electoral-college/allocation). For this prototype, those weights stay fixed in later years and all states use statewide winner-take-all results, including Maine and Nebraska. House districts, individual Senate races, real court appointments and contingent elections are simplified game systems.
 
-Preserve the original simple geometric portraits, muted browns, olive, cream and charcoal. Favor recognizable silhouettes and flat shapes. New adviser art should use a square canvas with a centered bust; avoid introducing detailed backgrounds or realistic rendering. This foundation reuses the supplied artwork and adds no generated replacement portraits.
+## Add content in Unity
 
-## Next milestones
+Open **Political Timeline > Content Workshop**. New Card and Duplicate Selected add real ScriptableObject cards to the campaign. Write a short question (around 50 characters), two choice labels (around 20 characters), consequences, four support changes and an optional follow-up branch. Use square portrait Sprites from the existing artwork. Headlines, adviser names and categories remain available for organization without being displayed on the main card.
 
-1. Balance the 18-card pool through playtesting; expand to 60–100 decisions and more distinct adviser voices.
-2. Add persistent story flags and authored multi-card crises, with explicit prerequisites and consequences.
-3. Add sound, card transition animation, onboarding and accessibility options.
-4. Add save/resume, statistics and a legacy collection.
-5. Build and test on a physical iPhone, including touch input, notches, device performance and accessibility.
+Follow-ups override ordinary selection rules. Otherwise, earliest decision, weight and once-per-run control draws. Cards can repeat across months, but immediate repeats are avoided when alternatives exist. **Validate Deck** checks content and national settings. **Run Rule Checks** exercises the calendar, support limits, elections, congressional totals, court appointments and deck behavior. **Balance Preview** runs 200 simulated campaigns, acknowledging election reports as it goes.
 
-This is a playable game foundation, not a finished content-complete release. Progress currently resets when Play mode ends. The layout targets portrait iPhone, with portrait-only orientation and the iPhone target configured in Player Settings. Unity previews cover compact and tall screen shapes; an iOS build and physical-device testing are still needed. Building/signing the iPhone app requires a Mac with Xcode.
+Choose **Political Timeline > National Simulation Settings** to edit state leans, interest weights, electoral weights, incumbent advantage and the court retirement interval. The legacy column/row fields are unused by the geographic map. Interest vector X = Workers, Y = Middle class, Z = Economy, W = Elites. Campaign Settings controls the inauguration year, starting support, term limit and national asset. Start years should follow presidential elections, such as 2025 or 2029. Changes take effect on a new run.
 
-## Scene maintenance
+The four transparent power PNGs are in `Assets/Content/Presidency/PowerImages`; replace these files to change the illustrations, then rebuild the starter scene. The map uses [us-atlas](https://github.com/topojson/us-atlas) v3 projected Census Bureau 2017 boundaries. Its ISC license, original TopoJSON and placement data are retained in `Assets/Content/Presidency/Map`. `Tools/build_state_map.py` rebuilds the tintable state sprites with Python and Pillow. No network connection is needed to play.
 
-**Political Timeline > Create Starter Scene** rebuilds the starter layout after confirmation and preserves card assets. It replaces changes to the generated Presidency scene, so save your custom scene under a different name before rebuilding. The new scene is first in Build Settings; the original is retained but disabled. **Run Rule Checks** exercises support limits, elections, victory, follow-ups, availability and empty decks.
+## Status and scene maintenance
+
+This is an editable game foundation with 18 cards. Progress currently resets when Play mode ends. State and institutional systems are fictional abstractions, not a forecast. Physical iPhone testing and a signed iOS build remain to be done.
+
+The original Main scene is preserved. **Create Starter Scene** rebuilds the Presidency layout after confirmation while preserving content assets. Save custom layouts under a different scene name before rebuilding.

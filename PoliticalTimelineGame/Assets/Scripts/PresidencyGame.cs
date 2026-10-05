@@ -11,6 +11,11 @@ namespace PoliticalTimeline
         public CampaignDefinition campaign;
         public TMP_Text briefing, choiceLabel, helpText, helpTitle;
         public Button[] powerButtons;
+        public TMP_Text monthLabel;
+        public Image background;
+        public Image[] powerIcons;
+        public NationalPanels nationalPanels;
+        public CampaignState State => state;
         public CanvasGroup choiceOverlay;
         public Image commitIndicator;
         public TMP_Text[] supportChanges;
@@ -27,7 +32,7 @@ namespace PoliticalTimeline
         float inputReady, feedbackUntil;
         public int Decisions => state == null ? 0 : state.decisions;
         float SwipeThreshold => cardTransform.rect.width * .22f;
-        bool HelpOpen => helpPanel != null && helpPanel.activeSelf;
+        bool HelpOpen => (helpPanel != null && helpPanel.activeSelf) || (nationalPanels != null && nationalPanels.IsOpen);
 
         void Start() => Initialize();
 
@@ -43,6 +48,7 @@ namespace PoliticalTimeline
                 powerButtons[i].onClick.AddListener(() => ShowPower(power));
             }
             closeHelpButton.onClick.AddListener(() => SetHelp(false));
+            nationalPanels.Initialize(this);
             Restart();
         }
 
@@ -51,9 +57,12 @@ namespace PoliticalTimeline
             if (campaign == null) { briefing.text = "Assign a campaign in the Inspector"; return; }
             inputReady = 0; feedbackUntil = 0; dragging = false; keyboardDirection = 0;
             ResetCard(); ClearFeedback(); helpPanel.SetActive(false);
+            nationalPanels.gameObject.SetActive(false);
             state = new CampaignState(campaign, System.Environment.TickCount);
             Render();
         }
+        public void Refresh() => Render();
+        public void CancelInteraction() => CancelDrag();
 
         void Update()
         {
@@ -123,6 +132,7 @@ namespace PoliticalTimeline
             state.Choose(right); dragging = false;
             inputReady = Time.unscaledTime + .22f;
             ResetCard(); Render(); ShowFeedback(change, true);
+            if(state.ElectionPending) nationalPanels.OpenElection();
         }
 
         public void SetHelp(bool visible)
@@ -133,7 +143,7 @@ namespace PoliticalTimeline
             helpTitle.text="Keys of power";
             helpText.text = "Keep every group above 0 and below 100.\n\n"
                 + "Hold the card left or right to see a choice. Release to choose.\n\n"
-                + $"Win reelection with {campaign.electionThreshold}% approval.\n\n"
+                + "One swipe is one month. Win 270 electoral votes to be reelected.\n\n"
                 + $"Term {state.Term}  ·  Approval {state.Approval}%";
         }
 
@@ -141,14 +151,20 @@ namespace PoliticalTimeline
         {
             if(state==null || index<0 || index>=4) return;
             SetHelp(true);
-            string[] names={ "Workers", "Middle class", "Security", "Elites" };
-            string[] descriptions={ "Workers and unions.", "Families and the middle class.", "Military and security services.", "Wealthy donors and business leaders." };
+            string[] names={ "Workers", "Middle class", "Economy", "Elites" };
+            string[] descriptions={ "Workers and unions.", "Families and the middle class.", "Jobs, growth and economic stability.", "Wealthy donors and business leaders." };
             helpTitle.text=names[index];
             helpText.text=descriptions[index]+$"\n\nSupport: {state.support[index]} / 100\n\nKeep this group above 0 and below 100.\n\nTerm {state.Term} · Approval {state.Approval}%";
         }
 
         void Render()
         {
+            bool electionYear=state.IsElectionYear;
+            background.color=electionYear?new Color(.98f,.975f,.95f):new Color(.13f,.18f,.19f);
+            var ink=electionYear?new Color(.10f,.15f,.16f):new Color(.96f,.93f,.83f);
+            briefing.color=ink; monthLabel.color=ink;
+            monthLabel.text=state.DisplayMonth.ToString("MMMM yyyy")+(electionYear?" · Election year":"");
+            foreach(var icon in powerIcons) icon.color=Color.white;
             for (int i = 0; i < 4; i++)
             {
                 supportFills[i].fillAmount = state.support[i] / 100f;
@@ -173,7 +189,9 @@ namespace PoliticalTimeline
             for (int i=0;i<supportChanges.Length;i++)
             {
                 supportChanges[i].text = values[i] == 0 ? "" : (values[i] > 0 ? "+" : "−");
-                supportChanges[i].color = values[i] > 0 ? new Color(.7f,.8f,.67f) : new Color(.9f,.58f,.43f);
+                supportChanges[i].color = state.IsElectionYear
+                    ? (values[i]>0?new Color(.15f,.42f,.22f):new Color(.65f,.20f,.14f))
+                    : (values[i]>0?new Color(.7f,.8f,.67f):new Color(.9f,.58f,.43f));
             }
             feedbackUntil = committed ? Time.unscaledTime + 1.2f : 0;
         }

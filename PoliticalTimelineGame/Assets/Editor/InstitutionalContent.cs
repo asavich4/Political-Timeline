@@ -23,6 +23,24 @@ namespace PoliticalTimeline.Editor
             Add(deck,"harvest","A failed harvest","Agriculture Secretary","DOMESTIC POLICY","Drought hit farms. Offer relief?","Offer relief",new SupportChange(5,2,-3,-3),"Relief keeps farms open through the dry season.","Back crop insurers",new SupportChange(-3,-2,3,4),"Insurers stay solvent. Uninsured farms close.");
             Add(deck,"cyber","The servers go dark","Security Adviser","NATIONAL SECURITY","A cyberattack has shut down hospitals.","Send federal teams",new SupportChange(3,5,-4,-2),"Federal teams restore hospital systems.","Hire contractors",new SupportChange(-2,2,-2,5),"Contractors restore service at a higher price.");
             Add(deck,"library","After school","Education Secretary","DOMESTIC POLICY","Keep libraries open in the evening?","Extend their hours",new SupportChange(4,5,-2,-4),"Libraries welcome evening readers and students.","Keep current hours",new SupportChange(-2,-3,2,2),"Budgets hold. Evening study spaces stay closed.");
+            Add(deck,"party_branches","Beyond the capital","Party Organizer","PARTY STRATEGY","Open party offices in rural towns?","Build local branches",new SupportChange(5,3,-2,-4),"Local organizers recruit new supporters.","Focus on donors",new SupportChange(-3,-2,2,5),"Donors fund the party. Local activists feel ignored.",condition:EventCondition.InOpposition);
+            Add(deck,"party_primary","The next candidate","Campaign Chair","PARTY STRATEGY","Let members choose the next leader?","Hold an open vote",new SupportChange(4,5,-2,-5),"Members choose a new public face for your party.","Back an insider",new SupportChange(-4,-3,2,5),"An insider takes the stage. Your network stays in control.",condition:EventCondition.InOpposition);
+            Add(deck,"party_coalition","A broader movement","Party Organizer","PARTY STRATEGY","Work with a rival grassroots group?","Build a coalition",new SupportChange(5,4,-2,-4),"Your movement grows beyond its old base.","Protect the brand",new SupportChange(-2,-3,2,4),"Core backers stay loyal. New recruits look elsewhere.",condition:EventCondition.InOpposition);
+            Add(deck,"repeal_meals","The lunch budget","House Speaker","CONGRESS","Your school meals law faces repeal.","Repeal the program",new SupportChange(-5,-4,3,4),"Congress repeals school meals funding.","Keep the program",new SupportChange(3,2,-2,-2),"The party stands behind school meals.",InstitutionRule.Congress);
+            string[] ids={"rail_vote","school_lunch","drug_prices","flood_vote","ethics_vote","clean_air_case","privacy_case","legal_aid","water","library","housing","science","tax","health","energy","pensions","schools","trade","surveillance","bridges"};
+            for(int i=0;i<ids.Length;i++)
+            {
+                var c=deck.cards.Find(card=>card.id==ids[i]); if(c==null) continue;
+                var choice=c.id=="trade"||c.id=="surveillance"?c.right:c.left;
+                choice.enactPolicy=(PolicyId)(i+1);
+                if(choice.institution==InstitutionRule.None) choice.institution=InstitutionRule.Congress;
+                choice.blockedChange=new SupportChange(-2,-3,-1,2);
+                if(string.IsNullOrWhiteSpace(choice.blockedConsequence)) choice.blockedConsequence="The proposal fails. Your party lacks the votes.";
+                EditorUtility.SetDirty(c);
+            }
+            var repeal=deck.cards.Find(c=>c.id=="repeal_meals"); repeal.left.repealPolicy=PolicyId.SchoolMeals; repeal.requiredPolicy=PolicyId.SchoolMeals; EditorUtility.SetDirty(repeal);
+            if(deck.nation!=null) EditorUtility.SetDirty(deck.nation);
+            StoryContent.Ensure(deck);
             EditorUtility.SetDirty(deck); AssetDatabase.SaveAssets();
         }
         static void Add(CampaignDefinition deck,string id,string title,string advisor,string category,string body,string left,SupportChange lc,string result,string right,SupportChange rc,string other,InstitutionRule rule=InstitutionRule.None,EventCondition condition=EventCondition.Always)
@@ -33,6 +51,7 @@ namespace PoliticalTimeline.Editor
             {
                 card=ScriptableObject.CreateInstance<DecisionCard>(); card.id=id; card.headline=title;
                 card.advisor=advisor; card.category=category; card.briefing=body; card.condition=condition;
+                if(condition==EventCondition.InOpposition) card.weight=3;
                 card.left=new PolicyChoice {label=left,change=lc,consequence=result,institution=rule,
                     blockedChange=new SupportChange(-2,-3,-1,2),
                     blockedConsequence=rule==InstitutionRule.Congress?"Congress blocks the bill. Your coalition lacks the votes.":rule==InstitutionRule.CourtReview?"The court strikes down the policy. You must revise it.":"The Senate blocks confirmation. The seat stays empty."};
@@ -40,6 +59,7 @@ namespace PoliticalTimeline.Editor
                 AssetDatabase.CreateAsset(card,path);
             }
             if(!deck.cards.Contains(card)) deck.cards.Add(card);
+            if(condition==EventCondition.InOpposition) { card.weight=3; EditorUtility.SetDirty(card); }
         }
     }
 }

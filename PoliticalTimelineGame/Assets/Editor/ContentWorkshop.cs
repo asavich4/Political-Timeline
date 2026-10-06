@@ -117,22 +117,22 @@ namespace PoliticalTimeline.Editor
             for(int seed=0;seed<200;seed++)
             {
                 var state=new CampaignState(campaign,seed);
-                while(!state.ended && state.decisions<1000)
+                while(!state.ended && state.current!=null && state.decisions<240)
                 {
                     if(state.ElectionPending) state.AcknowledgeElection();
                     var l=state.current.left; var r=state.current.right;
-                    int left=Score(state.support,state.nation.CanResolve(l.institution)?l.change:l.blockedChange), right=Score(state.support,state.nation.CanResolve(r.institution)?r.change:r.blockedChange);
+                    int left=Score(state.support,state.nation.CanResolve(l)?l.change:l.blockedChange), right=Score(state.support,state.nation.CanResolve(r)?r.change:r.blockedChange);
                     state.Choose(right<left); // Simple policy: keep the coalition near its midpoint.
                 }
-                if(state.ending=="A legacy secured") wins++;
+                if(!state.ended && state.decisions>=240) wins++;
                 total+=state.decisions;
             }
-            return $"200 simulated runs (choices favor support near 50): {wins} completed campaigns; average {total/200f:F1} decisions. This is a balancing aid, not a prediction of player results.";
+            return $"200 simulated runs (choices favor support near 50): {wins} survived 20 years; average {total/200f:F1} decisions. This is a balancing aid, not a prediction of player results.";
         }
         static int Score(int[] values,SupportChange change)
         {
             int score=0; var deltas=change.Values;
-            for(int i=0;i<4;i++) { int next=values[i]+deltas[i]; score+=(next-50)*(next-50); if(next<=0||next>=100) score+=100000; }
+            for(int i=0;i<4;i++) { int next=values[i]+deltas[i]; score+=(next-50)*(next-50); if(next<=0) score+=100000; }
             return score;
         }
     }

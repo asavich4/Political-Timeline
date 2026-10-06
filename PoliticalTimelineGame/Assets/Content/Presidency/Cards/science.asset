@@ -22,6 +22,7 @@ MonoBehaviour:
   weight: 1
   oncePerRun: 0
   condition: 0
+  requiredPolicy: 0
   left:
     label: Fund the research
     consequence: Universities begin hiring. Critics call it a distant promise.
@@ -31,13 +32,15 @@ MonoBehaviour:
       elites: -4
       economy: -5
     followUp: {fileID: 0}
-    institution: 0
+    institution: 1
+    enactPolicy: 12
+    repealPolicy: 0
     blockedChange:
-      workers: 0
-      middleClass: 0
-      elites: 0
-      economy: 0
-    blockedConsequence: 
+      workers: -2
+      middleClass: -3
+      elites: 2
+      economy: -1
+    blockedConsequence: The proposal fails. Your party lacks the votes.
   right:
     label: Back current firms
     consequence: Established firms applaud. Young voters are disappointed.
@@ -48,6 +51,8 @@ MonoBehaviour:
       economy: 3
     followUp: {fileID: 0}
     institution: 0
+    enactPolicy: 0
+    repealPolicy: 0
     blockedChange:
       workers: 0
       middleClass: 0

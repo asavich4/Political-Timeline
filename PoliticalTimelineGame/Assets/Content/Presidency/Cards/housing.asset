@@ -22,6 +22,7 @@ MonoBehaviour:
   weight: 1
   oncePerRun: 0
   condition: 0
+  requiredPolicy: 0
   left:
     label: Build more homes
     consequence: New housing breaks ground. Property groups pull their support.
@@ -31,13 +32,15 @@ MonoBehaviour:
       elites: -8
       economy: -2
     followUp: {fileID: 0}
-    institution: 0
+    institution: 1
+    enactPolicy: 11
+    repealPolicy: 0
     blockedChange:
-      workers: 0
-      middleClass: 0
-      elites: 0
-      economy: 0
-    blockedConsequence: 
+      workers: -2
+      middleClass: -3
+      elites: 2
+      economy: -1
+    blockedConsequence: The proposal fails. Your party lacks the votes.
   right:
     label: Let markets act
     consequence: Investors stay confident. Renters organize.
@@ -48,6 +51,8 @@ MonoBehaviour:
       economy: 2
     followUp: {fileID: 0}
     institution: 0
+    enactPolicy: 0
+    repealPolicy: 0
     blockedChange:
       workers: 0
       middleClass: 0

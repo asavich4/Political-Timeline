@@ -10,44 +10,44 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 419f0aa0370f329488c33c094f0c53c2, type: 3}
-  m_Name: rail_vote
+  m_Name: party_branches
   m_EditorClassIdentifier: 
-  id: rail_vote
-  advisor: House Speaker
-  category: CONGRESS
-  headline: The last vote
-  briefing: Fund a national rail network?
+  id: party_branches
+  advisor: Party Organizer
+  category: PARTY STRATEGY
+  headline: Beyond the capital
+  briefing: Open party offices in rural towns?
   portrait: {fileID: 0}
   earliestDecision: 1
-  weight: 1
+  weight: 3
   oncePerRun: 0
-  condition: 0
+  condition: 3
   requiredPolicy: 0
   left:
-    label: Bring it to a vote
-    consequence: Congress funds the railway. Construction begins.
+    label: Build local branches
+    consequence: Local organizers recruit new supporters.
     change:
-      workers: 7
-      middleClass: 4
-      elites: -7
-      economy: 5
+      workers: 5
+      middleClass: 3
+      elites: -4
+      economy: -2
     followUp: {fileID: 0}
-    institution: 1
-    enactPolicy: 1
+    institution: 0
+    enactPolicy: 0
     repealPolicy: 0
     blockedChange:
       workers: -2
       middleClass: -3
       elites: 2
       economy: -1
-    blockedConsequence: Congress blocks the bill. Your coalition lacks the votes.
+    blockedConsequence: The Senate blocks confirmation. The seat stays empty.
   right:
-    label: Leave it to states
-    consequence: States draw up separate rail plans.
+    label: Focus on donors
+    consequence: Donors fund the party. Local activists feel ignored.
     change:
       workers: -3
       middleClass: -2
-      elites: 4
+      elites: 5
       economy: 2
     followUp: {fileID: 0}
     institution: 0

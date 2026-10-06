@@ -22,6 +22,7 @@ MonoBehaviour:
   weight: 1
   oncePerRun: 0
   condition: 0
+  requiredPolicy: 0
   left:
     label: Replace the pipes
     consequence: Crews replace the pipes. Safe water returns.
@@ -31,7 +32,9 @@ MonoBehaviour:
       elites: -5
       economy: -3
     followUp: {fileID: 0}
-    institution: 0
+    institution: 1
+    enactPolicy: 9
+    repealPolicy: 0
     blockedChange:
       workers: -2
       middleClass: -3
@@ -48,6 +51,8 @@ MonoBehaviour:
       economy: 1
     followUp: {fileID: 0}
     institution: 0
+    enactPolicy: 0
+    repealPolicy: 0
     blockedChange:
       workers: 0
       middleClass: 0

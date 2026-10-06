@@ -22,6 +22,7 @@ MonoBehaviour:
   weight: 1
   oncePerRun: 0
   condition: 0
+  requiredPolicy: 0
   left:
     label: Fund hospitals
     consequence: Clinics reopen. Insurers mount a lobbying campaign.
@@ -31,13 +32,15 @@ MonoBehaviour:
       elites: -9
       economy: -3
     followUp: {fileID: 0}
-    institution: 0
+    institution: 1
+    enactPolicy: 14
+    repealPolicy: 0
     blockedChange:
-      workers: 0
-      middleClass: 0
-      elites: 0
-      economy: 0
-    blockedConsequence: 
+      workers: -2
+      middleClass: -3
+      elites: 2
+      economy: -1
+    blockedConsequence: The proposal fails. Your party lacks the votes.
   right:
     label: Offer incentives
     consequence: Investors take interest. Patients wait for results.
@@ -48,6 +51,8 @@ MonoBehaviour:
       economy: 3
     followUp: {fileID: 0}
     institution: 0
+    enactPolicy: 0
+    repealPolicy: 0
     blockedChange:
       workers: 0
       middleClass: 0

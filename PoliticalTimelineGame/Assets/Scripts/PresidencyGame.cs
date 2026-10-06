@@ -33,6 +33,7 @@ namespace PoliticalTimeline
         AdvisorArt flatArt;
         TMP_Text advisorLabel, resultLabel;
         public bool IsTransitioning => transitionPhase!=0;
+        public bool AwaitingAcknowledgement => transitionPhase==4;
         int transitionPhase;
         float transitionTime;
         Vector2 departurePosition;
@@ -69,6 +70,7 @@ namespace PoliticalTimeline
             if (campaign == null) { briefing.text = "Assign a campaign in the Inspector"; return; }
             inputReady = 0; feedbackUntil = 0; dragging = false; keyboardDirection = 0;
             transitionPhase=0; outcomePanel.SetActive(false);
+            ResetOutcome();
             nationalPanels.ResetElectionNight();
             ResetCard(); ClearFeedback(); helpPanel.SetActive(false);
             nationalPanels.gameObject.SetActive(false);
@@ -80,9 +82,9 @@ namespace PoliticalTimeline
 
         void Update()
         {
-            if(IsTransitioning) { AdvanceTransition(Time.unscaledDeltaTime); return; }
+            if(IsTransitioning && !AwaitingAcknowledgement) { AdvanceTransition(Time.unscaledDeltaTime); return; }
             if (!dragging && feedbackUntil > 0 && Time.unscaledTime >= feedbackUntil) ClearFeedback();
-            if (state == null || state.ended || dragging || HelpOpen || Time.unscaledTime < inputReady) return;
+            if (state == null || state.current==null || (state.ended && !AwaitingAcknowledgement) || dragging || HelpOpen || Time.unscaledTime < inputReady) return;
             var keyboard = Keyboard.current;
             if (keyboard != null)
             {
@@ -102,7 +104,7 @@ namespace PoliticalTimeline
         }
         public void BeginDrag(PointerEventData data)
         {
-            if (state == null || state.ended || IsTransitioning || state.ElectionPending || HelpOpen || dragging || Time.unscaledTime < inputReady) return;
+            if (state == null || (!AwaitingAcknowledgement && (state.ended || IsTransitioning || state.ElectionPending)) || HelpOpen || dragging || Time.unscaledTime < inputReady) return;
             keyboardDirection = 0; dragging = true; pointerId = data.pointerId; dragStart = LocalPoint(data);
         }
         public void Drag(PointerEventData data)
@@ -114,6 +116,13 @@ namespace PoliticalTimeline
 
         void PreviewDirection(float delta)
         {
+            if(AwaitingAcknowledgement)
+            {
+                var rect=(RectTransform)outcomePanel.transform;
+                rect.anchoredPosition=home+new Vector2(Mathf.Clamp(delta*.45f,-110,110),0);
+                rect.localRotation=Quaternion.Euler(0,0,Mathf.Clamp(-delta*.06f,-12,12));
+                return;
+            }
             cardTransform.anchoredPosition = home + new Vector2(Mathf.Clamp(delta * .45f,-110,110), 0);
             cardTransform.localRotation = Quaternion.Euler(0, 0, Mathf.Clamp(-delta * .06f,-12,12));
             float distance = Mathf.Abs(delta);
@@ -123,12 +132,13 @@ namespace PoliticalTimeline
             {
                 var choice = delta > 0 ? state.current.right : state.current.left;
                 choiceLabel.text = choice.label;
-                bool passes=state.nation.CanResolve(choice.institution);
+                bool passes=state.nation.CanResolve(choice);
                 resultLabel.text=choice.institution==InstitutionRule.None?state.lastResult:
                     choice.institution==InstitutionRule.Congress?(passes?"You hold both chambers. The bill can pass.":"You need 218 House seats and 51 senators."):
                     choice.institution==InstitutionRule.CourtReview?(passes?"Five justices are aligned. The policy can stand.":"Fewer than five aligned justices. The policy will fall."):
                     (passes?"The Senate can confirm your nominee.":"Confirmation needs a vacancy and 51 senators.");
-                ShowFeedback(state.nation.CanResolve(choice.institution)?choice.change:choice.blockedChange, false);
+                if(!passes && !state.nation.HoldsPresidency && (choice.enactPolicy!=PolicyId.None || choice.repealPolicy!=PolicyId.None || choice.institution==InstitutionRule.Congress || choice.institution==InstitutionRule.ConfirmJustice)) resultLabel.text="Your party must win the presidency first.";
+                ShowFeedback(state.nation.CanResolve(choice)?choice.change:choice.blockedChange, false);
             }
             else { choiceLabel.text = ""; resultLabel.text=state.lastResult; ClearFeedback(); }
         }
@@ -138,19 +148,22 @@ namespace PoliticalTimeline
             Vector2 delta = LocalPoint(data) - dragStart;
             dragging = false;
             if (Mathf.Abs(delta.x) > SwipeThreshold && Mathf.Abs(delta.x) > Mathf.Abs(delta.y)) Decide(delta.x > 0);
+            else if(AwaitingAcknowledgement) ResetOutcome();
             else { ResetCard(); ClearFeedback(); }
             
         }
         void ResetCard() { cardTransform.anchoredPosition = home; cardTransform.localRotation = Quaternion.identity; choiceOverlay.alpha = 0; choiceLabel.text = ""; commitIndicator.enabled = false; if(state!=null && resultLabel!=null) resultLabel.text=state.lastResult; }
         void OnApplicationFocus(bool focused) { if (!focused && initialized) CancelDrag(); }
         void OnDisable() { if (initialized) CancelDrag(); }
-        void CancelDrag() { keyboardDirection = 0; dragging = false; if(IsTransitioning) return; ResetCard(); ClearFeedback(); }
+        void ResetOutcome() { var rect=(RectTransform)outcomePanel.transform; rect.anchoredPosition=home; rect.localRotation=Quaternion.identity; }
+        void CancelDrag() { keyboardDirection = 0; dragging = false; if(AwaitingAcknowledgement) ResetOutcome(); if(IsTransitioning) return; ResetCard(); ClearFeedback(); }
 
         public void Decide(bool right)
         {
-            if (state == null || state.ended || state.ElectionPending || IsTransitioning || HelpOpen || Time.unscaledTime < inputReady) return;
+            if(AwaitingAcknowledgement) { AcknowledgeOutcome(right); return; }
+            if (state == null || state.current==null || state.ended || state.ElectionPending || IsTransitioning || HelpOpen || Time.unscaledTime < inputReady) return;
             var choice=right ? state.current.right : state.current.left;
-            var change = state.nation.CanResolve(choice.institution)?choice.change:choice.blockedChange;
+            var change = state.nation.CanResolve(choice)?choice.change:choice.blockedChange;
             for(int i=0;i<4;i++) previousSupport[i]=supportFills[i].fillAmount;
             departurePosition=cardTransform.anchoredPosition;
             departureAngle=cardTransform.localEulerAngles.z;
@@ -162,19 +175,29 @@ namespace PoliticalTimeline
             for(int i=0;i<4;i++) { int delta=state.support[i]-Mathf.RoundToInt(previousSupport[i]*100); supportChanges[i].text=delta==0?"":delta>0?"+"+delta:delta.ToString(); }
         }
 
+        public void AcknowledgeOutcome(bool right)
+        {
+            if(!AwaitingAcknowledgement) return;
+            var rect=(RectTransform)outcomePanel.transform;
+            departurePosition=rect.anchoredPosition; departureAngle=rect.localEulerAngles.z;
+            departureDirection=right?1:-1; transitionPhase=5; transitionTime=0;
+            dragging=false; keyboardDirection=0;
+        }
+
         // Explicit time steps keep playback deterministic and testable without real-time waits.
         public void AdvanceTransition(float seconds)
         {
-            while(IsTransitioning && seconds>0)
+            while(IsTransitioning && !AwaitingAcknowledgement && seconds>0)
             {
                 float duration=transitionPhase==1?.30f:transitionPhase==2?1.15f:.25f;
                 float step=Mathf.Min(seconds,duration-transitionTime); transitionTime+=step; seconds-=step;
                 float t=Mathf.Clamp01(transitionTime/duration);
-                if(transitionPhase==1)
+                if(transitionPhase==1 || transitionPhase==5)
                 {
+                    var moving=transitionPhase==5?(RectTransform)outcomePanel.transform:cardTransform;
                     float distance=((RectTransform)cardTransform.parent).rect.width+cardTransform.rect.width;
-                    cardTransform.anchoredPosition=Vector2.Lerp(departurePosition,home+new Vector2(departureDirection*distance,-45),t*t);
-                    cardTransform.localRotation=Quaternion.Euler(0,0,Mathf.LerpAngle(departureAngle,-departureDirection*28,t));
+                    moving.anchoredPosition=Vector2.Lerp(departurePosition,home+new Vector2(departureDirection*distance,-45),t*t);
+                    moving.localRotation=Quaternion.Euler(0,0,Mathf.LerpAngle(departureAngle,-departureDirection*28,t));
                 }
                 else if(transitionPhase==2)
                 {
@@ -182,7 +205,7 @@ namespace PoliticalTimeline
                     for(int i=0;i<4;i++)
                     {
                         supportFills[i].fillAmount=Mathf.Lerp(previousSupport[i],state.support[i]/100f,eased);
-                        supportFills[i].color=state.support[i]<20||state.support[i]>80?new Color(.83f,.36f,.29f):new Color(.72f,.62f,.39f);
+                        supportFills[i].color=state.support[i]<20?new Color(.83f,.36f,.29f):new Color(.72f,.62f,.39f);
                     }
                 }
                 else cardTransform.anchoredPosition=Vector2.Lerp(home+new Vector2(0,-32),home,Mathf.SmoothStep(0,1,t));
@@ -191,9 +214,13 @@ namespace PoliticalTimeline
                 if(transitionPhase==1)
                 {
                     transitionPhase=2; cardTransform.gameObject.SetActive(false);
-                    outcomeText.text=state.lastResult; outcomePanel.SetActive(true);
+                    ResetOutcome(); outcomeText.text=state.lastResult; outcomePanel.SetActive(true);
                 }
                 else if(transitionPhase==2)
+                {
+                    transitionPhase=4;
+                }
+                else if(transitionPhase==5)
                 {
                     outcomePanel.SetActive(false); ClearFeedback(); ResetCard(); Render();
                     if(state.ElectionPending || state.ended)
@@ -214,9 +241,11 @@ namespace PoliticalTimeline
             rect.anchorMin=cardTransform.anchorMin; rect.anchorMax=cardTransform.anchorMax; rect.pivot=cardTransform.pivot;
             rect.anchoredPosition=cardTransform.anchoredPosition; rect.sizeDelta=cardTransform.sizeDelta;
             outcomePanel.GetComponent<Image>().color=new Color(.91f,.87f,.77f);
-            outcomePanel.GetComponent<Image>().raycastTarget=false;
+            outcomePanel.GetComponent<Image>().raycastTarget=true;
+            outcomePanel.AddComponent<CardDrag>().game=this;
             Caption(rect,"Outcome heading",24,275,302,26,16).text="THE CONSEQUENCES";
             outcomeText=Caption(rect,"Outcome",24,65,302,190,25);
+            Caption(rect,"Read confirmation",24,18,302,30,17).text="Swipe either way to continue";
             outcomePanel.transform.SetSiblingIndex(cardTransform.GetSiblingIndex());
             outcomePanel.SetActive(false);
         }
@@ -227,11 +256,8 @@ namespace PoliticalTimeline
             if (visible) CancelDrag();
             helpPanel.SetActive(visible);
             if (state == null) return;
-            helpTitle.text="Keys of power";
-            helpText.text = "Keep every group above 0 and below 100.\n\n"
-                + "Hold the card left or right to see a choice. Release to choose.\n\n"
-                + "One swipe is one month. Win 270 electoral votes to be reelected.\n\n"
-                + $"Term {state.Term}  ·  Approval {state.Approval}%";
+            helpTitle.text="Behind the party";
+            helpText.text = "You lead the party from behind the scenes. Presidents come and go.\n\nKeep every top meter above zero. Election losses do not end your run.\n\nEnact policies through events. Review them under Policies.";
         }
 
         public void ShowPower(int index)
@@ -241,7 +267,7 @@ namespace PoliticalTimeline
             string[] names={ "Workers", "Middle class", "Economy", "Elites" };
             string[] descriptions={ "Workers and unions.", "Families and the middle class.", "Jobs, growth and economic stability.", "Wealthy donors and business leaders." };
             helpTitle.text=names[index];
-            helpText.text=descriptions[index]+$"\n\nSupport: {state.support[index]} / 100\n\nKeep this group above 0 and below 100.\n\nTerm {state.Term} · Approval {state.Approval}%";
+            helpText.text=descriptions[index]+$"\n\nSupport: {state.support[index]} / 100\n\nKeep this group above zero. A full meter is safe.\n\nParty cycle {state.Term} · Support {state.Approval}%";
         }
 
         void Render()
@@ -250,12 +276,16 @@ namespace PoliticalTimeline
             background.color=electionYear?new Color(.98f,.975f,.95f):new Color(.13f,.18f,.19f);
             var ink=electionYear?new Color(.10f,.15f,.16f):new Color(.96f,.93f,.83f);
             briefing.color=ink; monthLabel.color=ink;
-            monthLabel.text=state.DisplayMonth.ToString("MMMM yyyy")+(electionYear?" · Election year":"");
+            monthLabel.text=state.DisplayMonth.ToString("MMMM yyyy")+(state.nation.HoldsPresidency?" · Governing":" · Opposition");
+            monthLabel.fontSize=electionYear?12:16;
+            monthLabel.rectTransform.anchoredPosition=new Vector2(20,electionYear?-79:-82);
+            monthLabel.rectTransform.sizeDelta=new Vector2(350,electionYear?28:22);
+            if(electionYear) monthLabel.text="<b>"+state.ElectionYearLabel+"</b>\n"+monthLabel.text;
             foreach(var icon in powerIcons) icon.color=Color.white;
             for (int i = 0; i < 4; i++)
             {
                 supportFills[i].fillAmount = state.support[i] / 100f;
-                supportFills[i].color = state.support[i] < 20 || state.support[i] > 80 ? new Color(.83f,.36f,.29f) : new Color(.72f,.62f,.39f);
+                supportFills[i].color = state.support[i] < 20 ? new Color(.83f,.36f,.29f) : new Color(.72f,.62f,.39f);
             }
             portrait.gameObject.SetActive(!state.ended);
             cardTransform.gameObject.SetActive(!state.ended);
@@ -266,6 +296,7 @@ namespace PoliticalTimeline
                 return;
             }
             var c = state.current;
+            if(c==null) { cardTransform.gameObject.SetActive(false); briefing.text="No available events. Check the campaign deck."; return; }
             briefing.text = c.briefing;
             portrait.enabled = false;
             flatArt.Present(c);

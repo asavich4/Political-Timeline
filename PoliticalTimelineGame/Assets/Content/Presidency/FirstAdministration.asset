@@ -47,6 +47,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dfbf17056f7a6d749b6e70effe289ec1, type: 2}
   - {fileID: 11400000, guid: f12e27fb123df7d42843e40d1c8c4b63, type: 2}
   - {fileID: 11400000, guid: d0faf33bee4fffb489a50fe9eda090de, type: 2}
+  - {fileID: 11400000, guid: 70f1e02bd5feb8d498135d679e6ed653, type: 2}
+  - {fileID: 11400000, guid: 9fd7e99338aa307409f083b300376058, type: 2}
+  - {fileID: 11400000, guid: 9835d02fdf742a54f871f19c5415d54d, type: 2}
+  - {fileID: 11400000, guid: ec895ba3be73e84459ea19b8afa20cbb, type: 2}
   startingSupport: 50
   startYear: 2025
   nation: {fileID: 11400000, guid: fa31a48ce04320c49ac2ae7a8d033be0, type: 2}

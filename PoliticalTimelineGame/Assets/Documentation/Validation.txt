@@ -1,9 +1,11 @@
 Unity compilation passed.
 Monthly calendar, election, Congress, court and deck rule checks passed.
-Deck valid: 34 cards ready to play.
-Swipe departure, consequence pause, animated meters, entry and input lock verified.
+Deck valid: 38 cards ready to play.
+Swipe departure, indefinite reading pause, acknowledgement without another decision, animated meters, entry and input lock verified.
+House and Senate seat counts and selected-state support bar verified.
 Progressive presidential and midterm returns, uncalled-state privacy, skip and natural completion verified.
 Map, state selection, Congress, court nominations, annual theme and automatic November result flow verified.
+Party survives electoral defeat, returns to play in opposition, and retains enacted policies. Event-only enactment/repeal and read-only policy paging verified. Campaign rule checks cover twenty years, loss and regain of power, zero-only failure and harder elections.
 SDF text, full-card artwork, safe areas and text fit verified at 375x667, 390x844, 430x932 and 1170x2532.
 Directional hold previews, delayed commit, release threshold, canceled gestures, restart and help checks passed.
 Physical iPhone testing and an iOS build have not been performed.

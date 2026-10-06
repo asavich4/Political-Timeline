@@ -21,21 +21,41 @@ MonoBehaviour:
   earliestDecision: 1
   weight: 1
   oncePerRun: 0
+  condition: 0
+  requiredPolicy: 0
   left:
     label: Fund repairs
     consequence: Road crews mobilize. The business lobby demands a meeting.
     change:
       workers: 9
       middleClass: 6
-      economy: -3
       elites: -8
+      economy: -3
     followUp: {fileID: 0}
+    institution: 1
+    enactPolicy: 20
+    repealPolicy: 0
+    blockedChange:
+      workers: -2
+      middleClass: -3
+      elites: 2
+      economy: -1
+    blockedConsequence: The proposal fails. Your party lacks the votes.
   right:
     label: Let states pay
     consequence: The federal ledger holds. Commuters are less forgiving.
     change:
       workers: -7
       middleClass: -5
-      economy: 2
       elites: 8
+      economy: 2
     followUp: {fileID: 0}
+    institution: 0
+    enactPolicy: 0
+    repealPolicy: 0
+    blockedChange:
+      workers: 0
+      middleClass: 0
+      elites: 0
+      economy: 0
+    blockedConsequence: 

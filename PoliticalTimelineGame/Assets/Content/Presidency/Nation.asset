@@ -372,3 +372,7 @@ MonoBehaviour:
     interests: {x: 3, y: 1, z: 1, w: 2}
   incumbentAdvantage: 2
   courtRetirementMonths: 18
+  startingHouseSeats: 210
+  startingSenateSeats: 48
+  electoralResistance: 4
+  supportSensitivity: 0.55

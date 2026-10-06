@@ -1,0 +1,25 @@
+using System;
+
+namespace PoliticalTimeline
+{
+    public enum PolicyId { None, RailNetwork, SchoolMeals, DrugPriceCap, FloodDefenses, GiftBan, CleanAir, DataPrivacy, LegalAid, SafeWater, Libraries, PublicHousing, CleanResearch, WealthTax, HospitalFunding, EnergyPriceCap, PensionIncrease, SchoolRepairs, TradeAgreement, SurveillancePowers, BridgeRepairs, EmergencyGrid, PaidLeave, Childcare, PressFreedom, SoilProtection, ElectionAccess, RuralBroadband, Apprenticeships }
+    public sealed class EnactedPolicy
+    {
+        public PolicyId Id { get; }
+        public DateTime Enacted { get; }
+        public EnactedPolicy(PolicyId id,DateTime date) { Id=id; Enacted=date; }
+    }
+    public static class PolicyLedger
+    {
+        public static string Title(PolicyId id)
+        {
+            string[] names={"", "National rail network", "Universal school meals", "Prescription price cap", "Flood defenses", "Federal gift ban", "Clean-air standards", "Personal data protection", "Expanded legal aid", "Safe water program", "Evening libraries", "Public housing", "Clean technology research", "Wealth tax", "Rural hospital funding", "Household energy cap", "Pension increase", "School repair program", "Import trade agreement", "Expanded surveillance", "Bridge repair program", "Emergency grid reserve", "Paid family leave", "Public childcare", "Press protection law", "Soil restoration fund", "Accessible polling places", "Rural broadband", "Paid apprenticeships"};
+            return names[(int)id];
+        }
+        public static string Description(PolicyId id)
+        {
+            string[] descriptions={"", "Federal funding for a national rail network.", "Federal funding for school lunches.", "Limits on prescription drug prices.", "Investment in levees and drainage.", "Officials may no longer accept gifts.", "Factories must meet emissions limits.", "Rules protect personal information.", "More public funding for legal assistance.", "A program to replace unsafe water pipes.", "Funding for longer library opening hours.", "Public investment in new homes.", "Public funding for clean technology.", "Taxes on wealth fund household relief.", "Federal support for rural hospitals.", "Limits on household energy prices.", "Higher payments for retirees.", "Public funding to repair classrooms.", "Lower barriers to imported goods.", "Broader powers for intelligence agencies.", "Federal funding to repair aging bridges.", "Backup power for essential services.", "Paid time off to care for family.", "Public funding for childcare places.", "Legal safeguards for public-interest reporting.", "Support for restoring damaged farmland.", "Funding for accessible polling locations.", "Investment in rural internet connections.", "Paid training places for new workers."};
+            return descriptions[(int)id];
+        }
+    }
+}

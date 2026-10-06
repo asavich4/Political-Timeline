@@ -10,31 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 419f0aa0370f329488c33c094f0c53c2, type: 3}
-  m_Name: rail_vote
+  m_Name: repeal_meals
   m_EditorClassIdentifier: 
-  id: rail_vote
+  id: repeal_meals
   advisor: House Speaker
   category: CONGRESS
-  headline: The last vote
-  briefing: Fund a national rail network?
+  headline: The lunch budget
+  briefing: Your school meals law faces repeal.
   portrait: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0
   condition: 0
-  requiredPolicy: 0
+  requiredPolicy: 2
   left:
-    label: Bring it to a vote
-    consequence: Congress funds the railway. Construction begins.
+    label: Repeal the program
+    consequence: Congress repeals school meals funding.
     change:
-      workers: 7
-      middleClass: 4
-      elites: -7
-      economy: 5
+      workers: -5
+      middleClass: -4
+      elites: 4
+      economy: 3
     followUp: {fileID: 0}
     institution: 1
-    enactPolicy: 1
-    repealPolicy: 0
+    enactPolicy: 0
+    repealPolicy: 2
     blockedChange:
       workers: -2
       middleClass: -3
@@ -42,13 +42,13 @@ MonoBehaviour:
       economy: -1
     blockedConsequence: Congress blocks the bill. Your coalition lacks the votes.
   right:
-    label: Leave it to states
-    consequence: States draw up separate rail plans.
+    label: Keep the program
+    consequence: The party stands behind school meals.
     change:
-      workers: -3
-      middleClass: -2
-      elites: 4
-      economy: 2
+      workers: 3
+      middleClass: 2
+      elites: -2
+      economy: -2
     followUp: {fileID: 0}
     institution: 0
     enactPolicy: 0

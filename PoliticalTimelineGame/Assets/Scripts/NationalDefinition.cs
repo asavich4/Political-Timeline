@@ -18,6 +18,10 @@ namespace PoliticalTimeline
         public StateProfile[] states=CreateStates();
         [Range(0,10)] public float incumbentAdvantage=2;
         [Min(1)] public int courtRetirementMonths=18;
+        [Range(0,435)] public int startingHouseSeats=210;
+        [Range(0,100)] public int startingSenateSeats=48;
+        [Range(0,10)] public float electoralResistance=4;
+        [Range(.1f,1)] public float supportSensitivity=.55f;
 
         // Electoral weights: National Archives, 2024/2028 allocation. Map positions and leans are game data.
         public static StateProfile[] CreateStates()

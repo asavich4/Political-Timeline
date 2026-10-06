@@ -10,6 +10,6 @@ namespace PoliticalTimeline
         [Range(1, 99)] public int startingSupport = 50;
         [Min(2001)] public int startYear = 2025;
         public NationalDefinition nation;
-        [Min(1)] public int termLimit = 2;
+        [HideInInspector] public int termLimit = 2; // Legacy asset data; party campaigns have no term limit.
     }
 }

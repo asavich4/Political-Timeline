@@ -18,14 +18,14 @@ namespace PoliticalTimeline
         PresidencyGame game;
         int tab;
         bool results, bound;
-        public ChamberSeats HouseChart { get; private set; }
-        public ChamberSeats SenateChart { get; private set; }
-        public Image StateSupportFill { get; private set; }
-        GameObject supportBar;
-        TMP_Text supportLabel;
+        [field: SerializeField] public ChamberSeats HouseChart { get; private set; }
+        [field: SerializeField] public ChamberSeats SenateChart { get; private set; }
+        [field: SerializeField] public Image StateSupportFill { get; private set; }
+        [SerializeField] GameObject supportBar;
+        [SerializeField] TMP_Text supportLabel;
         int selectedState=-1;
-        GameObject policiesGroup;
-        TMP_Text policiesText;
+        [SerializeField] GameObject policiesGroup;
+        [SerializeField] TMP_Text policiesText;
         int policyPage;
         public ElectionNight Night { get; private set; }
         public bool IsOpen => gameObject.activeSelf;
@@ -40,6 +40,28 @@ namespace PoliticalTimeline
             for(int i=0;i<mapButtons.Length;i++) { int index=i; mapButtons[i].onClick.AddListener(()=>SelectState(index)); }
             for(int i=0;i<stateShortcuts.Length;i++) { int index=shortcutStates[i]; stateShortcuts[i].onClick.AddListener(()=>SelectState(index)); }
             closeButton.onClick.AddListener(Close); actionButton.onClick.AddListener(Action);
+        }
+        public void BuildEditablePresentation() { BuildDetailGraphics(); BuildPolicies(); }
+        public void PreviewForEditing(int page,CampaignDefinition campaign)
+        {
+            BuildEditablePresentation(); gameObject.SetActive(true);
+            mapGroup.SetActive(page==0); congressGroup.SetActive(page==1); courtGroup.SetActive(page==2); policiesGroup.SetActive(page==3);
+            title.text=new[]{"Election map","Congress","Supreme Court","Enacted policies"}[page];
+            subtitle.text="Editor preview · Starting party"; closeButton.gameObject.SetActive(true); actionButton.gameObject.SetActive(false);
+            var nation=new NationalState(campaign.nation);
+            HouseChart.Present(435,nation.houseSeats); SenateChart.Present(100,nation.SenateSeats);
+            houseText.text=$"House · {nation.houseSeats} / 435 yours"; senateText.text=$"Senate · {nation.SenateSeats} / 100 yours";
+            congressNote.text="Each dot is one seat. Teal: you · Red: opposition\nHouse majority: 218 · Senate majority: 51";
+            policiesText.text="<b>Policy list</b>\nEnacted policies and dates appear here.\n\nEdit event assets to choose which policies they enact.";
+            policiesText.color=mapDetail.color;
+            courtSummary.text="4 aligned · 4 opposed · 1 independent";
+            for(int i=0;i<9;i++) { courtTiles[i].color=nation.court[i]==1?Allied:nation.court[i]==-1?Opposed:Tossup; courtLabels[i].text=$"Seat {i+1}\n"+(nation.court[i]==1?"Aligned":nation.court[i]==-1?"Opposed":"Independent"); }
+            var starting=new[]{campaign.startingSupport,campaign.startingSupport,campaign.startingSupport,campaign.startingSupport};
+            for(int i=0;i<mapTiles.Length;i++) { float margin=nation.Margin(i,starting); mapTiles[i].color=Mathf.Abs(margin)<3?Tossup:margin>=0?Allied:Opposed; }
+            mapSummary.text=$"Projected electoral votes: {nation.ProjectedVotes(starting)}";
+            Place(mapDetail.rectTransform,24,427,342,50); mapDetail.text="Selected state details\nSupport bar preview";
+            supportBar.SetActive(page==0); supportLabel.gameObject.SetActive(page==0); StateSupportFill.fillAmount=.5f; supportLabel.text="Projected support: 50.0%"; supportLabel.color=mapDetail.color;
+            footnote.text="Editor preview · No campaign state changed";
         }
         public void Open(int page,bool election)
         {
@@ -145,6 +167,7 @@ namespace PoliticalTimeline
         }
         void BuildPolicies()
         {
+            if(policiesGroup!=null && policiesText!=null && navigation.Length==4) return;
             var policyButton=Instantiate(navigation[0],navigation[0].transform.parent); policyButton.name="Policies";
             policyButton.transform.SetSiblingIndex(navigation[2].transform.GetSiblingIndex()+1);
             policyButton.onClick.RemoveAllListeners(); policyButton.GetComponentInChildren<TMP_Text>().text="Policies";
@@ -157,6 +180,7 @@ namespace PoliticalTimeline
         }
         void BuildDetailGraphics()
         {
+            if(HouseChart!=null && SenateChart!=null && StateSupportFill!=null && supportLabel!=null) return;
             foreach(string name in new[]{"House Opposition","House Coalition","Senate Opposition","Senate Coalition"})
             { var old=congressGroup.transform.Find(name); if(old!=null) old.gameObject.SetActive(false); }
             Place(houseText.rectTransform,24,116,342,30); houseText.fontSize=22;

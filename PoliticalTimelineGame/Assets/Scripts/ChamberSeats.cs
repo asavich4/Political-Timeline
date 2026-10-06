@@ -9,8 +9,10 @@ namespace PoliticalTimeline
     public class ChamberSeats : MaskableGraphic
     {
         protected ChamberSeats() { useLegacyMeshGeneration=false; }
-        public int Total { get; private set; }
-        public int Allied { get; private set; }
+        public Color coalitionColor=new Color(.12f,.43f,.48f), oppositionColor=new Color(.73f,.30f,.22f);
+        [Range(.5f,1.5f)] public float dotScale=1;
+        [field: SerializeField] public int Total { get; private set; }
+        [field: SerializeField] public int Allied { get; private set; }
         public void Present(int total,int allied) { Total=total; Allied=Mathf.Clamp(allied,0,total); SetVerticesDirty(); }
         protected override void OnPopulateMesh(VertexHelper mesh)
         {
@@ -29,10 +31,10 @@ namespace PoliticalTimeline
                 }
             }
             seats.Sort((a,b)=>b.z.CompareTo(a.z));
-            var rect=GetPixelAdjustedRect(); float dot=Total>100?2.4f:4.3f;
+            var rect=GetPixelAdjustedRect(); float dot=(Total>100?2.4f:4.3f)*dotScale;
             for(int i=0;i<seats.Count;i++)
             {
-                Color c=i<Allied?new Color(.12f,.43f,.48f):new Color(.73f,.30f,.22f);
+                Color c=i<Allied?coalitionColor:oppositionColor;
                 int start=mesh.currentVertCount;
                 for(int v=0;v<8;v++)
                 {

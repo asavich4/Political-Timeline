@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 
 namespace PoliticalTimeline
 {
+    [ExecuteAlways]
     public class PresidencyGame : MonoBehaviour
     {
         public CampaignDefinition campaign;
@@ -32,7 +33,9 @@ namespace PoliticalTimeline
         float inputReady, feedbackUntil;
         AdvisorArt flatArt;
         TMP_Text advisorLabel, resultLabel;
-        PowerIcon[] flatPowerIcons;
+        [SerializeField] PowerIcon[] flatPowerIcons;
+        public DecisionCard editorPreviewCard;
+        [HideInInspector] public int editablePresentationVersion;
         string voterFeedback;
         public bool IsTransitioning => transitionPhase!=0;
         public bool AwaitingAcknowledgement => transitionPhase==4;
@@ -41,13 +44,40 @@ namespace PoliticalTimeline
         Vector2 departurePosition;
         float departureAngle, departureDirection;
         readonly float[] previousSupport=new float[4];
-        GameObject outcomePanel;
-        TMP_Text outcomeText;
+        [SerializeField] GameObject outcomePanel;
+        [SerializeField] TMP_Text outcomeText;
         public int Decisions => state == null ? 0 : state.decisions;
         float SwipeThreshold => cardTransform.rect.width * .22f;
         bool HelpOpen => (helpPanel != null && helpPanel.activeSelf) || (nationalPanels != null && nationalPanels.IsOpen);
 
-        void Start() => Initialize();
+        void Start() { if(Application.isPlaying) Initialize(); }
+        public void BuildEditablePresentation()
+        {
+            BuildCardFace(); BuildPowerIcons(); BuildOutcomePanel(); nationalPanels.BuildEditablePresentation();
+            editablePresentationVersion=1;
+        }
+        public void PreviewCardForEditing(DecisionCard card)
+        {
+            editorPreviewCard=card; BuildEditablePresentation();
+            nationalPanels.gameObject.SetActive(false); helpPanel.SetActive(false); outcomePanel.SetActive(false);
+            cardTransform.gameObject.SetActive(true); restartButton.gameObject.SetActive(false);
+            choiceOverlay.alpha=0; RenderEditorCard();
+        }
+        public void PreviewOutcomeForEditing()
+        {
+            BuildEditablePresentation(); nationalPanels.gameObject.SetActive(false); helpPanel.SetActive(false);
+            cardTransform.gameObject.SetActive(false); outcomePanel.SetActive(true);
+            outcomeText.text=editorPreviewCard!=null?editorPreviewCard.left.consequence:"Your decision's consequence appears here.";
+        }
+        void RenderEditorCard()
+        {
+            if(editorPreviewCard==null || cardTransform==null) return;
+            var art=cardTransform.GetComponentInChildren<AdvisorArt>(true); if(art==null) return;
+            art.Present(editorPreviewCard); art.enabled=!editorPreviewCard.usePortraitSprite;
+            portrait.enabled=editorPreviewCard.usePortraitSprite && editorPreviewCard.portrait!=null; portrait.sprite=editorPreviewCard.portrait;
+            briefing.text=editorPreviewCard.briefing;
+            cardTransform.Find("Paper caption/Advisor").GetComponent<TMP_Text>().text=editorPreviewCard.advisor+" / "+editorPreviewCard.category;
+        }
 
         public void Initialize()
         {
@@ -85,6 +115,7 @@ namespace PoliticalTimeline
 
         void Update()
         {
+            if(!Application.isPlaying) { if(!initialized) RenderEditorCard(); return; }
             if(IsTransitioning && !AwaitingAcknowledgement) { AdvanceTransition(Time.unscaledDeltaTime); return; }
             if (!dragging && feedbackUntil > 0 && Time.unscaledTime >= feedbackUntil) ClearFeedback();
             if (state == null || state.current==null || (state.ended && !AwaitingAcknowledgement) || dragging || HelpOpen || Time.unscaledTime < inputReady) return;
@@ -250,6 +281,7 @@ namespace PoliticalTimeline
 
         void BuildOutcomePanel()
         {
+            if(outcomePanel!=null) return;
             outcomePanel=new GameObject("Decision outcome",typeof(RectTransform),typeof(Image));
             var rect=(RectTransform)outcomePanel.transform; rect.SetParent(cardTransform.parent,false);
             rect.anchorMin=cardTransform.anchorMin; rect.anchorMax=cardTransform.anchorMax; rect.pivot=cardTransform.pivot;
@@ -312,7 +344,8 @@ namespace PoliticalTimeline
             var c = state.current;
             if(c==null) { cardTransform.gameObject.SetActive(false); briefing.text="No available events. Check the campaign deck."; return; }
             briefing.text = c.briefing;
-            portrait.enabled = false;
+            portrait.sprite=c.portrait; portrait.enabled=c.usePortraitSprite && c.portrait!=null;
+            flatArt.enabled=!c.usePortraitSprite;
             flatArt.Present(c);
             advisorLabel.text=c.advisor+"  /  "+c.category;
             resultLabel.text=state.lastResult;
@@ -347,6 +380,7 @@ namespace PoliticalTimeline
         }
         void BuildPowerIcons()
         {
+            if(flatPowerIcons!=null && flatPowerIcons.Length==powerIcons.Length && System.Array.TrueForAll(flatPowerIcons,i=>i!=null)) return;
             flatPowerIcons=new PowerIcon[powerIcons.Length];
             for(int i=0;i<powerIcons.Length;i++)
             {
@@ -355,7 +389,7 @@ namespace PoliticalTimeline
                 var go=new GameObject("Geometric power symbol",typeof(RectTransform),typeof(CanvasRenderer),typeof(PowerIcon));
                 var rect=(RectTransform)go.transform; rect.SetParent(legacy.transform.parent,false);
                 rect.anchorMin=rect.anchorMax=rect.pivot=new Vector2(.5f,.5f); rect.anchoredPosition=Vector2.zero; rect.sizeDelta=new Vector2(40,40);
-                var icon=go.GetComponent<PowerIcon>(); icon.symbol=(PowerIcon.Symbol)i; icon.raycastTarget=false; flatPowerIcons[i]=icon;
+                var icon=go.GetComponent<PowerIcon>(); icon.symbol=(PowerIcon.Symbol)i; icon.raycastTarget=false; icon.color=new Color(.96f,.93f,.83f); flatPowerIcons[i]=icon;
             }
         }
         TMP_Text Caption(RectTransform parent,string title,float x,float y,float w,float h,int size)

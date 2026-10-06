@@ -35,7 +35,21 @@ The state electoral weights use the [National Archives' 2024/2028 allocations](h
 
 ## Add content in Unity
 
-Open **Political Timeline > Content Workshop**. New Card and Duplicate Selected add real ScriptableObject cards to the campaign. Write a short question (around 50 characters), two choice labels (around 20 characters), consequences, four support changes and an optional follow-up branch. Advisor names select geometric character variants; CONGRESS and THE COURT categories add institutional backgrounds. Legacy portrait Sprites remain stored but are no longer displayed. Set a choice institution rule and its blocked consequence/support changes for conditional outcomes. Set the card condition to CourtVacancy or DividedCongress to restrict when it can appear. The starter deck now contains 102 cards, including opposition organizing and an event-driven policy repeal.
+### Preview and edit before Play
+
+The Presidency scene now saves the card artwork, four power symbols, consequence panel, Congress seat diagrams, state support bar and Policies panel as real scene objects. Starting the game reuses these objects.
+
+1. Open `Assets/Scenes/Presidency.unity` and select **Presidency • Portrait** in the Hierarchy.
+2. In its Inspector, use **Preview card**, **Preview consequence**, **Map**, **Congress**, **Court** or **Policies** to show the screen you want to edit. These previews use sample data; gameplay supplies the actual values.
+3. Select a card under `Assets/Content/Presidency/Cards` and click **Preview this card in the open scene**. Edit its briefing, advisor, category, design and choices on the card asset.
+4. For a custom image, assign the card's **Portrait** Sprite and enable **Use Portrait Sprite**. For geometric art, select **Decision Card > Flat advisor** and enable **Custom Palette** to edit background, skin and hair colors for the shared card presentation.
+5. Select **Geometric power symbol** under a top meter to change its symbol or size. Under **National View > Chambers**, select **House hemicycle** or **Senate hemicycle** to change seat colors and dot size. Move and resize UI objects with their RectTransforms.
+
+Make and save layout changes outside Play mode; Unity discards scene changes made during Play. Game text and live values come from card assets and game state. Power icon colors still follow the election-year theme.
+
+**Political Timeline > Update Editable Scene** upgrades an older open scene without rebuilding its existing layout. The current scene is already upgraded. Inspector preview buttons expose panels that normally start inactive in the Hierarchy.
+
+Open **Political Timeline > Content Workshop**. New Card and Duplicate Selected add real ScriptableObject cards to the campaign. Write a short question (around 50 characters), two choice labels (around 20 characters), consequences, four support changes and an optional follow-up branch. Advisor names select geometric character variants; CONGRESS and THE COURT categories add institutional backgrounds. Enable Use Portrait Sprite on a card to display its assigned custom image. Set a choice institution rule and its blocked consequence/support changes for conditional outcomes. Set the card condition to CourtVacancy or DividedCongress to restrict when it can appear. The starter deck now contains 102 cards, including opposition organizing and an event-driven policy repeal.
 
 Six four-card storylines cover backup power, paid leave, childcare, press protection, soil restoration and polling access. Each opening offers a policy path or a local response. Passing a bill unlocks its policy aftermath; a failed vote or opposition presidency leads to the local response. Follow-up-only chapters never enter random draws. Stories resume after election night. Eight new laws and six geometric portrait designs accompany these stories and eight standalone events.
 
@@ -58,3 +72,4 @@ Twelve campaign-only cards appear from January through November of even-numbered
 Eight new opposition-only cards cover four legislative blocking fights and four voter-rebuilding efforts. Out of power, opposition-card draw weights are tripled and ordinary federal enactment cards leave the random pool. Existing linked stories still resolve their blocked branches. Blocking a government bill needs either 218 House seats or 41 senators in this simplified game; a failed block grants no local voter gain and records no success. Congress displays the number of successful blocks. A compromise or organizing choice can still rebuild votes when the party lacks blocking seats.
 
 Twelve new governing-policy proposals add transit, renter protection, food safety, disaster insurance, cybersecurity, small-business credit, veterans care, water conservation, public records, wage enforcement, rural clinics and mental-health access.
+

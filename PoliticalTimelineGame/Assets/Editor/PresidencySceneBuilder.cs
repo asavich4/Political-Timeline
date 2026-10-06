@@ -118,7 +118,9 @@ namespace PoliticalTimeline.Editor
             game.closeHelpButton=Choice(help.transform,"Close Help",20,552,350,76,"Back to the card",out _);
             help.gameObject.SetActive(false);
             game.nationalPanels=BuildNationalPanels(root,campaign,navigation);
-            game.BuildCardFace();
+            game.BuildEditablePresentation();
+            game.nationalPanels.PreviewForEditing(1,campaign);
+            game.PreviewCardForEditing(campaign.cards[0]);
             new GameObject("Event System",typeof(EventSystem),typeof(InputSystemUIInputModule));
             PlayerSettings.defaultInterfaceOrientation=UIOrientation.Portrait;
             PlayerSettings.allowedAutorotateToPortrait=true;

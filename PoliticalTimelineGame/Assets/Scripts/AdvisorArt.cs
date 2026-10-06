@@ -4,10 +4,13 @@ using UnityEngine.UI;
 namespace PoliticalTimeline
 {
     // Flat UI geometry stays sharp at phone and desktop resolutions.
+    [ExecuteAlways]
     public class AdvisorArt : MaskableGraphic
     {
         [SerializeField] string advisor="Chief of Staff", category="DOMESTIC POLICY";
         [SerializeField] PortraitDesign design;
+        public bool customPalette;
+        public Color backdrop=new Color(.47f,.58f,.55f), skinTone=new Color(.71f,.47f,.33f), hairColor=new Color(.24f,.22f,.20f);
         public void Present(DecisionCard card) { advisor=card.advisor; category=card.category; design=card.design; SetVerticesDirty(); }
         protected override void OnPopulateMesh(VertexHelper mesh)
         {
@@ -20,6 +23,7 @@ namespace PoliticalTimeline
             Color ground=Hex(court?"777E87":congress?"AD795B":style%2==0?"77938B":"B3A47C");
             string[] palettes={"77938B","9C8769","799EA0","9A9B6C","918588","6B8A7D","AB8069"};
             if(design!=PortraitDesign.Default) ground=Hex(palettes[(int)design]);
+            if(customPalette) { ground=backdrop; skin=skinTone; hair=hairColor; }
             Box(mesh,ground,0,0,100,100);
             // A quiet institutional silhouette behind the speaker.
             Color architecture=Color.Lerp(ground,paper,.22f);

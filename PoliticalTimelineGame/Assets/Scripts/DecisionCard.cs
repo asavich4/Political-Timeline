@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace PoliticalTimeline
 {
+    public enum InstitutionRule { None, Congress, CourtReview, ConfirmJustice }
+    public enum EventCondition { Always, DividedCongress, CourtVacancy }
     [Serializable]
     public struct SupportChange
     {
@@ -19,6 +21,9 @@ namespace PoliticalTimeline
         [TextArea(2, 4)] public string consequence;
         public SupportChange change;
         public DecisionCard followUp;
+        public InstitutionRule institution;
+        public SupportChange blockedChange;
+        [TextArea(2, 4)] public string blockedConsequence;
     }
 
     [CreateAssetMenu(menuName = "Political Timeline/Decision Card")]
@@ -33,6 +38,7 @@ namespace PoliticalTimeline
         [Min(1)] public int earliestDecision = 1;
         [Min(1)] public int weight = 1;
         public bool oncePerRun;
+        public EventCondition condition;
         public PolicyChoice left = new PolicyChoice();
         public PolicyChoice right = new PolicyChoice();
     }

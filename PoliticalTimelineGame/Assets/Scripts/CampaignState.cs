@@ -35,9 +35,11 @@ namespace PoliticalTimeline
         {
             if(ended || ElectionPending || current==null) return;
             var choice=right?current.right:current.left; used.Add(current);
-            var deltas=choice.change.Values;
+            bool passed=nation.CanResolve(choice.institution);
+            if(passed && choice.institution==InstitutionRule.ConfirmJustice) nation.Nominate();
+            var deltas=(passed?choice.change:choice.blockedChange).Values;
             for(int i=0;i<4;i++) support[i]=Math.Max(0,Math.Min(100,support[i]+deltas[i]));
-            var month=CurrentMonth; decisions++; lastResult=choice.consequence;
+            var month=CurrentMonth; decisions++; lastResult=passed?choice.consequence:choice.blockedConsequence;
             nation.AdvanceMonth(decisions);
             string[] losses={"A nation on strike","The center collapses","Economic collapse","The donors walk away"};
             string[] excesses={"A movement beyond your control","A mandate without limits","The economy overheats","A captured presidency"};
@@ -57,7 +59,7 @@ namespace PoliticalTimeline
         void Draw(DecisionCard followUp)
         {
             if(followUp!=null) { current=followUp; return; }
-            var eligible=definition.cards.Where(c=>c!=null && c.earliestDecision<=decisions+1 && (!c.oncePerRun||!used.Contains(c))).ToList();
+            var eligible=definition.cards.Where(c=>c!=null && c.earliestDecision<=decisions+1 && nation.Allows(c.condition) && (!c.oncePerRun||!used.Contains(c))).ToList();
             if(eligible.Count>1) eligible.Remove(current);
             if(eligible.Count==0) { Finish("The briefing deck is exhausted"); return; }
             int roll=random.Next(eligible.Sum(c=>Math.Max(1,c.weight)));

@@ -13,7 +13,7 @@ namespace PoliticalTimeline.Editor
         UnityEditor.Editor cardEditor;
         Vector2 listScroll, detailScroll;
         string search = "";
-        string message = "Create cards, assign portraits, and tune both choices. Changes are saved as Unity assets.";
+        string message = "Create cards, choose an advisor and category for flat art, and tune both choices. Changes are saved as Unity assets.";
 
         [MenuItem("Political Timeline/Content Workshop")]
         public static void Open() => GetWindow<ContentWorkshop>("Content Workshop");
@@ -101,9 +101,12 @@ namespace PoliticalTimeline.Editor
                 if(c==null) { errors.Add("Missing card reference."); continue; }
                 if(string.IsNullOrWhiteSpace(c.id)||!ids.Add(c.id)) errors.Add(c.name+": missing or duplicate ID.");
                 if(string.IsNullOrWhiteSpace(c.headline)||string.IsNullOrWhiteSpace(c.briefing)) errors.Add(c.name+": missing headline or briefing.");
-                if(c.portrait==null) errors.Add(c.name+": missing portrait.");
+                if(string.IsNullOrWhiteSpace(c.advisor)) errors.Add(c.name+": missing advisor for geometric portrait.");
                 foreach(var choice in new[]{c.left,c.right})
+                {
                     if(choice==null||string.IsNullOrWhiteSpace(choice.label)||string.IsNullOrWhiteSpace(choice.consequence)) errors.Add(c.name+": incomplete choice.");
+                    else if(choice.institution!=InstitutionRule.None && string.IsNullOrWhiteSpace(choice.blockedConsequence)) errors.Add(c.name+": missing blocked outcome.");
+                }
             }
             if(!campaign.cards.Any(c=>c!=null&&c.earliestDecision<=1)) errors.Add("No card is available on the first decision.");
             return errors.Count==0 ? $"Deck valid: {campaign.cards.Count} cards ready to play." : string.Join("\n",errors);
@@ -117,7 +120,8 @@ namespace PoliticalTimeline.Editor
                 while(!state.ended && state.decisions<1000)
                 {
                     if(state.ElectionPending) state.AcknowledgeElection();
-                    int left=Score(state.support,state.current.left.change), right=Score(state.support,state.current.right.change);
+                    var l=state.current.left; var r=state.current.right;
+                    int left=Score(state.support,state.nation.CanResolve(l.institution)?l.change:l.blockedChange), right=Score(state.support,state.nation.CanResolve(r.institution)?r.change:r.blockedChange);
                     state.Choose(right<left); // Simple policy: keep the coalition near its midpoint.
                 }
                 if(state.ending=="A legacy secured") wins++;

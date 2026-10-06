@@ -62,7 +62,7 @@ namespace PoliticalTimeline
             closeButton.gameObject.SetActive(!results);
             title.text=tab==0 ? (results?"Election results":"Election map") : tab==1?"Congress":"Supreme Court";
             subtitle.text=results ? $"November {election.year} · "+(election.presidential?"Presidential election":"Midterm election") : state.DisplayMonth.ToString("MMMM yyyy");
-            footnote.text="Fictional game simulation";
+            footnote.text=tab==2?"Policy reviews need 5 aligned justices.":"Fictional game simulation";
             if(tab==0)
             {
                 int votes=results?election.electoralVotes:nation.ProjectedVotes(state.support);
@@ -83,7 +83,7 @@ namespace PoliticalTimeline
                 int house=results?election.houseSeats:nation.houseSeats, senate=results?election.senateSeats:nation.SenateSeats;
                 houseText.text=$"House\n{house} / 435 seats"; houseFill.fillAmount=house/435f;
                 senateText.text=$"Senate\n{senate} / 100 seats"; senateFill.fillAmount=senate/100f;
-                congressNote.text=(house>=218?"You hold the House.":"Opposition holds the House.")+"\n\n"+(senate>=51?"You hold the Senate.":"No Senate majority.")+"\n\nA Senate majority can confirm your court nominees.";
+                congressNote.text=(house>=218?"You hold the House.":"Opposition holds the House.")+"\n"+(senate>=51?"You hold the Senate.":"No Senate majority.")+"\n\nBills need both majorities.\nCourt nominees need 51 senators.";
             }
             if(tab==2)
             {

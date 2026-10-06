@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 419f0aa0370f329488c33c094f0c53c2, type: 3}
+  m_Name: ethics_vote
+  m_EditorClassIdentifier: 
+  id: ethics_vote
+  advisor: Committee Chair
+  category: CONGRESS
+  headline: No more gifts
+  briefing: Ban gifts to federal officials?
+  portrait: {fileID: 0}
+  earliestDecision: 1
+  weight: 1
+  oncePerRun: 0
+  condition: 0
+  left:
+    label: Ask Congress
+    consequence: Congress passes the ban. Lobbyists lose access.
+    change:
+      workers: 4
+      middleClass: 7
+      elites: -6
+      economy: -2
+    followUp: {fileID: 0}
+    institution: 1
+    blockedChange:
+      workers: -2
+      middleClass: -3
+      elites: 2
+      economy: -1
+    blockedConsequence: Congress blocks the bill. Your coalition lacks the votes.
+  right:
+    label: Publish a gift list
+    consequence: The gifts become public. They remain legal.
+    change:
+      workers: 1
+      middleClass: 3
+      elites: -2
+      economy: 0
+    followUp: {fileID: 0}
+    institution: 0
+    blockedChange:
+      workers: 0
+      middleClass: 0
+      elites: 0
+      economy: 0
+    blockedConsequence: 

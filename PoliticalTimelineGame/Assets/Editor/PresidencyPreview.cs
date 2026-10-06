@@ -26,13 +26,18 @@ namespace PoliticalTimeline.Editor
                 Check(game.helpTitle.text==powerNames[i] && game.helpText.text.Contains("50 / 100"),"Correct power details");
                 game.closeHelpButton.onClick.Invoke();
             }
-            Check(game.portrait.sprite!=null && game.briefing.text!="", "Card presentation");
+            Check(game.GetComponentInChildren<AdvisorArt>()!=null && game.briefing.text!="", "Geometric card presentation");
             Check(game.choiceOverlay.alpha==0,"Choices hidden at rest");
             Check(game.briefing.fontSharedMaterial.GetFloat("_Sharpness")>.3f,"Sharp text material applied");
             Capture("PresidencyPreview.png",390,844,new Rect(0,34,390,763));
             Capture("PresidencyCompactPreview.png",375,667,new Rect(0,0,375,647));
             Capture("PresidencyTallPreview.png",430,932,new Rect(0,34,430,839));
             Capture("PresidencyRetinaPreview.png",1170,2532,new Rect(0,102,1170,2289));
+            foreach(string id in new[]{"rail_vote","court_nominee","water","harvest"})
+            {
+                game.State.current=game.campaign.cards.Find(c=>c.id==id); game.Refresh();
+                Capture(id+"Preview.png",390,844,new Rect(0,34,390,763));
+            }
             var current=game.campaign.cards.Find(c=>c.briefing==game.briefing.text);
             var drag=Hold(game,new Vector2(-45,0));
             Check(game.choiceLabel.text==current.left.label && game.choiceOverlay.alpha>0,"Left hold reveals left choice");
@@ -176,6 +181,14 @@ namespace PoliticalTimeline.Editor
                     Fits(game.briefing,card.briefing,card.id);
                     Fits(game.choiceLabel,card.left.label,card.id);
                     Fits(game.choiceLabel,card.right.label,card.id);
+                    var caption=game.cardTransform.Find("Paper caption/Last decision").GetComponent<TMP_Text>();
+                    var advisor=game.cardTransform.Find("Paper caption/Advisor").GetComponent<TMP_Text>();
+                    Fits(advisor,card.advisor+"  /  "+card.category,card.id);
+                    foreach(var choice in new[]{card.left,card.right})
+                    {
+                        Fits(caption,choice.consequence,card.id);
+                        if(choice.institution!=InstitutionRule.None) Fits(caption,choice.blockedConsequence,card.id);
+                    }
                 }
             }
             finally

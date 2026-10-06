@@ -19,6 +19,14 @@ namespace PoliticalTimeline
         public int houseSeats=222;
         public int SenateSeats { get { int n=0; foreach(bool seat in senate) if(seat) n++; return n; } }
         public int Vacancy => Array.IndexOf(court,2);
+        public bool ControlsCongress => houseSeats>=218 && SenateSeats>=51;
+        public bool CanResolve(InstitutionRule rule) => rule==InstitutionRule.None ||
+            (rule==InstitutionRule.Congress && ControlsCongress) ||
+            (rule==InstitutionRule.CourtReview && AlignedJustices>=5) ||
+            (rule==InstitutionRule.ConfirmJustice && Vacancy>=0 && SenateSeats>=51);
+        public bool Allows(EventCondition condition) => condition==EventCondition.Always ||
+            (condition==EventCondition.DividedCongress && !ControlsCongress) ||
+            (condition==EventCondition.CourtVacancy && Vacancy>=0);
         public int AlignedJustices { get { int n=0; foreach(int seat in court) if(seat==1) n++; return n; } }
         public NationalState(NationalDefinition config)
         {

@@ -95,7 +95,7 @@ namespace PoliticalTimeline.Editor
             card.rectTransform.pivot=new Vector2(.5f,.5f);
             card.rectTransform.anchoredPosition+=new Vector2(175,-175);
             game.cardTransform=card.rectTransform; card.gameObject.AddComponent<CardDrag>().game=game;
-            // Square portraits fill the card edge to edge. No cream frame or text area.
+            // Retain the legacy sprite slot for authored content; flat art is layered above it.
             var portrait=Panel(card.transform,"Character",0,0,350,350,Color.white);
             portrait.sprite=campaign.cards[0].portrait; portrait.preserveAspect=false; portrait.raycastTarget=false; game.portrait=portrait;
             var stamp=Panel(card.transform,"Choice • revealed while holding",0,0,350,116,new Color(.06f,.09f,.10f,.94f));
@@ -118,6 +118,7 @@ namespace PoliticalTimeline.Editor
             game.closeHelpButton=Choice(help.transform,"Close Help",20,552,350,76,"Back to the card",out _);
             help.gameObject.SetActive(false);
             game.nationalPanels=BuildNationalPanels(root,campaign,navigation);
+            game.BuildCardFace();
             new GameObject("Event System",typeof(EventSystem),typeof(InputSystemUIInputModule));
             PlayerSettings.defaultInterfaceOrientation=UIOrientation.Portrait;
             PlayerSettings.allowedAutorotateToPortrait=true;

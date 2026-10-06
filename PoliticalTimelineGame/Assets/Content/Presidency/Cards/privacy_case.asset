@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 419f0aa0370f329488c33c094f0c53c2, type: 3}
+  m_Name: privacy_case
+  m_EditorClassIdentifier: 
+  id: privacy_case
+  advisor: Solicitor General
+  category: THE COURT
+  headline: A locked phone
+  briefing: Defend your new data privacy rule?
+  portrait: {fileID: 0}
+  earliestDecision: 1
+  weight: 1
+  oncePerRun: 0
+  condition: 0
+  left:
+    label: Fight in court
+    consequence: The court upholds the rule. Personal data is protected.
+    change:
+      workers: 3
+      middleClass: 6
+      elites: -4
+      economy: -2
+    followUp: {fileID: 0}
+    institution: 2
+    blockedChange:
+      workers: -2
+      middleClass: -3
+      elites: 2
+      economy: -1
+    blockedConsequence: The court strikes down the policy. You must revise it.
+  right:
+    label: Settle the case
+    consequence: The settlement leaves companies more freedom.
+    change:
+      workers: 1
+      middleClass: -3
+      elites: 4
+      economy: 2
+    followUp: {fileID: 0}
+    institution: 0
+    blockedChange:
+      workers: 0
+      middleClass: 0
+      elites: 0
+      economy: 0
+    blockedConsequence: 

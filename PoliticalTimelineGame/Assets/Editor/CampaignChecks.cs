@@ -37,6 +37,20 @@ namespace PoliticalTimeline.Editor
                 card.left.followUp=followUp; state=new CampaignState(config,1); state.Choose(false); Check(state.current==followUp,"Follow-up"); card.left.followUp=null;
                 card.oncePerRun=true; state=new CampaignState(config,1); state.Choose(false); Check(state.ended,"One-shot exhaustion");
                 card.oncePerRun=false; card.earliestDecision=5; state=new CampaignState(config,1); Check(state.ended,"Availability gating");
+                card.earliestDecision=1;
+                card.left.institution=InstitutionRule.Congress; card.left.change=new SupportChange(7,0,0,0);
+                card.left.blockedChange=new SupportChange(-3,0,0,0); card.left.blockedConsequence="Blocked.";
+                state=new CampaignState(config,1); state.Choose(false); Check(state.support[0]==57,"Congress passes with both majorities");
+                state=new CampaignState(config,1); state.nation.houseSeats=217; state.Choose(false);
+                Check(state.support[0]==47 && state.lastResult=="Blocked.","Opposition House blocks bill with alternate effects");
+                card.left.institution=InstitutionRule.CourtReview;
+                state=new CampaignState(config,1); state.Choose(false); Check(state.support[0]==47,"Unaligned court rejects policy");
+                state=new CampaignState(config,1); state.nation.court[4]=1; state.Choose(false); Check(state.support[0]==57,"Aligned court upholds policy");
+                card.left.institution=InstitutionRule.ConfirmJustice;
+                state=new CampaignState(config,1); state.nation.court[4]=2; state.Choose(false); Check(state.nation.Vacancy<0 && state.support[0]==57,"Card confirms justice");
+                state=new CampaignState(config,1); state.Choose(false); Check(state.support[0]==47,"No vacancy cannot confirm");
+                card.condition=EventCondition.CourtVacancy; state=new CampaignState(config,1); Check(state.ended,"Vacancy cards excluded without vacancy");
+                card.condition=EventCondition.DividedCongress; state=new CampaignState(config,1); Check(state.ended,"Divided Congress cards excluded with majority");
                 config.cards.Clear(); state=new CampaignState(config,1); Check(state.ended,"Empty deck");
                 Debug.Log("Political Timeline: monthly calendar, power, elections, Congress, court and deck checks passed.");
             }

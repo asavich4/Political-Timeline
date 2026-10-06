@@ -1,6 +1,6 @@
 Unity compilation passed.
 Monthly calendar, election, Congress, court and deck rule checks passed.
-Deck valid: 18 cards ready to play.
+Deck valid: 34 cards ready to play.
 Map, state selection, Congress, court nominations, annual theme and automatic November result flow verified.
 SDF text, full-card artwork, safe areas and text fit verified at 375x667, 390x844, 430x932 and 1170x2532.
 Directional hold previews, delayed commit, release threshold, canceled gestures, restart and help checks passed.

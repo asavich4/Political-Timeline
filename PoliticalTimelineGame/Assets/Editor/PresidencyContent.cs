@@ -11,9 +11,12 @@ namespace PoliticalTimeline.Editor
             System.IO.Directory.CreateDirectory(Root + "/Cards");
             AssetDatabase.Refresh();
             var campaign = AssetDatabase.LoadAssetAtPath<CampaignDefinition>(Root + "/FirstAdministration.asset");
-            if (campaign != null) return campaign;
-            campaign = ScriptableObject.CreateInstance<CampaignDefinition>();
-            AssetDatabase.CreateAsset(campaign, Root + "/FirstAdministration.asset");
+            if(campaign==null)
+            {
+                campaign = ScriptableObject.CreateInstance<CampaignDefinition>();
+                AssetDatabase.CreateAsset(campaign, Root + "/FirstAdministration.asset");
+            }
+            campaign.cards.RemoveAll(card=>card==null);
             Add(campaign, "bridges", "The bridges are failing", "Should we pay to fix the bridges?", "Fund repairs", new SupportChange(9,6,-3,-8), "Road crews mobilize. The business lobby demands a meeting.", "Let states pay", new SupportChange(-7,-5,2,8), "The federal ledger holds. Commuters are less forgiving.");
             Add(campaign, "strike", "The docks fall silent", "The docks are on strike. Back the workers?", "Back the workers", new SupportChange(10,-4,-3,-7), "Workers cheer. Importers warn of empty shelves.", "Push for a deal", new SupportChange(-4,7,3,3), "Cargo moves again, but the union feels abandoned.");
             Add(campaign, "surveillance", "Eyes on the nation", "Give security more surveillance powers?", "Protect privacy", new SupportChange(4,7,-10,-2), "Privacy advocates celebrate. Your security brief grows tense.", "Grant the powers", new SupportChange(-5,-7,10,4), "Intelligence agencies expand their reach. Trust erodes.");
@@ -32,11 +35,14 @@ namespace PoliticalTimeline.Editor
             Add(campaign, "budget", "Midnight on Capitol Hill", "A shutdown looms. Accept a compromise?", "Accept the deal", new SupportChange(5,7,-9,-3), "Government stays open. Security leaders demand guarantees.", "Hold your ground", new SupportChange(-6,-8,8,5), "Your allies praise your resolve as services close.");
             Add(campaign, "pensions", "A promise made", "Raise pension payments for retirees?", "Raise payments", new SupportChange(7,8,-3,-8), "Retirees welcome relief. Financing becomes the next fight.", "Freeze payments", new SupportChange(-8,-7,4,8), "The balance sheet improves. Town halls grow angry.");
             Add(campaign, "diplomacy", "A seat at the table", "A rival offers peace talks. Accept?", "Begin talks", new SupportChange(4,6,-8,3), "Markets settle. Hawks accuse you of giving too much away.", "Impose sanctions", new SupportChange(-4,-5,8,-3), "Security allies approve. Exporters count their losses.");
+            InstitutionalContent.Ensure(campaign);
             EditorUtility.SetDirty(campaign); AssetDatabase.SaveAssets(); return campaign;
         }
 
         static void Add(CampaignDefinition campaign, string id, string title, string body, string left, SupportChange lc, string lr, string right, SupportChange rc, string rr)
         {
+            var existing=AssetDatabase.LoadAssetAtPath<DecisionCard>(Root+"/Cards/"+id+".asset");
+            if(existing!=null) { if(!campaign.cards.Contains(existing)) campaign.cards.Add(existing); return; }
             var c = ScriptableObject.CreateInstance<DecisionCard>();
             c.id = id; c.headline = title; c.briefing = body;
             string stamp = "01_31_49 PM";

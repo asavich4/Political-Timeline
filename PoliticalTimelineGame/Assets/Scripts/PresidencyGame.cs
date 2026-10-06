@@ -30,6 +30,8 @@ namespace PoliticalTimeline
         int pointerId, keyboardDirection;
         Vector2 dragStart;
         float inputReady, feedbackUntil;
+        AdvisorArt flatArt;
+        TMP_Text advisorLabel, resultLabel;
         public int Decisions => state == null ? 0 : state.decisions;
         float SwipeThreshold => cardTransform.rect.width * .22f;
         bool HelpOpen => (helpPanel != null && helpPanel.activeSelf) || (nationalPanels != null && nationalPanels.IsOpen);
@@ -40,6 +42,7 @@ namespace PoliticalTimeline
         {
             if (initialized) return;
             initialized = true;
+            BuildCardFace();
             home = cardTransform.anchoredPosition;
             restartButton.onClick.AddListener(Restart);
             for(int i=0;i<powerButtons.Length;i++)
@@ -108,9 +111,14 @@ namespace PoliticalTimeline
             {
                 var choice = delta > 0 ? state.current.right : state.current.left;
                 choiceLabel.text = choice.label;
-                ShowFeedback(choice.change, false);
+                bool passes=state.nation.CanResolve(choice.institution);
+                resultLabel.text=choice.institution==InstitutionRule.None?state.lastResult:
+                    choice.institution==InstitutionRule.Congress?(passes?"You hold both chambers. The bill can pass.":"You need 218 House seats and 51 senators."):
+                    choice.institution==InstitutionRule.CourtReview?(passes?"Five justices are aligned. The policy can stand.":"Fewer than five aligned justices. The policy will fall."):
+                    (passes?"The Senate can confirm your nominee.":"Confirmation needs a vacancy and 51 senators.");
+                ShowFeedback(state.nation.CanResolve(choice.institution)?choice.change:choice.blockedChange, false);
             }
-            else { choiceLabel.text = ""; ClearFeedback(); }
+            else { choiceLabel.text = ""; resultLabel.text=state.lastResult; ClearFeedback(); }
         }
         public void EndDrag(PointerEventData data)
         {
@@ -120,7 +128,7 @@ namespace PoliticalTimeline
             if (Mathf.Abs(delta.x) > SwipeThreshold && Mathf.Abs(delta.x) > Mathf.Abs(delta.y)) Decide(delta.x > 0);
             
         }
-        void ResetCard() { cardTransform.anchoredPosition = home; cardTransform.localRotation = Quaternion.identity; choiceOverlay.alpha = 0; choiceLabel.text = ""; commitIndicator.enabled = false; }
+        void ResetCard() { cardTransform.anchoredPosition = home; cardTransform.localRotation = Quaternion.identity; choiceOverlay.alpha = 0; choiceLabel.text = ""; commitIndicator.enabled = false; if(state!=null && resultLabel!=null) resultLabel.text=state.lastResult; }
         void OnApplicationFocus(bool focused) { if (!focused && initialized) CancelDrag(); }
         void OnDisable() { if (initialized) CancelDrag(); }
         void CancelDrag() { keyboardDirection = 0; dragging = false; ResetCard(); ClearFeedback(); }
@@ -128,7 +136,8 @@ namespace PoliticalTimeline
         public void Decide(bool right)
         {
             if (state == null || state.ended || HelpOpen || Time.unscaledTime < inputReady) return;
-            var change = (right ? state.current.right : state.current.left).change;
+            var choice=right ? state.current.right : state.current.left;
+            var change = state.nation.CanResolve(choice.institution)?choice.change:choice.blockedChange;
             state.Choose(right); dragging = false;
             inputReady = Time.unscaledTime + .22f;
             ResetCard(); Render(); ShowFeedback(change, true);
@@ -180,7 +189,47 @@ namespace PoliticalTimeline
             }
             var c = state.current;
             briefing.text = c.briefing;
-            portrait.sprite = c.portrait; portrait.enabled = c.portrait != null;
+            portrait.enabled = false;
+            flatArt.Present(c);
+            advisorLabel.text=c.advisor+"  /  "+c.category;
+            resultLabel.text=state.lastResult;
+        }
+
+        public void BuildCardFace()
+        {
+            flatArt=cardTransform.GetComponentInChildren<AdvisorArt>(true);
+            if(flatArt!=null)
+            {
+                advisorLabel=cardTransform.Find("Paper caption/Advisor").GetComponent<TMP_Text>();
+                resultLabel=cardTransform.Find("Paper caption/Last decision").GetComponent<TMP_Text>();
+                return;
+            }
+            var face=new GameObject("Flat advisor",typeof(RectTransform),typeof(CanvasRenderer),typeof(AdvisorArt));
+            var r=(RectTransform)face.transform; r.SetParent(cardTransform,false);
+            r.anchorMin=Vector2.zero; r.anchorMax=Vector2.one; r.offsetMin=new Vector2(0,76); r.offsetMax=Vector2.zero;
+            flatArt=face.GetComponent<AdvisorArt>(); flatArt.raycastTarget=false;
+            var footer=new GameObject("Paper caption",typeof(RectTransform),typeof(Image));
+            var f=(RectTransform)footer.transform; f.SetParent(cardTransform,false);
+            f.anchorMin=Vector2.zero; f.anchorMax=new Vector2(1,0); f.pivot=new Vector2(.5f,0); f.sizeDelta=new Vector2(0,76); f.anchoredPosition=Vector2.zero;
+            footer.GetComponent<Image>().color=new Color(.91f,.87f,.77f); footer.GetComponent<Image>().raycastTarget=false;
+            advisorLabel=Caption(f,"Advisor",12,51,326,18,11);
+            resultLabel=Caption(f,"Last decision",12,6,326,42,14);
+            portrait.enabled=false;
+            if(campaign!=null && campaign.cards.Count>0)
+            {
+                flatArt.Present(campaign.cards[0]); advisorLabel.text=campaign.cards[0].advisor;
+                resultLabel.text="Hold left or right to reveal a choice.";
+            }
+            choiceOverlay.transform.SetAsLastSibling();
+        }
+        TMP_Text Caption(RectTransform parent,string title,float x,float y,float w,float h,int size)
+        {
+            var go=new GameObject(title,typeof(RectTransform),typeof(TextMeshProUGUI));
+            var r=(RectTransform)go.transform; r.SetParent(parent,false); r.anchorMin=r.anchorMax=r.pivot=Vector2.zero;
+            r.anchoredPosition=new Vector2(x,y); r.sizeDelta=new Vector2(w,h);
+            var text=go.GetComponent<TextMeshProUGUI>(); text.font=briefing.font; text.fontSharedMaterial=briefing.fontSharedMaterial;
+            text.fontSize=size; text.color=new Color(.16f,.21f,.21f); text.raycastTarget=false;
+            return text;
         }
 
         void ShowFeedback(SupportChange change, bool committed)

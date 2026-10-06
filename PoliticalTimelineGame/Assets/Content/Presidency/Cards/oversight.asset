@@ -17,8 +17,8 @@ MonoBehaviour:
   category: CONGRESS
   headline: Under oath
   briefing: Congress wants your aides to testify.
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: f5da883299902f449a7cb483abeb6377, type: 2}
+  portrait: {fileID: 3521880612142288986, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

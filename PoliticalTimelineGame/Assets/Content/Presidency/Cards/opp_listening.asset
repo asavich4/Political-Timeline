@@ -17,8 +17,8 @@ MonoBehaviour:
   category: OPPOSITION
   headline: Voters say our party stopped listening.
   briefing: Voters say our party stopped listening.
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: cd3535ce8e7738b4d85d1865e9272a4f, type: 2}
+  portrait: {fileID: -8140706219470489119, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 4
   oncePerRun: 0

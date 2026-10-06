@@ -10,4 +10,4 @@ SDF text, full-card artwork, safe areas and text fit verified at 375x667, 390x84
 Directional hold previews, delayed commit, release threshold, canceled gestures, restart and help checks passed.
 Physical iPhone testing and an iOS build have not been performed.
 Campaign-season gating, state voter changes, bounded decay, opposition weighting/blocking, expanded policy ledger, and four geometric power icons verified.
-All 102 cards have editable layered portrait assets; repeat generation preserves assets; layer edits drive runtime artwork.
+All 102 cards display assigned image sprites in play. Six named atlas sprites and ten existing character sprites replace geometric portraits.

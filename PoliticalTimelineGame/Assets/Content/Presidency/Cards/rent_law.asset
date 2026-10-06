@@ -17,8 +17,8 @@ MonoBehaviour:
   category: POLICY AGENDA
   headline: Protect renters from abusive lease terms?
   briefing: Protect renters from abusive lease terms?
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: dfe7a9b4f347c9c4a81a108a65c2dbaa, type: 2}
+  portrait: {fileID: 21300000, guid: ee574eb795a528d4a9466c557597b0d0, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

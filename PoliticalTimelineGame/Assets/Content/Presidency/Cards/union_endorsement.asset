@@ -17,8 +17,8 @@ MonoBehaviour:
   category: CAMPAIGN
   headline: Union locals offer campaign meetings.
   briefing: Union locals offer campaign meetings.
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: 6b19c182845f4df4ba5227587b689a96, type: 2}
+  portrait: {fileID: -8140706219470489119, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 3
   oncePerRun: 0

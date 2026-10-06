@@ -17,8 +17,8 @@ MonoBehaviour:
   category: OPPOSITION
   headline: The government wants rushed spending cuts.
   briefing: The government wants rushed spending cuts.
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: 722d6087904caa141abd36d0eeb9f554, type: 2}
+  portrait: {fileID: -8140706219470489119, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 4
   oncePerRun: 0

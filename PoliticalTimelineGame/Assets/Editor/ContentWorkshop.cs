@@ -13,7 +13,7 @@ namespace PoliticalTimeline.Editor
         UnityEditor.Editor cardEditor;
         Vector2 listScroll, detailScroll;
         string search = "";
-        string message = "Create cards, choose an advisor and category for flat art, and tune both choices. Changes are saved as Unity assets.";
+        string message = "Create cards, assign a Portrait sprite, and tune both choices. Changes are saved as Unity assets.";
 
         [MenuItem("Political Timeline/Content Workshop")]
         public static void Open() => GetWindow<ContentWorkshop>("Content Workshop");
@@ -102,7 +102,7 @@ namespace PoliticalTimeline.Editor
                 if(c==null) { errors.Add("Missing card reference."); continue; }
                 if(string.IsNullOrWhiteSpace(c.id)||!ids.Add(c.id)) errors.Add(c.name+": missing or duplicate ID.");
                 if(string.IsNullOrWhiteSpace(c.headline)||string.IsNullOrWhiteSpace(c.briefing)) errors.Add(c.name+": missing headline or briefing.");
-                if(string.IsNullOrWhiteSpace(c.advisor)) errors.Add(c.name+": missing advisor for geometric portrait.");
+                if(string.IsNullOrWhiteSpace(c.advisor)) errors.Add(c.name+": missing advisor label.");
                 foreach(var choice in new[]{c.left,c.right})
                 {
                     if(choice==null||string.IsNullOrWhiteSpace(choice.label)||string.IsNullOrWhiteSpace(choice.consequence)) errors.Add(c.name+": incomplete choice.");

@@ -17,8 +17,8 @@ MonoBehaviour:
   category: CONGRESS
   headline: Across the aisle
   briefing: Trade a smaller budget for a deal?
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: d9ff4fff700f05247adef945dd3e8005, type: 2}
+  portrait: {fileID: 21300000, guid: ec9d21502a4438b4688f866ba72be831, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

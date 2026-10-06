@@ -17,8 +17,8 @@ MonoBehaviour:
   category: PARTY & COMMUNITY
   headline: A mobile clinic needs volunteer drivers.
   briefing: A mobile clinic needs volunteer drivers.
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: c6fea5a84b341a94a935438b31f02361, type: 2}
+  portrait: {fileID: 4125771497919127614, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

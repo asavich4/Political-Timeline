@@ -17,8 +17,8 @@ MonoBehaviour:
   category: DOMESTIC POLICY
   headline: A place to call home
   briefing: Rents are rising. Build public housing?
-  portrait: {fileID: 21300000, guid: ec9d21502a4438b4688f866ba72be831, type: 3}
-  artwork: {fileID: 11400000, guid: 552f1cbf2ed35d746a72ec0ff3b245ee, type: 2}
+  portrait: {fileID: 21300000, guid: 8c4551f518af4f240bd8ec481bdb6cee, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

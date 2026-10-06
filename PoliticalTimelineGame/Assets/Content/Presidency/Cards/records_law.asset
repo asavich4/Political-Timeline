@@ -17,8 +17,8 @@ MonoBehaviour:
   category: POLICY AGENDA
   headline: Set firm deadlines for public records?
   briefing: Set firm deadlines for public records?
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: 8953656a8cabf794895612868f98cfaa, type: 2}
+  portrait: {fileID: 21300000, guid: ee574eb795a528d4a9466c557597b0d0, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

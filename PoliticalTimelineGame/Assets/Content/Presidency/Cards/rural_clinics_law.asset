@@ -17,8 +17,8 @@ MonoBehaviour:
   category: POLICY AGENDA
   headline: Build a network of small rural clinics?
   briefing: Build a network of small rural clinics?
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: f6cc6c6d4e5e37841841984b473f6904, type: 2}
+  portrait: {fileID: 21300000, guid: ee574eb795a528d4a9466c557597b0d0, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

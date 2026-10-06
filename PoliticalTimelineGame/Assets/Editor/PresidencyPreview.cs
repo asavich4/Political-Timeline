@@ -28,7 +28,7 @@ namespace PoliticalTimeline.Editor
                 Check(game.helpTitle.text==powerNames[i] && game.helpText.text.Contains("50 / 100"),"Correct power details");
                 game.closeHelpButton.onClick.Invoke();
             }
-            Check(game.GetComponentInChildren<AdvisorArt>()!=null && game.briefing.text!="", "Geometric card presentation");
+            Check(game.portrait.enabled && game.portrait.sprite!=null && game.GetComponentInChildren<AdvisorArt>()==null && game.briefing.text!="", "Image sprite card presentation");
             Check(game.choiceOverlay.alpha==0,"Choices hidden at rest");
             Check(game.briefing.fontSharedMaterial.GetFloat("_Sharpness")>.3f,"Sharp text material applied");
             Capture("PresidencyPreview.png",390,844,new Rect(0,34,390,763));

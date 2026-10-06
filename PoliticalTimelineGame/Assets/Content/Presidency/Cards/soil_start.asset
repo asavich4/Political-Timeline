@@ -17,8 +17,8 @@ MonoBehaviour:
   category: PARTY & COMMUNITY
   headline: Topsoil is washing away. Visit the farms?
   briefing: Topsoil is washing away. Visit the farms?
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: 3ee0f99ad1d6fb64394216d5d4c9fa1d, type: 2}
+  portrait: {fileID: 2438354146590935778, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

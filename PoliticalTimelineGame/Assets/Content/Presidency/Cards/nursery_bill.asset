@@ -17,8 +17,8 @@ MonoBehaviour:
   category: PARTY & COMMUNITY
   headline: Turn empty classrooms into public childcare?
   briefing: Turn empty classrooms into public childcare?
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: 54532ec0cc3808a469953b0be0e22d3f, type: 2}
+  portrait: {fileID: 4395305070045058485, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

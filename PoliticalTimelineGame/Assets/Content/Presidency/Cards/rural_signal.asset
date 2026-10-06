@@ -17,8 +17,8 @@ MonoBehaviour:
   category: PARTY & COMMUNITY
   headline: Rural towns want reliable internet.
   briefing: Rural towns want reliable internet.
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: 9dbf926485b4f8044b194de53ef35421, type: 2}
+  portrait: {fileID: 21300000, guid: 80a304152390ac4439cff306e1848a25, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

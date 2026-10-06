@@ -9,7 +9,7 @@ namespace PoliticalTimeline.Editor
     public static class PortraitLibrary
     {
         public const string Folder="Assets/Content/Presidency/Portraits";
-        [MenuItem("Political Timeline/Create Missing Portrait Assets")]
+        // Legacy geometric export retained for old assets only.
         public static void CreateMissing()
         {
             if(!AssetDatabase.IsValidFolder(Folder)) AssetDatabase.CreateFolder("Assets/Content/Presidency","Portraits");
@@ -31,12 +31,12 @@ namespace PoliticalTimeline.Editor
         }
         public static void Draw(Rect rect,DecisionCard card)
         {
-            if(card.usePortraitSprite && card.portrait!=null)
+            if(card.portrait!=null)
             {
                 var sprite=card.portrait; var r=sprite.rect; var t=sprite.texture;
                 GUI.DrawTextureWithTexCoords(rect,t,new Rect(r.x/t.width,r.y/t.height,r.width/t.width,r.height/t.height));
             }
-            else Draw(rect,card.artwork);
+            else { EditorGUI.DrawRect(rect,new Color(.18f,.22f,.22f)); GUI.Label(rect,"Assign a Portrait sprite"); }
         }
         public static void Draw(Rect rect,PortraitArtwork artwork)
         {
@@ -92,11 +92,11 @@ namespace PoliticalTimeline.Editor
         void OnProjectChange() { Reload(); Repaint(); }
         void OnGUI()
         {
-            EditorGUILayout.HelpBox("Every card, including campaign, opposition and linked events. Edit art opens its shape and color editor. Edit card opens its text, effects, conditions and follow-ups. Changes affect the game.",MessageType.Info);
+            EditorGUILayout.HelpBox("Every card, including campaign, opposition and linked events. Select sprite opens the actual image asset. Edit card opens its text, effects, conditions and follow-ups. Changes affect the game.",MessageType.Info);
             using(new EditorGUILayout.HorizontalScope())
             {
                 search=EditorGUILayout.TextField("Find",search);
-                if(GUILayout.Button("Create missing art",GUILayout.Width(130))) { PortraitLibrary.CreateMissing(); Reload(); }
+                if(GUILayout.Button("Assign missing sprites",GUILayout.Width(150))) { SpritePortraitSetup.AssignMissing(); Reload(); }
                 if(GUILayout.Button("Save",GUILayout.Width(55))) AssetDatabase.SaveAssets();
             }
             var filtered=cards.Where(c=>(c.headline+" "+c.advisor+" "+c.category+" "+c.condition).IndexOf(search,StringComparison.OrdinalIgnoreCase)>=0).ToArray();
@@ -112,7 +112,7 @@ namespace PoliticalTimeline.Editor
                     GUILayout.Label(card.advisor,EditorStyles.boldLabel,GUILayout.Width(160));
                     GUILayout.Label(card.headline,EditorStyles.wordWrappedLabel,GUILayout.Width(160),GUILayout.Height(38));
                     GUILayout.Label(card.condition.ToString(),EditorStyles.miniLabel);
-                    if(GUILayout.Button("Edit art")) { Selection.activeObject=card.usePortraitSprite?(UnityEngine.Object)card.portrait:card.artwork; }
+                    if(GUILayout.Button("Select sprite")) { Selection.activeObject=card.portrait; EditorGUIUtility.PingObject(card.portrait); }
                     if(GUILayout.Button("Edit card")) Selection.activeObject=card;
                 }
             EditorGUILayout.EndScrollView();
@@ -161,3 +161,4 @@ namespace PoliticalTimeline.Editor
         public override void OnPreviewGUI(Rect r,GUIStyle background) => PortraitLibrary.Draw(r,(PortraitArtwork)target);
     }
 }
+

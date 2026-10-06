@@ -17,8 +17,8 @@ MonoBehaviour:
   category: POLICY AGENDA
   headline: Public services need stronger cyber defenses.
   briefing: Public services need stronger cyber defenses.
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: bb4a446d4a34c33459e8079be040aad7, type: 2}
+  portrait: {fileID: 21300000, guid: ee574eb795a528d4a9466c557597b0d0, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

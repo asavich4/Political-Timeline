@@ -17,8 +17,8 @@ MonoBehaviour:
   category: POLICY AGENDA
   headline: Offer public disaster insurance support?
   briefing: Offer public disaster insurance support?
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: ed8d989017105d64bb1ea71d7cfafedd, type: 2}
+  portrait: {fileID: 21300000, guid: ee574eb795a528d4a9466c557597b0d0, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

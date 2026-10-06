@@ -17,8 +17,8 @@ MonoBehaviour:
   category: CONGRESS
   headline: An empty lunch tray
   briefing: Ask Congress to fund school meals?
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: d8d697a7f77bd1e40b3173fb44f182bd, type: 2}
+  portrait: {fileID: 3521880612142288986, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

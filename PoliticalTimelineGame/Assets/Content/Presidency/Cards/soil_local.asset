@@ -17,8 +17,8 @@ MonoBehaviour:
   category: PARTY & COMMUNITY
   headline: A farm cooperative proposes a local trial.
   briefing: A farm cooperative proposes a local trial.
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: 155764eccd87c0a4eb44a74e8c8a82c6, type: 2}
+  portrait: {fileID: 2438354146590935778, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

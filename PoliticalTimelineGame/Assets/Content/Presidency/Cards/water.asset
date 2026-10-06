@@ -17,8 +17,8 @@ MonoBehaviour:
   category: DOMESTIC POLICY
   headline: The tap runs brown
   briefing: Replace a town's unsafe water pipes?
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: fbe8ec2fbe0386b458d36a3504ca2d8c, type: 2}
+  portrait: {fileID: 4125771497919127614, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

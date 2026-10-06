@@ -18,7 +18,7 @@ MonoBehaviour:
   headline: The waiting room
   briefing: Rural hospitals are closing. Fund them?
   portrait: {fileID: 21300000, guid: f7c8e291b05e7af4abb637e16f7ed81a, type: 3}
-  artwork: {fileID: 11400000, guid: aaa2634c340cb464f8b7505dad1222d3, type: 2}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

@@ -17,8 +17,8 @@ MonoBehaviour:
   category: PARTY STRATEGY
   headline: A broader movement
   briefing: Work with a rival grassroots group?
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: 209e176ff97dbcc489e28474594b6ec2, type: 2}
+  portrait: {fileID: -8140706219470489119, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 3
   oncePerRun: 0

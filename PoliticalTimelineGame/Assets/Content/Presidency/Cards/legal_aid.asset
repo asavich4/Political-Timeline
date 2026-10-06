@@ -17,8 +17,8 @@ MonoBehaviour:
   category: THE COURT
   headline: A lawyer for everyone
   briefing: Legal aid offices are overwhelmed.
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: 99d6d590d5d3d5a4484b73cb98f5daaf, type: 2}
+  portrait: {fileID: -8688392447183608358, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

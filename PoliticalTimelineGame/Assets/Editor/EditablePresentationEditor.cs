@@ -13,7 +13,7 @@ namespace PoliticalTimeline.Editor
         {
             if(Application.isBatchMode || EditorApplication.isPlayingOrWillChangePlaymode) return;
             var game=Object.FindFirstObjectByType<PresidencyGame>();
-            if(game==null || game.editablePresentationVersion>=1) return;
+            if(game==null || game.editablePresentationVersion>=2) return;
             bool dirty=game.gameObject.scene.isDirty;
             Upgrade(game);
             if(!dirty) EditorSceneManager.SaveScene(game.gameObject.scene);
@@ -30,6 +30,7 @@ namespace PoliticalTimeline.Editor
         {
             Undo.RegisterFullObjectHierarchyUndo(game.gameObject,"Create editable presentation");
             game.BuildEditablePresentation(); game.nationalPanels.PreviewForEditing(1,game.campaign);
+            foreach(var legacyArt in game.cardTransform.GetComponentsInChildren<AdvisorArt>(true)) Undo.DestroyObjectImmediate(legacyArt.gameObject);
             game.PreviewCardForEditing(game.editorPreviewCard!=null?game.editorPreviewCard:game.campaign.cards[0]);
             EditorUtility.SetDirty(game); EditorUtility.SetDirty(game.nationalPanels);
             EditorSceneManager.MarkSceneDirty(game.gameObject.scene);
@@ -80,7 +81,7 @@ namespace PoliticalTimeline.Editor
         {
             var card=(DecisionCard)target;
             PortraitLibrary.Draw(GUILayoutUtility.GetRect(180,200,GUILayout.ExpandWidth(true)),card);
-            if(card.artwork!=null && GUILayout.Button("Edit portrait shapes and colors")) Selection.activeObject=card.artwork;
+            if(card.portrait!=null && GUILayout.Button("Select portrait sprite")) Selection.activeObject=card.portrait;
             if(GUILayout.Button("Browse every portrait")) PortraitGallery.Open();
             if(!Application.isPlaying && GUILayout.Button("Preview this card in the open scene"))
             {
@@ -88,7 +89,10 @@ namespace PoliticalTimeline.Editor
                 if(game!=null) { Undo.RegisterFullObjectHierarchyUndo(game.gameObject,"Preview card art"); game.PreviewCardForEditing((DecisionCard)target); EditorUtility.SetDirty(game); EditorSceneManager.MarkSceneDirty(game.gameObject.scene); }
                 else Debug.LogWarning("Open the Presidency scene to preview this card.");
             }
-            DrawDefaultInspector();
+            serializedObject.Update();
+            DrawPropertiesExcluding(serializedObject,"m_Script","artwork","usePortraitSprite","design");
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }
+

@@ -42,7 +42,7 @@ namespace PoliticalTimeline
         [TextArea(3, 6)] public string briefing;
         public Sprite portrait;
         public PortraitArtwork artwork;
-        [Tooltip("Use the assigned Sprite instead of the geometric character.")] public bool usePortraitSprite;
+        [Tooltip("Use the assigned Sprite instead of the geometric character.")] public bool usePortraitSprite=true;
         [Min(1)] public int earliestDecision = 1;
         [Min(1)] public int weight = 1;
         public bool oncePerRun;
@@ -54,3 +54,4 @@ namespace PoliticalTimeline
         public PolicyChoice right = new PolicyChoice();
     }
 }
+

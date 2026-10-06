@@ -54,7 +54,7 @@ namespace PoliticalTimeline
         public void BuildEditablePresentation()
         {
             BuildCardFace(); BuildPowerIcons(); BuildOutcomePanel(); nationalPanels.BuildEditablePresentation();
-            editablePresentationVersion=1;
+            editablePresentationVersion=2;
         }
         public void PreviewCardForEditing(DecisionCard card)
         {
@@ -72,9 +72,9 @@ namespace PoliticalTimeline
         void RenderEditorCard()
         {
             if(editorPreviewCard==null || cardTransform==null) return;
-            var art=cardTransform.GetComponentInChildren<AdvisorArt>(true); if(art==null) return;
-            art.Present(editorPreviewCard); art.enabled=!editorPreviewCard.usePortraitSprite;
-            portrait.enabled=editorPreviewCard.usePortraitSprite && editorPreviewCard.portrait!=null; portrait.sprite=editorPreviewCard.portrait;
+            var art=cardTransform.GetComponentInChildren<AdvisorArt>(true);
+            if(art!=null) art.gameObject.SetActive(false);
+            portrait.enabled=editorPreviewCard.portrait!=null; portrait.sprite=editorPreviewCard.portrait;
             briefing.text=editorPreviewCard.briefing;
             cardTransform.Find("Paper caption/Advisor").GetComponent<TMP_Text>().text=editorPreviewCard.advisor+" / "+editorPreviewCard.category;
         }
@@ -344,9 +344,9 @@ namespace PoliticalTimeline
             var c = state.current;
             if(c==null) { cardTransform.gameObject.SetActive(false); briefing.text="No available events. Check the campaign deck."; return; }
             briefing.text = c.briefing;
-            portrait.sprite=c.portrait; portrait.enabled=c.usePortraitSprite && c.portrait!=null;
-            flatArt.enabled=!c.usePortraitSprite;
-            flatArt.Present(c);
+            portrait.sprite=c.portrait; portrait.enabled=c.portrait!=null;
+            if(flatArt!=null) flatArt.gameObject.SetActive(false);
+
             advisorLabel.text=c.advisor+"  /  "+c.category;
             resultLabel.text=state.lastResult;
         }
@@ -354,16 +354,13 @@ namespace PoliticalTimeline
         public void BuildCardFace()
         {
             flatArt=cardTransform.GetComponentInChildren<AdvisorArt>(true);
-            if(flatArt!=null)
+            if(flatArt!=null) flatArt.gameObject.SetActive(false);
+            if(cardTransform.Find("Paper caption")!=null)
             {
                 advisorLabel=cardTransform.Find("Paper caption/Advisor").GetComponent<TMP_Text>();
                 resultLabel=cardTransform.Find("Paper caption/Last decision").GetComponent<TMP_Text>();
                 return;
             }
-            var face=new GameObject("Flat advisor",typeof(RectTransform),typeof(CanvasRenderer),typeof(AdvisorArt));
-            var r=(RectTransform)face.transform; r.SetParent(cardTransform,false);
-            r.anchorMin=Vector2.zero; r.anchorMax=Vector2.one; r.offsetMin=new Vector2(0,76); r.offsetMax=Vector2.zero;
-            flatArt=face.GetComponent<AdvisorArt>(); flatArt.raycastTarget=false;
             var footer=new GameObject("Paper caption",typeof(RectTransform),typeof(Image));
             var f=(RectTransform)footer.transform; f.SetParent(cardTransform,false);
             f.anchorMin=Vector2.zero; f.anchorMax=new Vector2(1,0); f.pivot=new Vector2(.5f,0); f.sizeDelta=new Vector2(0,76); f.anchoredPosition=Vector2.zero;
@@ -373,7 +370,7 @@ namespace PoliticalTimeline
             portrait.enabled=false;
             if(campaign!=null && campaign.cards.Count>0)
             {
-                flatArt.Present(campaign.cards[0]); advisorLabel.text=campaign.cards[0].advisor;
+                advisorLabel.text=campaign.cards[0].advisor;
                 resultLabel.text="Hold left or right to reveal a choice.";
             }
             choiceOverlay.transform.SetAsLastSibling();
@@ -421,3 +418,4 @@ namespace PoliticalTimeline
         }
     }
 }
+

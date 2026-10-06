@@ -17,8 +17,8 @@ MonoBehaviour:
   category: OPPOSITION
   headline: Local branches need credible new candidates.
   briefing: Local branches need credible new candidates.
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: 8f0e9612d03d4834983714154e788fb5, type: 2}
+  portrait: {fileID: -8140706219470489119, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 4
   oncePerRun: 0

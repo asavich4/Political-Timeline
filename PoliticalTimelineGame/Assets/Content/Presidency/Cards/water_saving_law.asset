@@ -17,8 +17,8 @@ MonoBehaviour:
   category: POLICY AGENDA
   headline: Pay communities to conserve water?
   briefing: Pay communities to conserve water?
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: dc7ad2619869b1247a996499fbae1c40, type: 2}
+  portrait: {fileID: 21300000, guid: ee574eb795a528d4a9466c557597b0d0, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

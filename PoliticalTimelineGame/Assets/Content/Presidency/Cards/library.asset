@@ -17,8 +17,8 @@ MonoBehaviour:
   category: DOMESTIC POLICY
   headline: After school
   briefing: Keep libraries open in the evening?
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: 86a19a54d395e384682587b7a2dd7937, type: 2}
+  portrait: {fileID: 4395305070045058485, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

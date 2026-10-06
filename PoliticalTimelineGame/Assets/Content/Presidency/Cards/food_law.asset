@@ -17,8 +17,8 @@ MonoBehaviour:
   category: POLICY AGENDA
   headline: Food inspectors cannot cover every plant.
   briefing: Food inspectors cannot cover every plant.
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: 3a80d3afe078ce64eb7949f466f5100f, type: 2}
+  portrait: {fileID: 21300000, guid: ee574eb795a528d4a9466c557597b0d0, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

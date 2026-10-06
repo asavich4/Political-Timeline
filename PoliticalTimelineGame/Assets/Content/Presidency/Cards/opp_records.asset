@@ -17,8 +17,8 @@ MonoBehaviour:
   category: OPPOSITION
   headline: The government wants to seal public records.
   briefing: The government wants to seal public records.
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: e268f6e47dc2d4c43813e3e312c9a54d, type: 2}
+  portrait: {fileID: -8140706219470489119, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 4
   oncePerRun: 0

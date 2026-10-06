@@ -17,8 +17,8 @@ MonoBehaviour:
   category: CAMPAIGN
   headline: Which suburbs get more canvassers?
   briefing: Which suburbs get more canvassers?
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: f087064827370c342b124b5ce445bc12, type: 2}
+  portrait: {fileID: -8140706219470489119, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 3
   oncePerRun: 0

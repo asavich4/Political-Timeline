@@ -17,8 +17,8 @@ MonoBehaviour:
   category: CONGRESS
   headline: Before the next storm
   briefing: Ask Congress to fund flood defenses?
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: 70114bf16a0d60e49b62daeb0db86c8c, type: 2}
+  portrait: {fileID: 3521880612142288986, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

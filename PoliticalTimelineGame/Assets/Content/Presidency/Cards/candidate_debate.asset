@@ -17,8 +17,8 @@ MonoBehaviour:
   category: CAMPAIGN
   headline: Two states invite your candidate to debate.
   briefing: Two states invite your candidate to debate.
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: 486cd495bee7cbb48ba7eeeab986a63c, type: 2}
+  portrait: {fileID: -8140706219470489119, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 3
   oncePerRun: 0

@@ -17,8 +17,8 @@ MonoBehaviour:
   category: CAMPAIGN
   headline: Where should the desert tour begin?
   briefing: Where should the desert tour begin?
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: 4040e89f901a6eb42aa75a496fad7fed, type: 2}
+  portrait: {fileID: -8140706219470489119, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 3
   oncePerRun: 0

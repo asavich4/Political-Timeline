@@ -17,8 +17,8 @@ MonoBehaviour:
   category: CAMPAIGN
   headline: Farm communities invite your candidate.
   briefing: Farm communities invite your candidate.
-  portrait: {fileID: 0}
-  artwork: {fileID: 11400000, guid: 8b817b3763511034fafc02309b114348, type: 2}
+  portrait: {fileID: -8140706219470489119, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  artwork: {fileID: 0}
   earliestDecision: 1
   weight: 3
   oncePerRun: 0

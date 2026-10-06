@@ -52,6 +52,22 @@ namespace PoliticalTimeline.Editor
                 card.condition=EventCondition.CourtVacancy; state=new CampaignState(config,1); Check(state.ended,"Vacancy cards excluded without vacancy");
                 card.condition=EventCondition.DividedCongress; state=new CampaignState(config,1); Check(state.ended,"Divided Congress cards excluded with majority");
                 config.cards.Clear(); state=new CampaignState(config,1); Check(state.ended,"Empty deck");
+                foreach(int approval in new[]{20,50,80}) foreach(int year in new[]{2026,2028})
+                {
+                    var nation=new NationalState(null);
+                    var election=nation.Elect(year,new[]{approval,approval,approval,approval});
+                    var night=new ElectionNight(election,nation.states);
+                    Check(night.Count==0 && night.Votes==0 && night.House==0,"Night begins uncalled");
+                    night.Advance(.5f); Check(night.Count==0,"Opening pause");
+                    night.Advance(.51f); Check(night.Count==1,"First state arrives");
+                    night.Advance(100);
+                    Check(night.Complete && night.called.All(c=>c),"All states report naturally");
+                    Check(night.Votes==election.electoralVotes && night.Votes+night.OppositionVotes==538,"Electoral returns reconcile");
+                    Check(night.House==election.houseSeats && night.House+night.OppositionHouse==435,"House returns reconcile");
+                    Check(night.Senate==election.senateSeats && night.Senate+night.OppositionSenate==100,"Senate returns reconcile");
+                    var skipped=new ElectionNight(election,nation.states); skipped.Finish(); skipped.Finish();
+                    Check(skipped.Votes==night.Votes && skipped.House==night.House && skipped.Count==51,"Skip cannot double-count results");
+                }
                 Debug.Log("Political Timeline: monthly calendar, power, elections, Congress, court and deck checks passed.");
             }
             finally { UnityEngine.Object.DestroyImmediate(card); UnityEngine.Object.DestroyImmediate(followUp); UnityEngine.Object.DestroyImmediate(config); }

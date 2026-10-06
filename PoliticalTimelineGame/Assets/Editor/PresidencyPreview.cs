@@ -61,13 +61,34 @@ namespace PoliticalTimeline.Editor
             drag=Hold(game,new Vector2(110,0));
             Check(game.commitIndicator.enabled && game.Decisions==0,"Threshold indicates ready without early commit");
             game.EndDrag(drag); Check(game.Decisions==1 && game.choiceOverlay.alpha==0,"Right release commits and clears overlay");
+            Check(game.IsTransitioning,"Release starts animation");
+            Vector2 released=game.cardTransform.anchoredPosition;
+            game.Decide(false); game.nationalPanels.navigation[0].onClick.Invoke(); game.ShowPower(0);
+            Check(game.Decisions==1 && !game.nationalPanels.IsOpen && !game.helpPanel.activeSelf,"Animation blocks repeat decisions and panels");
+            game.AdvanceTransition(.15f);
+            Check(game.cardTransform.anchoredPosition.x>released.x,"Card travels toward committed side");
+            Capture("SwipeDeparturePreview.png",390,844,new Rect(0,34,390,763));
+            game.AdvanceTransition(.45f);
+            Check(!game.cardTransform.gameObject.activeSelf && game.IsTransitioning,"Consequence pause hides departing card");
+            var outcome=game.transform.Find("Safe Area/Portrait Layout • 390 x 640/Decision outcome/Outcome").GetComponent<TMP_Text>();
+            Check(outcome.text==game.State.lastResult,"Consequence displays resolved outcome");
+            Capture("SwipeOutcomePreview.png",390,844,new Rect(0,34,390,763));
+            game.AdvanceTransition(2);
+            Check(!game.IsTransitioning && game.cardTransform.gameObject.activeSelf,"New card finishes entering");
+            for(int i=0;i<4;i++) Check(Mathf.Abs(game.supportFills[i].fillAmount-game.State.support[i]/100f)<.001f,"Animated meters reach exact support");
             game.restartButton.onClick.Invoke(); Check(game.Decisions==0,"Restart");
             Swipe(game,new Vector2(-110,0)); Check(game.Decisions==1,"Left swipe commits");
+            released=game.cardTransform.anchoredPosition; game.AdvanceTransition(.15f);
+            Check(game.cardTransform.anchoredPosition.x<released.x,"Left card travels left");
             game.Restart(); game.helpButton.onClick.Invoke(); Check(game.helpPanel.activeSelf,"Help opens");
+            Check(!game.IsTransitioning,"Restart cancels animation");
             Swipe(game,new Vector2(110,0)); Check(game.Decisions==0,"Help blocks swipes");
             game.closeHelpButton.onClick.Invoke(); Swipe(game,new Vector2(110,0)); Check(game.Decisions==1,"Help closes and play resumes");
             Check(PlayerSettings.defaultInterfaceOrientation==UIOrientation.Portrait,"Portrait orientation lock");
             CheckNationalViews(game);
+            game.Restart(); game.State.current=game.campaign.cards.Find(c=>c.id=="harvest"); game.State.support[0]=1; game.Refresh();
+            game.Decide(true); Check(game.State.ended && game.IsTransitioning,"Fatal decision still animates");
+            game.AdvanceTransition(2); Check(!game.IsTransitioning && game.restartButton.gameObject.activeSelf,"Fatal consequence leads to restart");
             File.AppendAllText("Validation.txt","\nSDF text, full-card artwork, safe areas and text fit verified at 375x667, 390x844, 430x932 and 1170x2532.\nDirectional hold previews, delayed commit, release threshold, canceled gestures, restart and help checks passed.\nPhysical iPhone testing and an iOS build have not been performed.");
         }
 
@@ -99,6 +120,8 @@ namespace PoliticalTimeline.Editor
                 if(month==47)
                 {
                     game.Decide(false);
+                    Check(!game.nationalPanels.IsOpen && game.IsTransitioning,"Election waits for swipe consequence");
+                    game.AdvanceTransition(2);
                     Check(game.State.ElectionPending && game.nationalPanels.IsOpen,"November automatically opens election results");
                 }
                 else { game.State.Choose(false); game.Refresh(); }
@@ -119,8 +142,18 @@ namespace PoliticalTimeline.Editor
                 if(game.State.ElectionPending)
                 {
                     game.nationalPanels.OpenElection();
-                    if(month==47) Capture("ElectionResultsPreview.png",390,844,new Rect(0,34,390,763));
+                    Check(game.nationalPanels.Night.Count==0,"Election begins with no reported states");
+                    game.nationalPanels.mapButtons[4].onClick.Invoke();
+                    Check(game.nationalPanels.mapDetail.text.Contains("Awaiting returns"),"Uncalled state does not leak final result");
+                    game.nationalPanels.AdvanceElectionNight(5);
+                    Check(game.nationalPanels.Night.Count>0 && !game.nationalPanels.Night.Complete,"Partial returns arrive over time");
+                    if(month==47) Capture("ElectionNightPreview.png",390,844,new Rect(0,34,390,763));
+                    else Capture("MidtermNightPreview.png",390,844,new Rect(0,34,390,763));
                     int before=game.Decisions; game.Decide(true); Check(game.Decisions==before,"Results block decisions");
+                    if(month==47) game.nationalPanels.actionButton.onClick.Invoke();
+                    else game.nationalPanels.AdvanceElectionNight(100);
+                    Check(game.nationalPanels.Night.Complete && game.State.ElectionPending,"Skip or natural completion preserves pending election");
+                    if(month==47) Capture("ElectionResultsPreview.png",390,844,new Rect(0,34,390,763));
                     game.nationalPanels.actionButton.onClick.Invoke();
                     Check(game.nationalPanels.congressGroup.activeSelf,"Results continue to Congress");
                     if(month==47) Capture("ElectionCongressPreview.png",390,844,new Rect(0,34,390,763));
@@ -128,7 +161,7 @@ namespace PoliticalTimeline.Editor
                     Check(!game.State.ElectionPending && !game.nationalPanels.IsOpen,"Results return to cards");
                 }
             }
-            File.AppendAllText("Validation.txt","\nMap, state selection, Congress, court nominations, annual theme and automatic November result flow verified.");
+            File.AppendAllText("Validation.txt","\nSwipe departure, consequence pause, animated meters, entry and input lock verified.\nProgressive presidential and midterm returns, uncalled-state privacy, skip and natural completion verified.\nMap, state selection, Congress, court nominations, annual theme and automatic November result flow verified.");
         }
 
         static PointerEventData Hold(PresidencyGame game,Vector2 localDelta)
@@ -187,6 +220,7 @@ namespace PoliticalTimeline.Editor
                     foreach(var choice in new[]{card.left,card.right})
                     {
                         Fits(caption,choice.consequence,card.id);
+                        Fits(game.cardTransform.parent.Find("Decision outcome/Outcome").GetComponent<TMP_Text>(),choice.consequence,card.id);
                         if(choice.institution!=InstitutionRule.None) Fits(caption,choice.blockedConsequence,card.id);
                     }
                 }

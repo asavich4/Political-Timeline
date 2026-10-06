@@ -7,6 +7,7 @@ namespace PoliticalTimeline
         public int year, electoralVotes, houseSeats, senateSeats;
         public bool presidential;
         public float[] margins;
+        public int[] houseByState, senateByState;
     }
 
     public sealed class NationalState
@@ -46,7 +47,7 @@ namespace PoliticalTimeline
         { int total=0; for(int i=0;i<states.Length;i++) if(Margin(i,support)>=0) total+=states[i].electoralVotes; return total; }
         public ElectionResult Elect(int year,int[] support)
         {
-            var result=new ElectionResult {year=year,presidential=year%4==0,margins=new float[states.Length]};
+            var result=new ElectionResult {year=year,presidential=year%4==0,margins=new float[states.Length],houseByState=new int[states.Length],senateByState=new int[states.Length]};
             int house=0, senator=0;
             for(int i=0;i<states.Length;i++)
             {
@@ -54,9 +55,13 @@ namespace PoliticalTimeline
                 if(margin>=0) result.electoralVotes+=p.electoralVotes;
                 if(p.abbreviation=="DC") continue;
                 int seats=p.electoralVotes-2;
-                house+=(int)Math.Round(seats*Math.Max(0,Math.Min(1,.5+margin/60)));
+                result.houseByState[i]=(int)Math.Round(seats*Math.Max(0,Math.Min(1,.5+margin/60)));
+                house+=result.houseByState[i];
                 for(int j=0;j<2 && senator<100;j++,senator++)
+                {
                     if(senator%3==(year/2)%3) senate[senator]=margin+(j==0 ? -2 : 2)>=0;
+                    if(senate[senator]) result.senateByState[i]++;
+                }
             }
             houseSeats=house; result.houseSeats=house; result.senateSeats=SenateSeats; return result;
         }

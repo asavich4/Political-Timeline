@@ -18,6 +18,7 @@ namespace PoliticalTimeline
         PresidencyGame game;
         int tab;
         bool results, bound;
+        public ElectionNight Night { get; private set; }
         public bool IsOpen => gameObject.activeSelf;
         static readonly Color Allied=new Color(.12f,.43f,.48f), Opposed=new Color(.73f,.30f,.22f), Tossup=new Color(.50f,.49f,.43f);
 
@@ -31,10 +32,16 @@ namespace PoliticalTimeline
         }
         public void Open(int page,bool election)
         {
-            if(game.State==null) return;
+            if(game.State==null || game.IsTransitioning) return;
             game.SetHelp(false); game.CancelInteraction();
-            tab=page; results=election || game.State.ElectionPending; gameObject.SetActive(true); Render();
+            results=election || game.State.ElectionPending;
+            if(results && (Night==null || Night.result!=game.State.lastElection)) Night=new ElectionNight(game.State.lastElection,game.State.nation.states);
+            tab=results && !Night.Complete?0:page; gameObject.SetActive(true); Render();
         }
+        public void ResetElectionNight() { Night=null; results=false; }
+        void Update() => AdvanceElectionNight(Time.unscaledDeltaTime);
+        public void AdvanceElectionNight(float seconds)
+        { if(results && Night!=null && !Night.Complete && Night.Advance(seconds)) Render(); }
         public void Close()
         {
             if(results) return;
@@ -45,6 +52,7 @@ namespace PoliticalTimeline
         {
             if(results)
             {
+                if(!Night.Complete) { Night.Finish(); Render(); return; }
                 if(tab==0) {tab=1; Render();}
                 else { game.State.AcknowledgeElection(); results=false; gameObject.SetActive(false); game.Refresh(); }
                 return;
@@ -99,10 +107,34 @@ namespace PoliticalTimeline
             actionButton.gameObject.SetActive(results||nomination);
             actionButton.interactable=results || nation.SenateSeats>=51;
             actionLabel.text=results ? (tab==0?"View Congress":"Continue") : "Nominate a justice";
+            if(results && tab==0) RenderElectionNight();
+        }
+        void RenderElectionNight()
+        {
+            var nation=game.State.nation; bool presidential=Night.result.presidential;
+            title.text=Night.Complete?"Final returns":"Election night";
+            subtitle.text=$"November {Night.result.year} · "+(presidential?"Presidential election":"Midterm election");
+            for(int i=0;i<mapTiles.Length;i++) mapTiles[i].color=!Night.called[i]?Tossup:Night.result.margins[i]>=0?Allied:Opposed;
+            for(int i=0;i<stateShortcuts.Length;i++) stateShortcuts[i].GetComponent<Image>().color=mapTiles[shortcutStates[i]].color;
+            mapSummary.text=presidential?$"You {Night.Votes}  ·  Opposition {Night.OppositionVotes}":$"House {Night.House}  ·  Opposition {Night.OppositionHouse}";
+            string latest=Night.Latest<0?"Waiting for the first returns…":nation.states[Night.Latest].stateName+
+                (presidential?": "+(Night.result.margins[Night.Latest]>=0?"you":"opposition")+" +"+nation.states[Night.Latest].electoralVotes+" EV":" reports");
+            mapDetail.text=presidential
+                ? latest+"\n"+Night.PresidentialCall
+                : latest+$"\nSenate: you {Night.Senate} · opposition {Night.OppositionSenate}\n"+(Night.Complete?"All chamber totals confirmed.":"Chamber totals build as states report.");
+            footnote.text=$"{Night.Count} / {Night.called.Length} reporting · Gray: awaiting returns";
+            actionLabel.text=Night.Complete?"View Congress":"Skip to final results";
         }
         void SelectState(int index)
         {
             var state=game.State; var profile=state.nation.states[index];
+            if(results && !Night.called[index]) { mapDetail.text=profile.stateName+"\nAwaiting returns.\nThis state has not reported yet."; return; }
+            if(results && !Night.result.presidential)
+            {
+                mapDetail.text=profile.stateName+(profile.abbreviation=="DC"?"\nNo congressional seats in this simulation.":
+                    $"\nYour House seats: {Night.result.houseByState[index]} / {profile.electoralVotes-2}\nYour Senate seats: {Night.result.senateByState[index]} / 2");
+                return;
+            }
             float margin=results?state.lastElection.margins[index]:state.nation.Margin(index,state.support);
             string lead=Mathf.Abs(margin)<3&&!results?"Close race":margin>=0?"Your coalition leads":"Opposition leads";
             mapDetail.text=$"{profile.stateName}\n{profile.electoralVotes} electoral votes\n{lead} · {Mathf.Abs(margin):0.0} point margin";

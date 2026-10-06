@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: Where should we buy local radio time?
   briefing: Where should we buy local radio time?
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: 4c79efef7c9d0e248aae1fd409ef46fe, type: 2}
   earliestDecision: 1
   weight: 3
   oncePerRun: 0

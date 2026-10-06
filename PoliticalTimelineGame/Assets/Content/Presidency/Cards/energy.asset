@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: Keeping the lights on
   briefing: Energy bills are soaring. Cap prices?
   portrait: {fileID: 21300000, guid: ec9d21502a4438b4688f866ba72be831, type: 3}
+  artwork: {fileID: 11400000, guid: 1df3c69b72a127c4a9e71088f9e9862f, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

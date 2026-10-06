@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: Turn empty classrooms into public childcare?
   briefing: Turn empty classrooms into public childcare?
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: 54532ec0cc3808a469953b0be0e22d3f, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

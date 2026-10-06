@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: Offer public disaster insurance support?
   briefing: Offer public disaster insurance support?
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: ed8d989017105d64bb1ea71d7cfafedd, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

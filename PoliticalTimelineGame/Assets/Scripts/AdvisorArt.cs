@@ -9,12 +9,32 @@ namespace PoliticalTimeline
     {
         [SerializeField] string advisor="Chief of Staff", category="DOMESTIC POLICY";
         [SerializeField] PortraitDesign design;
+        [SerializeField] PortraitArtwork artwork;
+        System.Collections.Generic.List<PortraitArtwork.Layer> recording;
         public bool customPalette;
         public Color backdrop=new Color(.47f,.58f,.55f), skinTone=new Color(.71f,.47f,.33f), hairColor=new Color(.24f,.22f,.20f);
-        public void Present(DecisionCard card) { advisor=card.advisor; category=card.category; design=card.design; SetVerticesDirty(); }
+        public void Present(DecisionCard card) { advisor=card.advisor; category=card.category; design=card.design; artwork=card.artwork; SetVerticesDirty(); }
+        public System.Collections.Generic.List<PortraitArtwork.Layer> ExportLayers(DecisionCard card)
+        {
+            Present(card); artwork=null;
+            recording=new System.Collections.Generic.List<PortraitArtwork.Layer>();
+            using(var mesh=new VertexHelper()) OnPopulateMesh(mesh);
+            var result=recording; recording=null; return result;
+        }
         protected override void OnPopulateMesh(VertexHelper mesh)
         {
             mesh.Clear();
+            if(artwork!=null)
+            {
+                foreach(var layer in artwork.layers)
+                {
+                    if(!layer.visible || layer.points==null || layer.points.Length<3) continue;
+                    var xy=new float[layer.points.Length*2];
+                    for(int i=0;i<layer.points.Length;i++) { xy[i*2]=layer.points[i].x; xy[i*2+1]=layer.points[i].y; }
+                    Poly(mesh,layer.color,xy);
+                }
+                return;
+            }
             bool court=category=="THE COURT", congress=category=="CONGRESS";
             int seed=0; foreach(char c in advisor) seed=(seed*31+c)&0x7fffffff;
             int style=design==PortraitDesign.Default?seed%6:(int)design-1;
@@ -91,6 +111,11 @@ namespace PoliticalTimeline
         void Box(VertexHelper mesh,Color c,float x,float y,float w,float h) => Poly(mesh,c,x,y,x+w,y,x+w,y+h,x,y+h);
         void Poly(VertexHelper mesh,Color c,params float[] xy)
         {
+            if(recording!=null)
+            {
+                var points=new Vector2[xy.Length/2]; for(int i=0;i<points.Length;i++) points[i]=new Vector2(xy[i*2],xy[i*2+1]);
+                recording.Add(new PortraitArtwork.Layer { name=recording.Count==0?"Background":"Shape "+recording.Count, color=c, points=points });
+            }
             var r=GetPixelAdjustedRect(); int start=mesh.currentVertCount;
             for(int i=0;i<xy.Length;i+=2) mesh.AddVert(new Vector3(r.x+xy[i]*r.width/100,r.y+xy[i+1]*r.height/100),c,Vector2.zero);
             for(int i=1;i<xy.Length/2-1;i++) mesh.AddTriangle(start,start+i,start+i+1);

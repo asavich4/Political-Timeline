@@ -41,6 +41,7 @@ namespace PoliticalTimeline
         public string headline = "A decision awaits";
         [TextArea(3, 6)] public string briefing;
         public Sprite portrait;
+        public PortraitArtwork artwork;
         [Tooltip("Use the assigned Sprite instead of the geometric character.")] public bool usePortraitSprite;
         [Min(1)] public int earliestDecision = 1;
         [Min(1)] public int weight = 1;

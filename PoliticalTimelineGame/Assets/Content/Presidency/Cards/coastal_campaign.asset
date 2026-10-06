@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: Coastal towns want to hear your plans.
   briefing: Coastal towns want to hear your plans.
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: b7d61be935ec4f04e902b2dd7eb6241b, type: 2}
   earliestDecision: 1
   weight: 3
   oncePerRun: 0

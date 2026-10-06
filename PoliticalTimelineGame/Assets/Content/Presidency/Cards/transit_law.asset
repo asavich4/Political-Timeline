@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: Fund affordable public transport?
   briefing: Fund affordable public transport?
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: 45fd8a71d5ac6ed4c9b5026975a5b61b, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

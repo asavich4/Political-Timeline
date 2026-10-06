@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: Volunteers offer transport to polling sites.
   briefing: Volunteers offer transport to polling sites.
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: 33ec3031c257ecc4d989988ae8d1d490, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

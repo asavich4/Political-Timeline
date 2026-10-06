@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: A government contract looks wasteful.
   briefing: A government contract looks wasteful.
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: 2ebdf081527d84a45b0d96e9900b9d39, type: 2}
   earliestDecision: 1
   weight: 4
   oncePerRun: 0

@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: A farm cooperative proposes a local trial.
   briefing: A farm cooperative proposes a local trial.
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: 155764eccd87c0a4eb44a74e8c8a82c6, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

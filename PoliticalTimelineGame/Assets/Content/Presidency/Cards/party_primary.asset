@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: The next candidate
   briefing: Let members choose the next leader?
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: 7b742c316d34d9545a17a09cffd80566, type: 2}
   earliestDecision: 1
   weight: 3
   oncePerRun: 0

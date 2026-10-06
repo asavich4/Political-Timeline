@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: The procurement file
   briefing: The fleet is over budget. Approve it?
   portrait: {fileID: 21300000, guid: 5392be1f37fab5149bfeb3219d39833f, type: 3}
+  artwork: {fileID: 11400000, guid: dd03492c513a7d34895ba72ef8a571a9, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

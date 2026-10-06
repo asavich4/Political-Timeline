@@ -30,6 +30,7 @@ namespace PoliticalTimeline.Editor
             {
                 if(GUILayout.Button("Open Game Scene")) { if(EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) EditorSceneManager.OpenScene(PresidencySceneBuilder.ScenePath); }
                 if(GUILayout.Button("Game Outline")) EditorUtility.OpenWithDefaultApp(System.IO.Path.GetFullPath("Assets/Documentation/GameOutline.md"));
+                if(GUILayout.Button("Portrait Gallery")) PortraitGallery.Open();
                 if(GUILayout.Button("Save Content")) AssetDatabase.SaveAssets();
             }
             if(campaign==null) { if(GUILayout.Button("Create Starter Content")) campaign=PresidencyContent.CreateStarter(); return; }
@@ -59,7 +60,7 @@ namespace PoliticalTimeline.Editor
                     if(selected==null) EditorGUILayout.HelpBox("Select a card to edit its artwork, text, effects and follow-up branches.",MessageType.None);
                     else
                     {
-                        if(selected.portrait!=null) { var rect=GUILayoutUtility.GetRect(160,160,GUILayout.ExpandWidth(false)); var sprite=selected.portrait; GUI.DrawTextureWithTexCoords(rect,sprite.texture,new Rect(sprite.rect.x/sprite.texture.width,sprite.rect.y/sprite.texture.height,sprite.rect.width/sprite.texture.width,sprite.rect.height/sprite.texture.height)); }
+                        PortraitLibrary.Draw(GUILayoutUtility.GetRect(180,180,GUILayout.ExpandWidth(false)),selected);
                         if(cardEditor!=null) cardEditor.OnInspectorGUI();
                     }
                     EditorGUILayout.EndScrollView();

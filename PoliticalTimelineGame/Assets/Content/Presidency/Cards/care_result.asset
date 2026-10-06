@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: Paid leave is law. Who explains the rules?
   briefing: Paid leave is law. Who explains the rules?
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: 0da2711595ebcb14cac1d529b97f7b5d, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

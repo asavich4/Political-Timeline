@@ -37,12 +37,18 @@ The state electoral weights use the [National Archives' 2024/2028 allocations](h
 
 ### Preview and edit before Play
 
+**Political Timeline > Portrait Gallery** displays the actual artwork for every card, including cards restricted to campaigns, opposition and follow-up stories. Search by advisor, headline, category or condition. **Edit art** opens the portrait asset; **Edit card** opens event text, choices, effects and availability rules.
+
+All 102 cards have their own layered portrait assets under `Assets/Content/Presidency/Portraits`. In a portrait Inspector, select a shape and drag its cyan points in the preview. Expand **Layers** to change colors, visibility, names and point coordinates, add shapes or reorder them. Undo works normally. Changes to these assets drive both the editor preview and the in-game portrait; no code changes are needed. These are editable vector shapes rather than PNG files. Several cards intentionally start with the same character design, but their assets can now be edited independently.
+
+Assigned **Artwork** takes precedence over the procedural **Design** template and shared **Custom Palette**. For a newly created card with no Artwork, set the advisor/design first, then choose **Create Missing Portrait Assets**. Existing artwork is preserved. **Use Portrait Sprite** overrides the layered art when you want your own image instead.
+
 The Presidency scene now saves the card artwork, four power symbols, consequence panel, Congress seat diagrams, state support bar and Policies panel as real scene objects. Starting the game reuses these objects.
 
 1. Open `Assets/Scenes/Presidency.unity` and select **Presidency • Portrait** in the Hierarchy.
 2. In its Inspector, use **Preview card**, **Preview consequence**, **Map**, **Congress**, **Court** or **Policies** to show the screen you want to edit. These previews use sample data; gameplay supplies the actual values.
 3. Select a card under `Assets/Content/Presidency/Cards` and click **Preview this card in the open scene**. Edit its briefing, advisor, category, design and choices on the card asset.
-4. For a custom image, assign the card's **Portrait** Sprite and enable **Use Portrait Sprite**. For geometric art, select **Decision Card > Flat advisor** and enable **Custom Palette** to edit background, skin and hair colors for the shared card presentation.
+4. For a custom image, assign the card's **Portrait** Sprite and enable **Use Portrait Sprite**. For geometric art, click **Edit portrait shapes and colors** on the card Inspector to edit its assigned Artwork asset.
 5. Select **Geometric power symbol** under a top meter to change its symbol or size. Under **National View > Chambers**, select **House hemicycle** or **Senate hemicycle** to change seat colors and dot size. Move and resize UI objects with their RectTransforms.
 
 Make and save layout changes outside Play mode; Unity discards scene changes made during Play. Game text and live values come from card assets and game state. Power icon colors still follow the election-year theme.

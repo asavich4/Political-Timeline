@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: The new press law protects a harsh critic.
   briefing: The new press law protects a harsh critic.
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: 016ae1c00d500334b91ab968b2292dab, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

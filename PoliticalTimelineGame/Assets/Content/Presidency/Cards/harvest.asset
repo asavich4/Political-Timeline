@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: A failed harvest
   briefing: Drought hit farms. Offer relief?
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: d4790991faec0724c9848868710cac19, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: The government proposes weaker labor rules.
   briefing: The government proposes weaker labor rules.
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: d61419f9aec76b54cbe0136989236f37, type: 2}
   earliestDecision: 1
   weight: 4
   oncePerRun: 0

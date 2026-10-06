@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: Which factory towns should we visit?
   briefing: Which factory towns should we visit?
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: c3bb3f742c268f043a743a2310825192, type: 2}
   earliestDecision: 1
   weight: 3
   oncePerRun: 0

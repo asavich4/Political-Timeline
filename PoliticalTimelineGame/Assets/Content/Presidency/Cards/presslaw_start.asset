@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: A reporter has files on party donors.
   briefing: A reporter has files on party donors.
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: 694e47c79c4d3614aaa98a12ebe88a92, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

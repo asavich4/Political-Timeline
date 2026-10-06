@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: Carers are quitting work. Hear them out?
   briefing: Carers are quitting work. Hear them out?
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: 295f28150d716c147ad743fb46ec1782, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

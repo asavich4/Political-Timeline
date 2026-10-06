@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: A locked phone
   briefing: Defend your new data privacy rule?
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: 64b93e037a4018d40958c6b6f6d1ede8, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

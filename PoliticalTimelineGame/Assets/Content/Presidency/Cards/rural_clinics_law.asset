@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: Build a network of small rural clinics?
   briefing: Build a network of small rural clinics?
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: f6cc6c6d4e5e37841841984b473f6904, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

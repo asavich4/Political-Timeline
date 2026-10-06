@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: Parents cannot find childcare. Meet them?
   briefing: Parents cannot find childcare. Meet them?
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: 1eec447e37c452c47a9dad57b069496c, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

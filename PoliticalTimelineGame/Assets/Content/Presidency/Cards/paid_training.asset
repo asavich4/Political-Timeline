@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: Trainees cannot afford unpaid work.
   briefing: Trainees cannot afford unpaid work.
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: 97e069f1ca291204bb4de1b3060f2d51, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

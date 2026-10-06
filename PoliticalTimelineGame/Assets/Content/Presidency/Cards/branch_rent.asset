@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: A local party office cannot pay its rent.
   briefing: A local party office cannot pay its rent.
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: 481620b86c3fef34aa34008b2d9e4814, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

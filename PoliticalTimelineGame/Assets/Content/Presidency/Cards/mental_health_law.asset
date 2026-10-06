@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: Expand access to mental health treatment?
   briefing: Expand access to mental health treatment?
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: d2ef09feb833fa44290358485a661816, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

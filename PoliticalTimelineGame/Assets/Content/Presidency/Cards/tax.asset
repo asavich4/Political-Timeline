@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: The price of prosperity
   briefing: Tax the wealthy to help families?
   portrait: {fileID: 21300000, guid: abe362ac3a5c97c4ea2232f303ffa20f, type: 3}
+  artwork: {fileID: 11400000, guid: 45124c0ce70f0d1409435ada33eccda0, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

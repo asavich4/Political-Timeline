@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: Pay communities to conserve water?
   briefing: Pay communities to conserve water?
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: dc7ad2619869b1247a996499fbae1c40, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

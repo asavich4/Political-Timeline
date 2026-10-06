@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: The lunch budget
   briefing: Your school meals law faces repeal.
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: 46a3a19fffb085940ab9a41e256c1271, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

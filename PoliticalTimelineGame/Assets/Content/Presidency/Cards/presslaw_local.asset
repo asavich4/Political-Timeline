@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: The newsroom asks for a public response.
   briefing: The newsroom asks for a public response.
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: ea0fabb61edf73f4197caa5c331d68b5, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

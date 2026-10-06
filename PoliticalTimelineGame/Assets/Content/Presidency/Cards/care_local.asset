@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: Small firms want a voluntary leave plan.
   briefing: Small firms want a voluntary leave plan.
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: 9f884e370a3f597468074b6616d562c8, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

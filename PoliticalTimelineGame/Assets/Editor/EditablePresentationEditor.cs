@@ -78,6 +78,10 @@ namespace PoliticalTimeline.Editor
     {
         public override void OnInspectorGUI()
         {
+            var card=(DecisionCard)target;
+            PortraitLibrary.Draw(GUILayoutUtility.GetRect(180,200,GUILayout.ExpandWidth(true)),card);
+            if(card.artwork!=null && GUILayout.Button("Edit portrait shapes and colors")) Selection.activeObject=card.artwork;
+            if(GUILayout.Button("Browse every portrait")) PortraitGallery.Open();
             if(!Application.isPlaying && GUILayout.Button("Preview this card in the open scene"))
             {
                 var game=Object.FindFirstObjectByType<PresidencyGame>();

@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: Voters report inaccessible polling sites.
   briefing: Voters report inaccessible polling sites.
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: 867b1c6258d5afd47a92e0bee52120a7, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

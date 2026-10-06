@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: Where should the final campaign push go?
   briefing: Where should the final campaign push go?
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: 58bc160aac0d3254c81822654fd440e4, type: 2}
   earliestDecision: 1
   weight: 3
   oncePerRun: 0

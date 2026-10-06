@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: The utility wants more time. Press them?
   briefing: The utility wants more time. Press them?
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: 4ac8667c74d3b434091bd969c58d64e2, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

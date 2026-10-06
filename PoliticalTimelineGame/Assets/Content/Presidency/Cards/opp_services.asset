@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: The government wants to cut local services.
   briefing: The government wants to cut local services.
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: 19f064d8ae008814aafe388bf058e548, type: 2}
   earliestDecision: 1
   weight: 4
   oncePerRun: 0

@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: A seat at the table
   briefing: A rival offers peace talks. Accept?
   portrait: {fileID: 21300000, guid: 5bf4d51012a88a145aada2d83185b0fa, type: 3}
+  artwork: {fileID: 11400000, guid: 7058f3522950adf42a0f95fc19734e80, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

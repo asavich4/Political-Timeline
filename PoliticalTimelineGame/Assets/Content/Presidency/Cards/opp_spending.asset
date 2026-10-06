@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: The government wants rushed spending cuts.
   briefing: The government wants rushed spending cuts.
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: 722d6087904caa141abd36d0eeb9f554, type: 2}
   earliestDecision: 1
   weight: 4
   oncePerRun: 0

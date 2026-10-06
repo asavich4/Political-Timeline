@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: Local branches need credible new candidates.
   briefing: Local branches need credible new candidates.
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: 8f0e9612d03d4834983714154e788fb5, type: 2}
   earliestDecision: 1
   weight: 4
   oncePerRun: 0

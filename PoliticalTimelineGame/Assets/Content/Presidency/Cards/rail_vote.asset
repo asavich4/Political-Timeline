@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: The last vote
   briefing: Fund a national rail network?
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: c0266ed53de1ae2408ba88b5f439d439, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: Accessible sites are open. Spread the word?
   briefing: Accessible sites are open. Spread the word?
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: ca07c897837078145bca0a13c839b311, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

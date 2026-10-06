@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: Where do our volunteers spend the weekend?
   briefing: Where do our volunteers spend the weekend?
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: a60a2848108500e488ad9b4c7f03a99c, type: 2}
   earliestDecision: 1
   weight: 3
   oncePerRun: 0

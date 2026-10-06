@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: A mobile clinic needs volunteer drivers.
   briefing: A mobile clinic needs volunteer drivers.
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: c6fea5a84b341a94a935438b31f02361, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

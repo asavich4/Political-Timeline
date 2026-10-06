@@ -18,6 +18,7 @@ MonoBehaviour:
   headline: An internal party memo has leaked.
   briefing: An internal party memo has leaked.
   portrait: {fileID: 0}
+  artwork: {fileID: 11400000, guid: c235134dd91854849a7e52b5ad8a2c74, type: 2}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0

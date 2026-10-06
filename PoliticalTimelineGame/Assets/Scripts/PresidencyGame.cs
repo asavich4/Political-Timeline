@@ -32,6 +32,8 @@ namespace PoliticalTimeline
         float inputReady, feedbackUntil;
         AdvisorArt flatArt;
         TMP_Text advisorLabel, resultLabel;
+        PowerIcon[] flatPowerIcons;
+        string voterFeedback;
         public bool IsTransitioning => transitionPhase!=0;
         public bool AwaitingAcknowledgement => transitionPhase==4;
         int transitionPhase;
@@ -52,6 +54,7 @@ namespace PoliticalTimeline
             if (initialized) return;
             initialized = true;
             BuildCardFace();
+            BuildPowerIcons();
             BuildOutcomePanel();
             home = cardTransform.anchoredPosition;
             restartButton.onClick.AddListener(Restart);
@@ -138,6 +141,9 @@ namespace PoliticalTimeline
                     choice.institution==InstitutionRule.CourtReview?(passes?"Five justices are aligned. The policy can stand.":"Fewer than five aligned justices. The policy will fall."):
                     (passes?"The Senate can confirm your nominee.":"Confirmation needs a vacancy and 51 senators.");
                 if(!passes && !state.nation.HoldsPresidency && (choice.enactPolicy!=PolicyId.None || choice.repealPolicy!=PolicyId.None || choice.institution==InstitutionRule.Congress || choice.institution==InstitutionRule.ConfirmJustice)) resultLabel.text="Your party must win the presidency first.";
+                if(choice.institution==InstitutionRule.BlockGovernment) resultLabel.text=passes?"Your party can block this bill.":"Blocking needs the House or 41 senators.";
+                if(passes && choice.voterStates!=null && choice.voterStates.Length>0)
+                    resultLabel.text=string.Join(" / ",choice.voterStates)+$": up to {choice.voterSupportChange:+0;-0} points support";
                 ShowFeedback(state.nation.CanResolve(choice)?choice.change:choice.blockedChange, false);
             }
             else { choiceLabel.text = ""; resultLabel.text=state.lastResult; ClearFeedback(); }
@@ -164,11 +170,19 @@ namespace PoliticalTimeline
             if (state == null || state.current==null || state.ended || state.ElectionPending || IsTransitioning || HelpOpen || Time.unscaledTime < inputReady) return;
             var choice=right ? state.current.right : state.current.left;
             var change = state.nation.CanResolve(choice)?choice.change:choice.blockedChange;
+            bool passed=state.nation.CanResolve(choice); var localBefore=new float[state.nation.states.Length];
+            for(int i=0;i<localBefore.Length;i++) localBefore[i]=state.nation.VoterSupportBonus(i);
             for(int i=0;i<4;i++) previousSupport[i]=supportFills[i].fillAmount;
             departurePosition=cardTransform.anchoredPosition;
             departureAngle=cardTransform.localEulerAngles.z;
             departureDirection=right?1:-1;
             state.Choose(right); dragging = false; keyboardDirection=0;
+            voterFeedback="";
+            if(passed && choice.voterStates!=null) for(int i=0;i<localBefore.Length;i++) if(System.Array.IndexOf(choice.voterStates,state.nation.states[i].abbreviation)>=0)
+            {
+                float delta=state.nation.VoterSupportBonus(i)-localBefore[i]*.97f;
+                voterFeedback+=(voterFeedback==""?"":" · ")+state.nation.states[i].abbreviation+$" {delta:+0.0;-0.0;0}pp";
+            }
             transitionPhase=1; transitionTime=0;
             choiceOverlay.alpha=0; commitIndicator.enabled=false;
             ShowFeedback(change, true); feedbackUntil=0;
@@ -214,7 +228,7 @@ namespace PoliticalTimeline
                 if(transitionPhase==1)
                 {
                     transitionPhase=2; cardTransform.gameObject.SetActive(false);
-                    ResetOutcome(); outcomeText.text=state.lastResult; outcomePanel.SetActive(true);
+                    ResetOutcome(); outcomeText.text=state.lastResult+(voterFeedback==""?"":"\n\n<size=18>State support: "+voterFeedback+"</size>"); outcomePanel.SetActive(true);
                 }
                 else if(transitionPhase==2)
                 {
@@ -281,7 +295,7 @@ namespace PoliticalTimeline
             monthLabel.rectTransform.anchoredPosition=new Vector2(20,electionYear?-79:-82);
             monthLabel.rectTransform.sizeDelta=new Vector2(350,electionYear?28:22);
             if(electionYear) monthLabel.text="<b>"+state.ElectionYearLabel+"</b>\n"+monthLabel.text;
-            foreach(var icon in powerIcons) icon.color=Color.white;
+            foreach(var icon in flatPowerIcons) icon.color=ink;
             for (int i = 0; i < 4; i++)
             {
                 supportFills[i].fillAmount = state.support[i] / 100f;
@@ -330,6 +344,19 @@ namespace PoliticalTimeline
                 resultLabel.text="Hold left or right to reveal a choice.";
             }
             choiceOverlay.transform.SetAsLastSibling();
+        }
+        void BuildPowerIcons()
+        {
+            flatPowerIcons=new PowerIcon[powerIcons.Length];
+            for(int i=0;i<powerIcons.Length;i++)
+            {
+                var legacy=powerIcons[i]; legacy.enabled=false;
+                var badge=legacy.transform.parent.GetComponent<Image>(); if(badge!=null) badge.enabled=false;
+                var go=new GameObject("Geometric power symbol",typeof(RectTransform),typeof(CanvasRenderer),typeof(PowerIcon));
+                var rect=(RectTransform)go.transform; rect.SetParent(legacy.transform.parent,false);
+                rect.anchorMin=rect.anchorMax=rect.pivot=new Vector2(.5f,.5f); rect.anchoredPosition=Vector2.zero; rect.sizeDelta=new Vector2(40,40);
+                var icon=go.GetComponent<PowerIcon>(); icon.symbol=(PowerIcon.Symbol)i; icon.raycastTarget=false; flatPowerIcons[i]=icon;
+            }
         }
         TMP_Text Caption(RectTransform parent,string title,float x,float y,float w,float h,int size)
         {

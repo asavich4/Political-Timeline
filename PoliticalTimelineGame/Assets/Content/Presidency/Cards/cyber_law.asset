@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 419f0aa0370f329488c33c094f0c53c2, type: 3}
+  m_Name: cyber_law
+  m_EditorClassIdentifier: 
+  id: cyber_law
+  advisor: Policy Director
+  category: POLICY AGENDA
+  headline: Public services need stronger cyber defenses.
+  briefing: Public services need stronger cyber defenses.
+  portrait: {fileID: 0}
+  earliestDecision: 1
+  weight: 1
+  oncePerRun: 0
+  condition: 5
+  requiredPolicy: 0
+  followUpOnly: 0
+  design: 1
+  left:
+    label: Fund cyber defenses
+    consequence: Congress enacts public cyber defenses.
+    change:
+      workers: 4
+      middleClass: 5
+      elites: -4
+      economy: -3
+    followUp: {fileID: 0}
+    blockedFollowUp: {fileID: 0}
+    institution: 1
+    enactPolicy: 33
+    repealPolicy: 0
+    voterStates: []
+    voterSupportChange: 0
+    blockedChange:
+      workers: -2
+      middleClass: -2
+      elites: 1
+      economy: 0
+    blockedConsequence: Congress rejects the bill. Your party must build more support.
+  right:
+    label: Seek a smaller deal
+    consequence: The party negotiates a smaller proposal. No new law is enacted.
+    change:
+      workers: -1
+      middleClass: 1
+      elites: 1
+      economy: 2
+    followUp: {fileID: 0}
+    blockedFollowUp: {fileID: 0}
+    institution: 0
+    enactPolicy: 0
+    repealPolicy: 0
+    voterStates: []
+    voterSupportChange: 0
+    blockedChange:
+      workers: 0
+      middleClass: 0
+      elites: 0
+      economy: 0
+    blockedConsequence: 

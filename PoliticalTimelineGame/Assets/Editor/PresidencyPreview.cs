@@ -15,9 +15,11 @@ namespace PoliticalTimeline.Editor
             Check(IPhonePreview.EnsureSize()>=0,"Portrait Game view preset");
             IPhonePreview.ValidatePreviewApi();
             var game=Object.FindFirstObjectByType<PresidencyGame>();
+            StoryChecks.Run(game.campaign);
+            ElectoralChecks.Run(game.campaign);
             game.Initialize();
-            Check(game.powerIcons.Length==4,"Four illustrated power images");
-            foreach(var icon in game.powerIcons) Check(icon.sprite!=null,"Power image sprite assigned");
+            Check(game.GetComponentsInChildren<PowerIcon>().Length==4,"Four geometric power symbols");
+            foreach(var icon in game.powerIcons) Check(!icon.enabled,"Legacy power image hidden");
             Check(game.briefing.font.atlasWidth==2048,"High-resolution font atlas");
             string[] powerNames={"Workers","Middle class","Economy","Elites"};
             for(int i=0;i<4;i++)
@@ -34,6 +36,11 @@ namespace PoliticalTimeline.Editor
             Capture("PresidencyTallPreview.png",430,932,new Rect(0,34,430,839));
             Capture("PresidencyRetinaPreview.png",1170,2532,new Rect(0,102,1170,2289));
             foreach(string id in new[]{"rail_vote","court_nominee","water","harvest"})
+            {
+                game.State.current=game.campaign.cards.Find(c=>c.id==id); game.Refresh();
+                Capture(id+"Preview.png",390,844,new Rect(0,34,390,763));
+            }
+            foreach(string id in new[]{"grid_start","care_start","nursery_start","presslaw_start","soil_start","ballot_start"})
             {
                 game.State.current=game.campaign.cards.Find(c=>c.id==id); game.Refresh();
                 Capture(id+"Preview.png",390,844,new Rect(0,34,390,763));
@@ -71,7 +78,7 @@ namespace PoliticalTimeline.Editor
             game.AdvanceTransition(.45f);
             Check(!game.cardTransform.gameObject.activeSelf && game.IsTransitioning,"Consequence pause hides departing card");
             var outcome=game.transform.Find("Safe Area/Portrait Layout • 390 x 640/Decision outcome/Outcome").GetComponent<TMP_Text>();
-            Check(outcome.text==game.State.lastResult,"Consequence displays resolved outcome");
+            Check(outcome.text.StartsWith(game.State.lastResult),"Consequence displays resolved outcome");
             Capture("SwipeOutcomePreview.png",390,844,new Rect(0,34,390,763));
             game.AdvanceTransition(2);
             Check(game.AwaitingAcknowledgement,"Consequence waits for acknowledgement");
@@ -92,12 +99,27 @@ namespace PoliticalTimeline.Editor
             game.closeHelpButton.onClick.Invoke(); Swipe(game,new Vector2(110,0)); Check(game.Decisions==1,"Help closes and play resumes");
             Check(PlayerSettings.defaultInterfaceOrientation==UIOrientation.Portrait,"Portrait orientation lock");
             CheckNationalViews(game);
+            game.Restart(); game.State.decisions=17; game.State.current=game.campaign.cards.Find(c=>c.id=="factory_tour"); game.Refresh();
+            var campaignDrag=Hold(game,new Vector2(-45,0));
+            Check(game.cardTransform.Find("Paper caption/Last decision").GetComponent<TMP_Text>().text.Contains("PA"),"Campaign preview names target states");
+            Capture("CampaignCardPreview.png",390,844,new Rect(0,34,390,763)); game.EndDrag(campaignDrag);
+            game.Decide(false); game.AdvanceTransition(.6f);
+            Capture("CampaignOutcomePreview.png",390,844,new Rect(0,34,390,763));
+            game.AdvanceTransition(2); Swipe(game,new Vector2(110,0)); game.AdvanceTransition(2);
+            game.nationalPanels.Open(0,false);
+            int pennsylvania=System.Array.FindIndex(game.State.nation.states,s=>s.abbreviation=="PA");
+            game.nationalPanels.mapButtons[pennsylvania].onClick.Invoke();
+            Check(Mathf.Abs(game.State.nation.VoterSupportBonus(pennsylvania)-4)<.001f,"Campaign effect remains after reading acknowledgement");
+            Capture("CampaignMapPreview.png",390,844,new Rect(0,34,390,763)); game.nationalPanels.Close();
+            game.State.nation.HoldsPresidency=false; game.State.current=game.campaign.cards.Find(c=>c.id=="opp_spending"); game.Refresh();
+            Capture("OppositionCardPreview.png",390,844,new Rect(0,34,390,763));
             game.Restart(); game.State.current=game.campaign.cards.Find(c=>c.id=="harvest"); game.State.support[0]=1; game.Refresh();
             game.Decide(true); Check(game.State.ended && game.IsTransitioning,"Fatal decision still animates");
             game.AdvanceTransition(2); Check(game.AwaitingAcknowledgement,"Fatal consequence waits for reading");
             Swipe(game,new Vector2(110,0)); game.AdvanceTransition(2);
             Check(!game.IsTransitioning && game.restartButton.gameObject.activeSelf,"Fatal consequence leads to restart after acknowledgement");
             File.AppendAllText("Validation.txt","\nSDF text, full-card artwork, safe areas and text fit verified at 375x667, 390x844, 430x932 and 1170x2532.\nDirectional hold previews, delayed commit, release threshold, canceled gestures, restart and help checks passed.\nPhysical iPhone testing and an iOS build have not been performed.");
+            File.AppendAllText("Validation.txt","\nCampaign-season gating, state voter changes, bounded decay, opposition weighting/blocking, expanded policy ledger, and four geometric power icons verified.");
         }
 
         static void CheckNationalViews(PresidencyGame game)
@@ -146,7 +168,14 @@ namespace PoliticalTimeline.Editor
                 if(month==12)
                 {
                     Check(game.background.color.r>.95f && game.briefing.color.r<.2f,"Election year white theme and dark text");
+                    Check(game.monthLabel.text.Contains("Midterm election year"),"Midterm year label");
                     Capture("ElectionYearPreview.png",390,844,new Rect(0,34,390,763));
+                }
+                if(month==36)
+                {
+                    Check(game.monthLabel.text.Contains("Presidential election year"),"Presidential year label");
+                    Capture("PresidentialYearPreview.png",390,844,new Rect(0,34,390,763));
+                    Capture("PresidentialYearCompactPreview.png",375,667,new Rect(0,0,375,647));
                 }
                 if(month==18)
                 {
@@ -241,6 +270,7 @@ namespace PoliticalTimeline.Editor
                 canvas.scaleFactor=width/390f;
                 Canvas.ForceUpdateCanvases(); layout.Apply(safePixels,new Vector2(width,height)); Canvas.ForceUpdateCanvases();
                 foreach(var label in game.GetComponentsInChildren<TMP_Text>()) label.ForceMeshUpdate();
+                Fits(game.monthLabel,game.monthLabel.text,"Election/date heading");
                 var policyList=game.nationalPanels.transform.Find("Policies/Policy list").GetComponent<TMP_Text>();
                 if(policyList.gameObject.activeInHierarchy) Fits(policyList,policyList.text,"Policy page");
                 camera.Render(); RenderTexture.active=texture;

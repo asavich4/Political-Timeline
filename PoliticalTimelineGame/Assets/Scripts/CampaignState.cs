@@ -23,6 +23,7 @@ namespace PoliticalTimeline
         public DateTime CurrentMonth => new DateTime(definition.startYear,1,1).AddMonths(decisions);
         public DateTime DisplayMonth => ElectionPending ? CurrentMonth.AddMonths(-1) : CurrentMonth;
         public bool IsElectionYear => DisplayMonth.Year%2==0;
+        public bool IsCampaignSeason => CurrentMonth.Year%2==0 && CurrentMonth.Month<=11;
         public string ElectionYearLabel => !IsElectionYear?"":DisplayMonth.Year%4==0?"Presidential election year":"Midterm election year";
         public int Term => decisions/48+1;
         public int Approval => (support[0]+support[1]+support[2]+support[3])/4;
@@ -51,6 +52,7 @@ namespace PoliticalTimeline
                 if(choice.enactPolicy!=PolicyId.None && !policies.Any(p=>p.Id==choice.enactPolicy)) policies.Add(new EnactedPolicy(choice.enactPolicy,month));
             }
             nation.AdvanceMonth(decisions);
+            if(passed) nation.ApplyVoterEffect(choice);
             string[] losses={"A nation on strike","The center collapses","Economic collapse","The donors walk away"};
             for(int i=0;i<4;i++) if(support[i]==0) { Finish(losses[i]); return; }
             if(month.Month==11 && month.Year%2==0)
@@ -66,12 +68,13 @@ namespace PoliticalTimeline
         void Draw(DecisionCard followUp)
         {
             if(followUp!=null) { current=followUp; return; }
-            var eligible=definition.cards.Where(c=>c!=null && !c.followUpOnly && c.earliestDecision<=decisions+1 && nation.Allows(c.condition) && (c.requiredPolicy==PolicyId.None || policies.Any(p=>p.Id==c.requiredPolicy)) && (!c.oncePerRun||!used.Contains(c))).ToList();
+            var eligible=definition.cards.Where(c=>c!=null && !c.followUpOnly && c.earliestDecision<=decisions+1 && nation.Allows(c.condition) && (c.condition!=EventCondition.CampaignSeason || IsCampaignSeason) && (nation.HoldsPresidency || (c.left.enactPolicy==PolicyId.None && c.right.enactPolicy==PolicyId.None)) && (c.requiredPolicy==PolicyId.None || policies.Any(p=>p.Id==c.requiredPolicy)) && (!c.oncePerRun||!used.Contains(c))).ToList();
             if(eligible.Count>1) eligible.Remove(current);
             if(eligible.Count==0) { current=null; lastResult="No events are available. Check the campaign deck."; return; }
-            int roll=random.Next(eligible.Sum(c=>Math.Max(1,c.weight)));
-            foreach(var card in eligible) { roll-=Math.Max(1,card.weight); if(roll<0) {current=card; return;} }
+            int roll=random.Next(eligible.Sum(DrawWeight));
+            foreach(var card in eligible) { roll-=DrawWeight(card); if(roll<0) {current=card; return;} }
         }
+        int DrawWeight(DecisionCard card) => Math.Max(1,card.weight)*(!nation.HoldsPresidency && card.condition==EventCondition.InOpposition?3:1);
         void Finish(string title) { ended=true; ending=title; }
     }
 }

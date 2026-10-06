@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 419f0aa0370f329488c33c094f0c53c2, type: 3}
+  m_Name: final_push
+  m_EditorClassIdentifier: 
+  id: final_push
+  advisor: Campaign Organizer
+  category: CAMPAIGN
+  headline: Where should the final campaign push go?
+  briefing: Where should the final campaign push go?
+  portrait: {fileID: 0}
+  earliestDecision: 1
+  weight: 3
+  oncePerRun: 0
+  condition: 4
+  requiredPolicy: 0
+  followUpOnly: 0
+  design: 6
+  left:
+    label: Focus on the Great Lakes
+    consequence: Organizers build local support in MI, WI, PA.
+    change:
+      workers: 2
+      middleClass: 1
+      elites: -3
+      economy: -2
+    followUp: {fileID: 0}
+    blockedFollowUp: {fileID: 0}
+    institution: 0
+    enactPolicy: 0
+    repealPolicy: 0
+    voterStates:
+    - MI
+    - WI
+    - PA
+    voterSupportChange: 4
+    blockedChange:
+      workers: 0
+      middleClass: 0
+      elites: 0
+      economy: 0
+    blockedConsequence: 
+  right:
+    label: Focus on the Sun Belt
+    consequence: Your candidate reaches new voters in AZ, GA, NC.
+    change:
+      workers: -1
+      middleClass: 2
+      elites: -2
+      economy: -1
+    followUp: {fileID: 0}
+    blockedFollowUp: {fileID: 0}
+    institution: 0
+    enactPolicy: 0
+    repealPolicy: 0
+    voterStates:
+    - AZ
+    - GA
+    - NC
+    voterSupportChange: 3
+    blockedChange:
+      workers: 0
+      middleClass: 0
+      elites: 0
+      economy: 0
+    blockedConsequence: 

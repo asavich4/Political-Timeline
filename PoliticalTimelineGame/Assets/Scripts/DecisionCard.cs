@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace PoliticalTimeline
 {
-    public enum InstitutionRule { None, Congress, CourtReview, ConfirmJustice }
-    public enum EventCondition { Always, DividedCongress, CourtVacancy, InOpposition }
+    public enum InstitutionRule { None, Congress, CourtReview, ConfirmJustice, BlockGovernment }
+    public enum EventCondition { Always, DividedCongress, CourtVacancy, InOpposition, CampaignSeason, InGovernment }
     public enum PortraitDesign { Default, Engineer, Medic, Farmer, Reporter, Teacher, Organizer }
     [Serializable]
     public struct SupportChange
@@ -26,6 +26,8 @@ namespace PoliticalTimeline
         public InstitutionRule institution;
         public PolicyId enactPolicy;
         public PolicyId repealPolicy;
+        public string[] voterStates = new string[0];
+        [Range(-12,12)] public float voterSupportChange;
         public SupportChange blockedChange;
         [TextArea(2, 4)] public string blockedConsequence;
     }

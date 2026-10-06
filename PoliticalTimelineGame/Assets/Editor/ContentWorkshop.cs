@@ -106,9 +106,11 @@ namespace PoliticalTimeline.Editor
                 {
                     if(choice==null||string.IsNullOrWhiteSpace(choice.label)||string.IsNullOrWhiteSpace(choice.consequence)) errors.Add(c.name+": incomplete choice.");
                     else if(choice.institution!=InstitutionRule.None && string.IsNullOrWhiteSpace(choice.blockedConsequence)) errors.Add(c.name+": missing blocked outcome.");
+                    if(choice!=null) foreach(var next in new[]{choice.followUp,choice.blockedFollowUp})
+                        if(next!=null && !campaign.cards.Contains(next)) errors.Add(c.name+": follow-up is outside the deck.");
                 }
             }
-            if(!campaign.cards.Any(c=>c!=null&&c.earliestDecision<=1)) errors.Add("No card is available on the first decision.");
+            if(!campaign.cards.Any(c=>c!=null&&!c.followUpOnly&&c.earliestDecision<=1)) errors.Add("No card is available on the first decision.");
             return errors.Count==0 ? $"Deck valid: {campaign.cards.Count} cards ready to play." : string.Join("\n",errors);
         }
         public static string Simulate(CampaignDefinition campaign)

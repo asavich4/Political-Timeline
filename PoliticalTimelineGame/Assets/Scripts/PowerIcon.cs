@@ -27,8 +27,8 @@ namespace PoliticalTimeline
                     Box(mesh,7,7,11,17); Box(mesh,26,7,11,29); Box(mesh,45,7,11,43);
                     break;
                 case Symbol.Coins:
-                    for(int i=0;i<3;i++) Coin(mesh,18,12+i*11,12);
-                    for(int i=0;i<4;i++) Coin(mesh,46,12+i*11,11);
+                    Polygon(mesh,new Vector2(10,13),new Vector2(4,48),new Vector2(22,34),new Vector2(32,57),new Vector2(42,34),new Vector2(60,48),new Vector2(54,13));
+                    Box(mesh,10,5,44,5);
                     break;
             }
         }

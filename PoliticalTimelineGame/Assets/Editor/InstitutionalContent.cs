@@ -41,6 +41,7 @@ namespace PoliticalTimeline.Editor
             var repeal=deck.cards.Find(c=>c.id=="repeal_meals"); repeal.left.repealPolicy=PolicyId.SchoolMeals; repeal.requiredPolicy=PolicyId.SchoolMeals; EditorUtility.SetDirty(repeal);
             if(deck.nation!=null) EditorUtility.SetDirty(deck.nation);
             StoryContent.Ensure(deck);
+            ElectoralContent.Ensure(deck);
             EditorUtility.SetDirty(deck); AssetDatabase.SaveAssets();
         }
         static void Add(CampaignDefinition deck,string id,string title,string advisor,string category,string body,string left,SupportChange lc,string result,string right,SupportChange rc,string other,InstitutionRule rule=InstitutionRule.None,EventCondition condition=EventCondition.Always)

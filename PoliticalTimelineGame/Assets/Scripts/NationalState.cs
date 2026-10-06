@@ -19,6 +19,15 @@ namespace PoliticalTimeline
         readonly int retirementMonths;
         readonly float resistance, sensitivity;
         public bool HoldsPresidency { get; set; } = true;
+        readonly float[] voterSupport;
+        public int BlockedGovernmentBills { get; private set; }
+        public float VoterSupportBonus(int index) => voterSupport[index];
+        public void ApplyVoterEffect(PolicyChoice choice)
+        {
+            for(int i=0;i<states.Length;i++) if(choice.voterStates!=null && Array.IndexOf(choice.voterStates,states[i].abbreviation)>=0)
+                voterSupport[i]=Math.Max(-12,Math.Min(12,voterSupport[i]+choice.voterSupportChange));
+            if(choice.institution==InstitutionRule.BlockGovernment) BlockedGovernmentBills++;
+        }
         public int houseSeats=222;
         public int SenateSeats { get { int n=0; foreach(bool seat in senate) if(seat) n++; return n; } }
         public int Vacancy => Array.IndexOf(court,2);
@@ -26,17 +35,20 @@ namespace PoliticalTimeline
         public bool CanResolve(InstitutionRule rule) => rule==InstitutionRule.None ||
             (rule==InstitutionRule.Congress && ControlsCongress && HoldsPresidency) ||
             (rule==InstitutionRule.CourtReview && AlignedJustices>=5) ||
-            (rule==InstitutionRule.ConfirmJustice && Vacancy>=0 && SenateSeats>=51 && HoldsPresidency);
+            (rule==InstitutionRule.ConfirmJustice && Vacancy>=0 && SenateSeats>=51 && HoldsPresidency) ||
+            (rule==InstitutionRule.BlockGovernment && !HoldsPresidency && (houseSeats>=218 || SenateSeats>=41));
         public bool CanResolve(PolicyChoice choice) => CanResolve(choice.institution) &&
             ((choice.enactPolicy==PolicyId.None && choice.repealPolicy==PolicyId.None) || HoldsPresidency);
         public bool Allows(EventCondition condition) => condition==EventCondition.Always ||
             (condition==EventCondition.DividedCongress && !ControlsCongress) ||
             (condition==EventCondition.CourtVacancy && Vacancy>=0 && HoldsPresidency) ||
-            (condition==EventCondition.InOpposition && !HoldsPresidency);
+            (condition==EventCondition.InOpposition && !HoldsPresidency) ||
+            condition==EventCondition.CampaignSeason || (condition==EventCondition.InGovernment && HoldsPresidency);
         public int AlignedJustices { get { int n=0; foreach(int seat in court) if(seat==1) n++; return n; } }
         public NationalState(NationalDefinition config)
         {
             states=config!=null ? config.states : NationalDefinition.CreateStates();
+            voterSupport=new float[states.Length];
             advantage=config!=null ? config.incumbentAdvantage : 2;
             retirementMonths=config!=null ? Math.Max(1,config.courtRetirementMonths) : 18;
             resistance=config!=null?config.electoralResistance:4;
@@ -49,7 +61,7 @@ namespace PoliticalTimeline
             var p=states[index]; var w=p.interests;
             float sum=Math.Max(.01f,w.x+w.y+w.z+w.w);
             float approval=(support[0]*w.x+support[1]*w.y+support[2]*w.z+support[3]*w.w)/sum;
-            return Math.Max(-49,Math.Min(49,p.startingLean*1.15f+(HoldsPresidency?advantage:-advantage)-resistance+(approval-50)*sensitivity));
+            return Math.Max(-49,Math.Min(49,p.startingLean*1.15f+(HoldsPresidency?advantage:-advantage)-resistance+(approval-50)*sensitivity+2*voterSupport[index]));
         }
         public int ProjectedVotes(int[] support)
         { int total=0; for(int i=0;i<states.Length;i++) if(Margin(i,support)>=0) total+=states[i].electoralVotes; return total; }
@@ -74,7 +86,10 @@ namespace PoliticalTimeline
             houseSeats=house; result.houseSeats=house; result.senateSeats=SenateSeats; return result;
         }
         public void AdvanceMonth(int months)
-        { if(months>0 && months%retirementMonths==0 && Vacancy<0) court[(months/retirementMonths+3)%9]=2; }
+        {
+            for(int i=0;i<voterSupport.Length;i++) voterSupport[i]*=.97f;
+            if(months>0 && months%retirementMonths==0 && Vacancy<0) court[(months/retirementMonths+3)%9]=2;
+        }
         public bool Nominate()
         { int seat=Vacancy; if(seat<0 || SenateSeats<51 || !HoldsPresidency) return false; court[seat]=1; return true; }
     }

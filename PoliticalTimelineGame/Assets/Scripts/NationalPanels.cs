@@ -124,6 +124,7 @@ namespace PoliticalTimeline
                 HouseChart.Present(435,house); SenateChart.Present(100,senate);
                 congressNote.text="Each dot is one seat. Teal: you · Red: opposition\n"+
                     $"House majority: 218 · Senate majority: 51\n"+(house>=218 && senate>=51?"You control both chambers.":"You need a deal across the aisle.");
+                if(!nation.HoldsPresidency) congressNote.text=$"Opposition can block with the House or 41 senators.\nBills blocked by your party: {nation.BlockedGovernmentBills}\nTeal: your seats · Red: government";
             }
             if(tab==2)
             {
@@ -205,6 +206,8 @@ namespace PoliticalTimeline
             Place(mapDetail.rectTransform,24,427,342,50);
             supportBar.SetActive(true); supportLabel.gameObject.SetActive(true); StateSupportFill.fillAmount=percent/100;
             supportLabel.color=mapDetail.color; supportLabel.text=(results?"Election support":"Projected support")+$": {percent:0.0}% · 50% to lead";
+            if(!results && Mathf.Abs(state.nation.VoterSupportBonus(index))>.05f)
+                supportLabel.text=$"Support {percent:0.0}% · Outreach {state.nation.VoterSupportBonus(index):+0.0;-0.0}pp";
             if(results && !Night.result.presidential)
             {
                 mapDetail.text=profile.stateName+(profile.abbreviation=="DC"?"\nNo congressional seats":

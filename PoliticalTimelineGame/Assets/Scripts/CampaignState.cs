@@ -57,6 +57,8 @@ namespace PoliticalTimeline
                 if(choice.repealPolicy!=PolicyId.None) policies.RemoveAll(p=>p.Id==choice.repealPolicy);
                 if(choice.enactPolicy!=PolicyId.None && !policies.Any(p=>p.Id==choice.enactPolicy)) policies.Add(new EnactedPolicy(choice.enactPolicy,month));
             }
+            else if(choice.institution==InstitutionRule.CourtReview && choice.blockedRepealPolicy!=PolicyId.None)
+                policies.RemoveAll(p=>p.Id==choice.blockedRepealPolicy);
             nation.AdvanceMonth(decisions);
             if(passed) nation.ApplyVoterEffect(choice);
             string[] losses={"A nation on strike","The center collapses","Economic collapse","The donors walk away"};
@@ -75,6 +77,7 @@ namespace PoliticalTimeline
         {
             if(followUp!=null) { current=followUp; return; }
             var eligible=definition.cards.Where(c=>c!=null && !c.followUpOnly && c.earliestDecision<=decisions+1 && nation.Allows(c.condition) && (c.condition!=EventCondition.CampaignSeason || IsCampaignSeason) && (nation.HoldsPresidency || (c.left.enactPolicy==PolicyId.None && c.right.enactPolicy==PolicyId.None)) && (c.requiredPolicy==PolicyId.None || policies.Any(p=>p.Id==c.requiredPolicy)) && (!c.oncePerRun||!used.Contains(c))).ToList();
+            eligible.RemoveAll(c=>c.excludedPolicy!=PolicyId.None && policies.Any(p=>p.Id==c.excludedPolicy));
             if(eligible.Count>1) eligible.Remove(current);
             if(eligible.Count==0) { current=null; lastResult="No events are available. Check the campaign deck."; return; }
             int roll=random.Next(eligible.Sum(DrawWeight)); draws++;

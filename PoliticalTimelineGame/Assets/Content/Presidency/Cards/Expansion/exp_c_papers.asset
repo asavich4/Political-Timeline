@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 419f0aa0370f329488c33c094f0c53c2, type: 3}
+  m_Name: exp_c_papers
+  m_EditorClassIdentifier: 
+  id: exp_c_papers
+  advisor: Solicitor General
+  category: THE COURT
+  headline: A leaked report tests the press protection law.
+  briefing: A leaked report tests the press protection law.
+  portrait: {fileID: -8688392447183608358, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  artwork: {fileID: 0}
+  usePortraitSprite: 1
+  earliestDecision: 1
+  weight: 2
+  oncePerRun: 0
+  condition: 0
+  requiredPolicy: 24
+  excludedPolicy: 0
+  historicalNote: Inspired by publication of the Pentagon Papers in 1971. The fictional
+    litigation here uses the game's simplified court rules.
+  sourceUrl: https://www.archives.gov/research/pentagon-papers
+  followUpOnly: 0
+  design: 0
+  left:
+    label: Defend publication
+    consequence: The court upholds the press protections despite political embarrassment.
+    change:
+      workers: 1
+      middleClass: 4
+      elites: -4
+      economy: -1
+    followUp: {fileID: 0}
+    blockedFollowUp: {fileID: 0}
+    institution: 2
+    enactPolicy: 0
+    repealPolicy: 0
+    blockedRepealPolicy: 24
+    voterStates: []
+    voterSupportChange: 0
+    blockedChange:
+      workers: -4
+      middleClass: -3
+      elites: 2
+      economy: 1
+    blockedConsequence: The court rejects the defense and strikes down press protection
+      law.
+  right:
+    label: Seek limited redactions
+    consequence: Editors discuss narrow redactions. The law stays in force.
+    change:
+      workers: -1
+      middleClass: 1
+      elites: 2
+      economy: 2
+    followUp: {fileID: 0}
+    blockedFollowUp: {fileID: 0}
+    institution: 0
+    enactPolicy: 0
+    repealPolicy: 0
+    blockedRepealPolicy: 0
+    voterStates: []
+    voterSupportChange: 0
+    blockedChange:
+      workers: 0
+      middleClass: 0
+      elites: 0
+      economy: 0
+    blockedConsequence: 

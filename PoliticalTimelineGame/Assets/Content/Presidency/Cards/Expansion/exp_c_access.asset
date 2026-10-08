@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 419f0aa0370f329488c33c094f0c53c2, type: 3}
+  m_Name: exp_c_access
+  m_EditorClassIdentifier: 
+  id: exp_c_access
+  advisor: Chief Justice
+  category: THE COURT
+  headline: Polling access rules face a legal challenge.
+  briefing: Polling access rules face a legal challenge.
+  portrait: {fileID: -8688392447183608358, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  artwork: {fileID: 0}
+  usePortraitSprite: 1
+  earliestDecision: 1
+  weight: 2
+  oncePerRun: 0
+  condition: 0
+  requiredPolicy: 26
+  excludedPolicy: 0
+  historicalNote: 
+  sourceUrl: 
+  followUpOnly: 0
+  design: 0
+  left:
+    label: Defend equal access
+    consequence: The court upholds accessible polling requirements.
+    change:
+      workers: 3
+      middleClass: 3
+      elites: -3
+      economy: -1
+    followUp: {fileID: 0}
+    blockedFollowUp: {fileID: 0}
+    institution: 2
+    enactPolicy: 0
+    repealPolicy: 0
+    blockedRepealPolicy: 26
+    voterStates: []
+    voterSupportChange: 0
+    blockedChange:
+      workers: -4
+      middleClass: -3
+      elites: 2
+      economy: 1
+    blockedConsequence: The court rejects the defense and strikes down accessible
+      polling places.
+  right:
+    label: Seek a local agreement
+    consequence: Officials discuss implementation. The enacted law remains unchanged.
+    change:
+      workers: 1
+      middleClass: 1
+      elites: -1
+      economy: 1
+    followUp: {fileID: 0}
+    blockedFollowUp: {fileID: 0}
+    institution: 0
+    enactPolicy: 0
+    repealPolicy: 0
+    blockedRepealPolicy: 0
+    voterStates: []
+    voterSupportChange: 0
+    blockedChange:
+      workers: 0
+      middleClass: 0
+      elites: 0
+      economy: 0
+    blockedConsequence: 

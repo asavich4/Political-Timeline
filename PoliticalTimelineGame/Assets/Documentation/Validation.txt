@@ -1,6 +1,6 @@
 Unity compilation passed.
 Monthly calendar, election, Congress, court and deck rule checks passed.
-Deck valid: 102 cards ready to play.
+Deck valid: 182 cards ready to play.
 Swipe departure, indefinite reading pause, acknowledgement without another decision, animated meters, entry and input lock verified.
 House and Senate seat counts and selected-state support bar verified.
 Progressive presidential and midterm returns, uncalled-state privacy, skip and natural completion verified.
@@ -11,3 +11,4 @@ Directional hold previews, delayed commit, release threshold, canceled gestures,
 Physical iPhone testing and an iOS build have not been performed.
 Campaign-season gating, state voter changes, bounded decay, opposition weighting/blocking, expanded policy ledger, and four geometric power icons verified.
 Start menu, party choice, three independent disk slots, replacement cancellation, corrupt-save handling, unread consequence restore, full state round trip and deterministic next cards passed.
+80 expansion cards, 12 new policies, conditional repeal eligibility, law exclusion after passage, congressional success/failure and court invalidation in opposition verified. All card text and PNG sprites checked at phone sizes.

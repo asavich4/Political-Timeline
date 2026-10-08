@@ -36,6 +36,7 @@ namespace PoliticalTimeline.Editor
             Add(campaign, "pensions", "A promise made", "Raise pension payments for retirees?", "Raise payments", new SupportChange(7,8,-3,-8), "Retirees welcome relief. Financing becomes the next fight.", "Freeze payments", new SupportChange(-8,-7,4,8), "The balance sheet improves. Town halls grow angry.");
             Add(campaign, "diplomacy", "A seat at the table", "A rival offers peace talks. Accept?", "Begin talks", new SupportChange(4,6,-8,3), "Markets settle. Hawks accuse you of giving too much away.", "Impose sanctions", new SupportChange(-4,-5,8,-3), "Security allies approve. Exporters count their losses.");
             InstitutionalContent.Ensure(campaign);
+            ExpansionContent.Ensure(campaign);
             EditorUtility.SetDirty(campaign); AssetDatabase.SaveAssets(); return campaign;
         }
 

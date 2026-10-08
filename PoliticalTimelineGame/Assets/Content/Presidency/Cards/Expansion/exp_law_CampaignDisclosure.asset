@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 419f0aa0370f329488c33c094f0c53c2, type: 3}
+  m_Name: exp_law_CampaignDisclosure
+  m_EditorClassIdentifier: 
+  id: exp_law_CampaignDisclosure
+  advisor: Congressional Clerk
+  category: POLICY AGENDA
+  headline: Publish the names of major campaign donors?
+  briefing: Publish the names of major campaign donors?
+  portrait: {fileID: -1275117128306786066, guid: 878db280f2a863f4d8e289c4ad699fc1, type: 3}
+  artwork: {fileID: 0}
+  usePortraitSprite: 1
+  earliestDecision: 1
+  weight: 2
+  oncePerRun: 0
+  condition: 5
+  requiredPolicy: 0
+  excludedPolicy: 47
+  historicalNote: 
+  sourceUrl: 
+  followUpOnly: 0
+  design: 0
+  left:
+    label: Require disclosure
+    consequence: Congress requires large-donor disclosure. Some patrons withdraw.
+    change:
+      workers: 2
+      middleClass: 4
+      elites: -5
+      economy: -1
+    followUp: {fileID: 0}
+    blockedFollowUp: {fileID: 0}
+    institution: 1
+    enactPolicy: 47
+    repealPolicy: 0
+    blockedRepealPolicy: 0
+    voterStates: []
+    voterSupportChange: 0
+    blockedChange:
+      workers: -2
+      middleClass: -2
+      elites: 1
+      economy: 0
+    blockedConsequence: Congress rejects the proposal. No law or funding changes.
+  right:
+    label: Invite voluntary lists
+    consequence: Some donors agree. Disclosure remains voluntary.
+    change:
+      workers: -1
+      middleClass: -2
+      elites: 4
+      economy: 2
+    followUp: {fileID: 0}
+    blockedFollowUp: {fileID: 0}
+    institution: 0
+    enactPolicy: 0
+    repealPolicy: 0
+    blockedRepealPolicy: 0
+    voterStates: []
+    voterSupportChange: 0
+    blockedChange:
+      workers: 0
+      middleClass: 0
+      elites: 0
+      economy: 0
+    blockedConsequence: 

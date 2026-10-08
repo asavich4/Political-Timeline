@@ -26,6 +26,7 @@ namespace PoliticalTimeline
         public InstitutionRule institution;
         public PolicyId enactPolicy;
         public PolicyId repealPolicy;
+        [Tooltip("A court defeat can strike down this law even while the party is in opposition.")] public PolicyId blockedRepealPolicy;
         public string[] voterStates = new string[0];
         [Range(-12,12)] public float voterSupportChange;
         public SupportChange blockedChange;
@@ -48,6 +49,9 @@ namespace PoliticalTimeline
         public bool oncePerRun;
         public EventCondition condition;
         public PolicyId requiredPolicy;
+        public PolicyId excludedPolicy;
+        [TextArea(2,4)] public string historicalNote;
+        public string sourceUrl;
         public bool followUpOnly;
         public PortraitDesign design;
         public PolicyChoice left = new PolicyChoice();

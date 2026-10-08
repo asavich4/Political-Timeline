@@ -86,6 +86,7 @@ namespace PoliticalTimeline.Editor
             PortraitLibrary.Draw(GUILayoutUtility.GetRect(180,200,GUILayout.ExpandWidth(true)),card);
             if(card.portrait!=null && GUILayout.Button("Select portrait sprite")) Selection.activeObject=card.portrait;
             if(GUILayout.Button("Browse every portrait")) PortraitGallery.Open();
+            if(!string.IsNullOrEmpty(card.sourceUrl) && GUILayout.Button("Open historical source")) Application.OpenURL(card.sourceUrl);
             if(!Application.isPlaying && GUILayout.Button("Preview this card in the open scene"))
             {
                 var game=Object.FindFirstObjectByType<PresidencyGame>();

@@ -49,7 +49,7 @@ namespace PoliticalTimeline.Editor
                 using(new EditorGUILayout.VerticalScope(GUILayout.Width(250)))
                 {
                     listScroll=EditorGUILayout.BeginScrollView(listScroll);
-                    foreach(var c in campaign.cards.Where(c=>c!=null && (c.headline??"").IndexOf(search,StringComparison.OrdinalIgnoreCase)>=0))
+                    foreach(var c in campaign.cards.Where(c=>c!=null && (c.headline+" "+c.advisor+" "+c.category+" "+c.id).IndexOf(search,StringComparison.OrdinalIgnoreCase)>=0))
                         if(GUILayout.Button(c.headline,selected==c?EditorStyles.toolbarButton:EditorStyles.miniButton,GUILayout.Height(30))) Select(c);
                     EditorGUILayout.EndScrollView();
                     GUILayout.Label(campaign.cards.Count+" cards in this campaign",EditorStyles.miniLabel);

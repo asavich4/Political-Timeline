@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 419f0aa0370f329488c33c094f0c53c2, type: 3}
+  m_Name: exp_law_RightToRepair
+  m_EditorClassIdentifier: 
+  id: exp_law_RightToRepair
+  advisor: Union Apprentice
+  category: POLICY AGENDA
+  headline: Let independent shops access repair manuals?
+  briefing: Let independent shops access repair manuals?
+  portrait: {fileID: -8140706219470489119, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  artwork: {fileID: 0}
+  usePortraitSprite: 1
+  earliestDecision: 1
+  weight: 2
+  oncePerRun: 0
+  condition: 5
+  requiredPolicy: 0
+  excludedPolicy: 42
+  historicalNote: 
+  sourceUrl: 
+  followUpOnly: 0
+  design: 0
+  left:
+    label: Back repair rights
+    consequence: Congress enacts repair access. Local repair shops gain business.
+    change:
+      workers: 4
+      middleClass: 3
+      elites: -4
+      economy: 1
+    followUp: {fileID: 0}
+    blockedFollowUp: {fileID: 0}
+    institution: 1
+    enactPolicy: 42
+    repealPolicy: 0
+    blockedRepealPolicy: 0
+    voterStates: []
+    voterSupportChange: 0
+    blockedChange:
+      workers: -2
+      middleClass: -2
+      elites: 1
+      economy: 0
+    blockedConsequence: Congress rejects the proposal. No law or funding changes.
+  right:
+    label: Seek voluntary access
+    consequence: Manufacturers offer selected manuals. No legal right is created.
+    change:
+      workers: -1
+      middleClass: -2
+      elites: 3
+      economy: 2
+    followUp: {fileID: 0}
+    blockedFollowUp: {fileID: 0}
+    institution: 0
+    enactPolicy: 0
+    repealPolicy: 0
+    blockedRepealPolicy: 0
+    voterStates: []
+    voterSupportChange: 0
+    blockedChange:
+      workers: 0
+      middleClass: 0
+      elites: 0
+      economy: 0
+    blockedConsequence: 

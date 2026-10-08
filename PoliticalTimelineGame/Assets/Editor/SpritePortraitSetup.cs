@@ -41,6 +41,9 @@ namespace PoliticalTimeline.Editor
                 Sprite selected;
                 switch(card.advisor)
                 {
+                    case "Congressional Clerk": selected=AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/CharacterSprites/Clerk.png"); break;
+                    case "Park Ranger": selected=AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/CharacterSprites/Ranger.png"); break;
+                    case "Party Goose": selected=AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/CharacterSprites/Goose.png"); break;
                     case "Chief Justice": case "Solicitor General": selected=sprites["Judge"]; break;
                     case "House Speaker": case "Senate Leader": case "Committee Chair": selected=sprites["CongressLeader"]; break;
                     case "Campaign Chair": case "Campaign Organizer": case "Field Organizer": case "Party Organizer": case "Union Apprentice": selected=sprites["CampaignOrganizer"]; break;

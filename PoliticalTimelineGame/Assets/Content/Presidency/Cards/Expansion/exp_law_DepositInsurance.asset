@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 419f0aa0370f329488c33c094f0c53c2, type: 3}
+  m_Name: exp_law_DepositInsurance
+  m_EditorClassIdentifier: 
+  id: exp_law_DepositInsurance
+  advisor: Treasury Secretary
+  category: POLICY AGENDA
+  headline: Insure household deposits against bank failure?
+  briefing: Insure household deposits against bank failure?
+  portrait: {fileID: 21300000, guid: f3b86bea61f4d754ca6f9d8365d322f9, type: 3}
+  artwork: {fileID: 0}
+  usePortraitSprite: 1
+  earliestDecision: 1
+  weight: 2
+  oncePerRun: 0
+  condition: 5
+  requiredPolicy: 0
+  excludedPolicy: 41
+  historicalNote: Inspired by US deposit insurance created in 1933. This proposal
+    and its tradeoffs are fictional.
+  sourceUrl: https://www.fdic.gov/history/1930-1939
+  followUpOnly: 0
+  design: 0
+  left:
+    label: Back deposit cover
+    consequence: Congress enacts deposit insurance. Savers welcome protection.
+    change:
+      workers: 2
+      middleClass: 5
+      elites: -3
+      economy: -2
+    followUp: {fileID: 0}
+    blockedFollowUp: {fileID: 0}
+    institution: 1
+    enactPolicy: 41
+    repealPolicy: 0
+    blockedRepealPolicy: 0
+    voterStates: []
+    voterSupportChange: 0
+    blockedChange:
+      workers: -2
+      middleClass: -2
+      elites: 1
+      economy: 0
+    blockedConsequence: Congress rejects the proposal. No law or funding changes.
+  right:
+    label: Ask banks for pledges
+    consequence: Banks make voluntary promises. No insurance law is enacted.
+    change:
+      workers: -2
+      middleClass: -2
+      elites: 3
+      economy: 2
+    followUp: {fileID: 0}
+    blockedFollowUp: {fileID: 0}
+    institution: 0
+    enactPolicy: 0
+    repealPolicy: 0
+    blockedRepealPolicy: 0
+    voterStates: []
+    voterSupportChange: 0
+    blockedChange:
+      workers: 0
+      middleClass: 0
+      elites: 0
+      economy: 0
+    blockedConsequence: 

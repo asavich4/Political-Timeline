@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 419f0aa0370f329488c33c094f0c53c2, type: 3}
+  m_Name: exp_g_bankqueue
+  m_EditorClassIdentifier: 
+  id: exp_g_bankqueue
+  advisor: Treasury Secretary
+  category: GENERAL
+  headline: Bank queues are growing. Address the panic?
+  briefing: Bank queues are growing. Address the panic?
+  portrait: {fileID: 21300000, guid: f3b86bea61f4d754ca6f9d8365d322f9, type: 3}
+  artwork: {fileID: 0}
+  usePortraitSprite: 1
+  earliestDecision: 1
+  weight: 2
+  oncePerRun: 0
+  condition: 0
+  requiredPolicy: 0
+  excludedPolicy: 0
+  historicalNote: Inspired by the US banking panic and national bank holiday of March
+    1933. This is a fictional modern recurrence, not a replay of the historical decisions.
+  sourceUrl: https://www.federalreservehistory.org/essays/banking-panics-1931-33
+  followUpOnly: 0
+  design: 0
+  left:
+    label: Explain safeguards
+    consequence: A calm briefing reassures savers. Bankers dislike the scrutiny.
+    change:
+      workers: 1
+      middleClass: 4
+      elites: -3
+      economy: 1
+    followUp: {fileID: 0}
+    blockedFollowUp: {fileID: 0}
+    institution: 0
+    enactPolicy: 0
+    repealPolicy: 0
+    blockedRepealPolicy: 0
+    voterStates: []
+    voterSupportChange: 0
+    blockedChange:
+      workers: 0
+      middleClass: 0
+      elites: 0
+      economy: 0
+    blockedConsequence: 
+  right:
+    label: Meet bank leaders
+    consequence: Banks coordinate a response behind closed doors. Depositors want
+      answers.
+    change:
+      workers: -2
+      middleClass: -2
+      elites: 3
+      economy: 4
+    followUp: {fileID: 0}
+    blockedFollowUp: {fileID: 0}
+    institution: 0
+    enactPolicy: 0
+    repealPolicy: 0
+    blockedRepealPolicy: 0
+    voterStates: []
+    voterSupportChange: 0
+    blockedChange:
+      workers: 0
+      middleClass: 0
+      elites: 0
+      economy: 0
+    blockedConsequence: 

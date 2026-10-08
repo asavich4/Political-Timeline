@@ -18,7 +18,7 @@ Four buttons at the bottom open separate views so the main card stays uncluttere
 - **Congress:** separate semicircle diagrams show all 435 House seats and 100 Senate seats, with one dot per seat. Blue dots represent Democrats and red dots represent Republicans; the seat counts refer to your chosen party. The House needs 218 seats for a majority; the simplified Senate confirmation rule needs 51. Composition changes at November elections. Bills marked Congress need 218 House seats, 51 Senate seats and your party in the presidency. Without both majorities, the blocked outcome and support changes apply.
 - **Court:** nine fictional seats marked aligned, independent, opposed or vacant. A retirement creates a vacancy every 18 months if one is not already open. With your party in the presidency and at least 51 allied senators, the nomination button confirms an aligned replacement. Nominations do not consume an extra month. Judicial review cards need five aligned justices to uphold a policy; otherwise the blocked outcome applies. This is an intentionally simplified fictional rule. A vacancy-only event also lets the player nominate through a monthly card.
 
-**Policies:** a read-only ledger lists enacted policies, descriptions and enactment dates, with three entries per page. Forty durable policies can be enacted through successful event choices. Failed votes do not enact laws; repeat enactments do not duplicate them. Laws survive election losses and only a successful repeal event removes them. School meals has a repeal event available while enacted.
+**Policies:** a read-only ledger lists enacted policies, descriptions and enactment dates, with three entries per page. Fifty-two durable policies can be enacted through successful event choices. Failed votes do not enact laws; repeat enactments do not duplicate them. Laws survive election losses and only a successful repeal event removes them. School meals has a repeal event available while enacted.
 
 The party starts with 210 House seats and 48 senators. State leans are strengthened by 15%, support sensitivity is reduced to 0.55, and electoral resistance subtracts four margin points. These editable fictional difficulty settings make a neutral coalition less competitive. State leans and support weights are intentionally fictional and editable. Economic support affects state projections alongside workers, the middle class and elites. The old Security meter has been migrated to Economy without losing the authored effect values.
 
@@ -39,7 +39,7 @@ The state electoral weights use the [National Archives' 2024/2028 allocations](h
 
 **Political Timeline > Portrait Gallery** displays the actual artwork for every card, including cards restricted to campaigns, opposition and follow-up stories. Search by advisor, headline, category or condition. **Select sprite** opens the image asset; **Edit card** opens event text, choices, effects and availability rules.
 
-All 102 cards now use normal Unity Sprite references. Six new characters are sliced from `Assets/Art/CharacterSprites/PolicyCharacters.png`: Judge, CampaignOrganizer, Farmer, Nurse, Teacher and CongressLeader. Ten existing character sprites are reused from `Assets/Sprites`. Expand the new sheet in the Project browser to see its six sprites.
+All 182 cards now use normal Unity Sprite references. Six new characters are sliced from `Assets/Art/CharacterSprites/PolicyCharacters.png`: Judge, CampaignOrganizer, Farmer, Nurse, Teacher and CongressLeader. Ten existing character sprites are reused from `Assets/Sprites`. Expand the new sheet in the Project browser to see its six sprites.
 
 Assign any Sprite to **Portrait** in the card Inspector. The gallery, scene preview and game all use that same image. Edit source PNGs in an image editor; Unity reimports changes. Adjust slice rectangles in the Sprite Editor. **Assign Missing Character Sprites** fills empty slots without replacing assigned images.
 
@@ -55,7 +55,7 @@ Make and save layout changes outside Play mode; Unity discards scene changes mad
 
 **Political Timeline > Update Editable Scene** upgrades an older open scene without rebuilding its existing layout. The current scene is already upgraded. Inspector preview buttons expose panels that normally start inactive in the Hierarchy.
 
-Open **Political Timeline > Content Workshop**. New Card and Duplicate Selected add real ScriptableObject cards to the campaign. Write a short question (around 50 characters), two choice labels (around 20 characters), consequences, four support changes and an optional follow-up branch. Assign a Portrait sprite directly; advisor and category only control the text labels. Set a choice institution rule and its blocked consequence/support changes for conditional outcomes. Set the card condition to CourtVacancy or DividedCongress to restrict when it can appear. The starter deck now contains 102 cards, including opposition organizing and an event-driven policy repeal.
+Open **Political Timeline > Content Workshop**. New Card and Duplicate Selected add real ScriptableObject cards to the campaign. Write a short question (around 50 characters), two choice labels (around 20 characters), consequences, four support changes and an optional follow-up branch. Assign a Portrait sprite directly; advisor and category only control the text labels. Set a choice institution rule and its blocked consequence/support changes for conditional outcomes. Set the card condition to CourtVacancy or DividedCongress to restrict when it can appear. The starter deck now contains 182 cards, including opposition organizing and an event-driven policy repeal.
 
 Six four-card storylines cover backup power, paid leave, childcare, press protection, soil restoration and polling access. Each opening offers a policy path or a local response. Passing a bill unlocks its policy aftermath; a failed vote or opposition presidency leads to the local response. Follow-up-only chapters never enter random draws. Stories resume after election night. Eight new laws accompany these stories and eight standalone events. Their portraits use the shared PNG character collection.
 
@@ -67,7 +67,7 @@ The power symbols are drawn as crisp UI geometry by PowerIcon. The legacy PNG sl
 
 ## Status and scene maintenance
 
-This is an editable game foundation with 102 cards. Three local save slots preserve progress across Play sessions and app restarts. State and institutional systems are fictional abstractions, not a forecast. Physical iPhone testing and a signed iOS build remain to be done.
+This is an editable game foundation with 182 cards. Three local save slots preserve progress across Play sessions and app restarts. State and institutional systems are fictional abstractions, not a forecast. Physical iPhone testing and a signed iOS build remain to be done.
 
 The original Main scene is preserved. **Create Starter Scene** rebuilds the Presidency layout after confirmation while preserving content assets. Save custom layouts under a different scene name before rebuilding.
 
@@ -91,3 +91,19 @@ Progress autosaves after a decision, consequence acknowledgement, election ackno
 Files live in Unity's persistentDataPath/CampaignSaves as slot-1.json through slot-3.json. Writes use a temporary file and preserve the previous save as a .bak file. Invalid or unsupported saves are marked unavailable and cannot be loaded; they are not silently replaced. Saves are local to this device, not cloud-synced.
 
 The menu is saved in the Presidency scene under Portrait Layout > Start Menu. Select Presidency • Portrait and use Preview start menu or Preview party selection in the Inspector to edit their objects before Play. Preview card returns to the game view. All labels, colors, positions and button sizes are normal scene UI objects.
+## Everyday politics expansion
+
+80 new, editable card assets are under Assets/Content/Presidency/Cards/Expansion: 24 general community/party events, 16 funny events, 12 new-law proposals, 12 repeal fights, eight Congress events and eight court events. The deck now has 182 cards and 52 possible policies. General events have draw weight 2; funny events have weight 1. Most work in either government or opposition.
+
+Policy proposals require government and congressional passage. The new proposals stop appearing once their law is enacted. Repeals only appear with their corresponding law active and your party in government; a failed repeal leaves the law intact. Four court-defense cards require an active policy: privacy, clean air, press protection or polling access. Five aligned justices uphold it under the existing simplified court model; defeat removes it from the ledger even if your party is in opposition. Settlement choices leave the policy enacted. These are game abstractions, not legal guidance.
+
+New PNG portraits are Clerk.png, Ranger.png and Goose.png in Assets/Art/CharacterSprites. Existing portraits fill the other roles. The portrait gallery shows all of them. Content Workshop searches now include category, advisor and ID; search exp_ for the expansion, or PARTY NONSENSE for the comedy cards. Each asset exposes text, effects, portraits, required/excluded policy and source notes in the Inspector.
+
+Historical inspiration is marked in each relevant card's Historical Note and Source Url fields. Open historical source in the Inspector opens its reference. The choices are fictional modern situations, not verbatim historical accounts:
+
+- Bank queues: the 1931-33 banking panic and March 1933 bank holiday. [Federal Reserve History](https://www.federalreservehistory.org/essays/banking-panics-1931-33).
+- Deposit insurance: creation of US deposit insurance in 1933. [FDIC history](https://www.fdic.gov/history/1930-1939).
+- Burning river: the 1969 Cuyahoga River fire and environmental debate. [EPA history](https://www.epa.gov/sciencematters/putting-out-fire-50-years-science-protect-americas-water).
+- Press protections: the 1971 Pentagon Papers. [National Archives](https://www.archives.gov/research/pentagon-papers).
+
+Political Timeline > Add Expansion Cards installs any missing expansion assets and adds them to the campaign without rewriting existing ones. Manual Inspector edits are preserved by repeated installation. Existing policy enum values and card IDs are preserved for saved games.

@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 419f0aa0370f329488c33c094f0c53c2, type: 3}
+  m_Name: exp_repeal_DepositInsurance
+  m_EditorClassIdentifier: 
+  id: exp_repeal_DepositInsurance
+  advisor: Policy Director
+  category: POLICY REPEAL
+  headline: Bank lobbyists want deposit insurance repealed.
+  briefing: Bank lobbyists want deposit insurance repealed.
+  portrait: {fileID: 21300000, guid: ee574eb795a528d4a9466c557597b0d0, type: 3}
+  artwork: {fileID: 0}
+  usePortraitSprite: 1
+  earliestDecision: 1
+  weight: 1
+  oncePerRun: 0
+  condition: 5
+  requiredPolicy: 41
+  excludedPolicy: 0
+  historicalNote: 
+  sourceUrl: 
+  followUpOnly: 0
+  design: 0
+  left:
+    label: Vote to repeal
+    consequence: Congress repeals deposit insurance. Savers lose that guarantee.
+    change:
+      workers: -3
+      middleClass: -5
+      elites: 4
+      economy: 2
+    followUp: {fileID: 0}
+    blockedFollowUp: {fileID: 0}
+    institution: 1
+    enactPolicy: 0
+    repealPolicy: 41
+    blockedRepealPolicy: 0
+    voterStates: []
+    voterSupportChange: 0
+    blockedChange:
+      workers: -2
+      middleClass: -2
+      elites: 1
+      economy: 0
+    blockedConsequence: The repeal fails in Congress. Deposit insurance remains in
+      force.
+  right:
+    label: Keep the guarantee
+    consequence: The insurance remains. Bank lobbyists reduce their support.
+    change:
+      workers: 2
+      middleClass: 3
+      elites: -3
+      economy: -1
+    followUp: {fileID: 0}
+    blockedFollowUp: {fileID: 0}
+    institution: 0
+    enactPolicy: 0
+    repealPolicy: 0
+    blockedRepealPolicy: 0
+    voterStates: []
+    voterSupportChange: 0
+    blockedChange:
+      workers: 0
+      middleClass: 0
+      elites: 0
+      economy: 0
+    blockedConsequence: 

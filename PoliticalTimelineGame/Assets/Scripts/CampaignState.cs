@@ -19,8 +19,12 @@ namespace PoliticalTimeline
         public bool ElectionPending { get; private set; }
         readonly CampaignDefinition definition;
         readonly Random random;
+        readonly int seed;
+        int draws;
+        int startYear;
+        public PartyTeam Party { get; private set; }
         readonly HashSet<DecisionCard> used=new HashSet<DecisionCard>();
-        public DateTime CurrentMonth => new DateTime(definition.startYear,1,1).AddMonths(decisions);
+        public DateTime CurrentMonth => new DateTime(startYear,1,1).AddMonths(decisions);
         public DateTime DisplayMonth => ElectionPending ? CurrentMonth.AddMonths(-1) : CurrentMonth;
         public bool IsElectionYear => DisplayMonth.Year%2==0;
         public bool IsCampaignSeason => CurrentMonth.Year%2==0 && CurrentMonth.Month<=11;
@@ -28,9 +32,11 @@ namespace PoliticalTimeline
         public int Term => decisions/48+1;
         public int Approval => (support[0]+support[1]+support[2]+support[3])/4;
 
-        public CampaignState(CampaignDefinition campaign,int seed)
+        public CampaignState(CampaignDefinition campaign,int seed,PartyTeam party=PartyTeam.Democrat)
         {
-            definition=campaign; random=new Random(seed); nation=new NationalState(campaign.nation);
+            this.seed=seed; Party=party;
+            startYear=campaign.startYear;
+            definition=campaign; random=new Random(seed); nation=new NationalState(campaign.nation,party);
             for(int i=0;i<4;i++) support[i]=campaign.startingSupport;
             Draw(null);
         }
@@ -71,10 +77,32 @@ namespace PoliticalTimeline
             var eligible=definition.cards.Where(c=>c!=null && !c.followUpOnly && c.earliestDecision<=decisions+1 && nation.Allows(c.condition) && (c.condition!=EventCondition.CampaignSeason || IsCampaignSeason) && (nation.HoldsPresidency || (c.left.enactPolicy==PolicyId.None && c.right.enactPolicy==PolicyId.None)) && (c.requiredPolicy==PolicyId.None || policies.Any(p=>p.Id==c.requiredPolicy)) && (!c.oncePerRun||!used.Contains(c))).ToList();
             if(eligible.Count>1) eligible.Remove(current);
             if(eligible.Count==0) { current=null; lastResult="No events are available. Check the campaign deck."; return; }
-            int roll=random.Next(eligible.Sum(DrawWeight));
+            int roll=random.Next(eligible.Sum(DrawWeight)); draws++;
             foreach(var card in eligible) { roll-=DrawWeight(card); if(roll<0) {current=card; return;} }
         }
         int DrawWeight(DecisionCard card) => Math.Max(1,card.weight)*(!nation.HoldsPresidency && card.condition==EventCondition.InOpposition?3:1);
         void Finish(string title) { ended=true; ending=title; }
+        public CampaignSave Export(bool unread=false)
+        {
+            var save=new CampaignSave { party=(int)Party, seed=seed, draws=draws, decisions=decisions, support=(int[])support.Clone(), currentCard=current?.id,
+                lastResult=lastResult, ended=ended, ending=ending, election=lastElection, electionPending=ElectionPending, unreadOutcome=unread,
+                usedCards=used.Select(c=>c.id).ToArray(), policies=policies.Select(p=>(int)p.Id).ToArray(), policyDates=policies.Select(p=>p.Enacted.Ticks).ToArray() };
+            save.startYear=startYear; nation.Export(save); return save;
+        }
+        public static CampaignState Restore(CampaignDefinition definition,CampaignSave save)
+        {
+            var state=new CampaignState(definition,save.seed,(PartyTeam)save.party);
+            state.startYear=save.startYear;
+            // One Random.Next call per draw, regardless of its upper bound.
+            while(state.draws<save.draws) { state.random.Next(1); state.draws++; }
+            state.decisions=save.decisions; Array.Copy(save.support,state.support,4);
+            state.current=definition.cards.Find(c=>c.id==save.currentCard);
+            if(state.current==null && !save.ended) throw new System.IO.InvalidDataException("The saved event is missing from this campaign.");
+            state.lastResult=save.lastResult; state.ended=save.ended; state.ending=save.ending;
+            state.lastElection=save.election; state.ElectionPending=save.electionPending;
+            foreach(var id in save.usedCards) { var c=definition.cards.Find(card=>card.id==id); if(c!=null) state.used.Add(c); }
+            for(int i=0;i<save.policies.Length;i++) state.policies.Add(new EnactedPolicy((PolicyId)save.policies[i],new DateTime(save.policyDates[i])));
+            state.nation.Restore(save); return state;
+        }
     }
 }

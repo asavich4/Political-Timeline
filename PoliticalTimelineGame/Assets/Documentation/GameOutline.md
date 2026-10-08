@@ -14,8 +14,8 @@ The cards use illustrated PNG character sprites, muted colors and a paper captio
 
 Four buttons at the bottom open separate views so the main card stays uncluttered:
 
-- **Map:** geographic outlines of all 50 states and DC, with Alaska and Hawaii inset. Teal favors your coalition, red favors the opposition, and gray means a close race. Tap a state to reveal its electoral votes and projected support bar, with a 50% marker. Support is the two-coalition vote share implied by the simulated margin (50 + margin / 2). Election-night selections hide the bar until that state reports, then use its recorded election margin. Larger shortcuts below the map select DC, DE, RI, CT, NJ and MA. These are fictional game projections, not real polling or party affiliations.
-- **Congress:** separate semicircle diagrams show all 435 House seats and 100 Senate seats, with one dot per seat. Teal dots belong to your coalition; red dots belong to the opposition. The House needs 218 seats for a majority; the simplified Senate confirmation rule needs 51. Composition changes at November elections. Bills marked Congress need 218 House seats, 51 Senate seats and your party in the presidency. Without both majorities, the blocked outcome and support changes apply.
+- **Map:** geographic outlines of all 50 states and DC, with Alaska and Hawaii inset. Blue represents Democrats, red represents Republicans, and gray means a close race. Tap a state to reveal its electoral votes and projected support bar, with a 50% marker. Support is the two-coalition vote share implied by the simulated margin (50 + margin / 2). Election-night selections hide the bar until that state reports, then use its recorded election margin. Larger shortcuts below the map select DC, DE, RI, CT, NJ and MA. These are fictional game projections, not real polling or party affiliations.
+- **Congress:** separate semicircle diagrams show all 435 House seats and 100 Senate seats, with one dot per seat. Blue dots represent Democrats and red dots represent Republicans; the seat counts refer to your chosen party. The House needs 218 seats for a majority; the simplified Senate confirmation rule needs 51. Composition changes at November elections. Bills marked Congress need 218 House seats, 51 Senate seats and your party in the presidency. Without both majorities, the blocked outcome and support changes apply.
 - **Court:** nine fictional seats marked aligned, independent, opposed or vacant. A retirement creates a vacancy every 18 months if one is not already open. With your party in the presidency and at least 51 allied senators, the nomination button confirms an aligned replacement. Nominations do not consume an extra month. Judicial review cards need five aligned justices to uphold a policy; otherwise the blocked outcome applies. This is an intentionally simplified fictional rule. A vacancy-only event also lets the player nominate through a monthly card.
 
 **Policies:** a read-only ledger lists enacted policies, descriptions and enactment dates, with three entries per page. Forty durable policies can be enacted through successful event choices. Failed votes do not enact laws; repeat enactments do not duplicate them. Laws survive election losses and only a successful repeal event removes them. School meals has a repeal event available while enacted.
@@ -67,7 +67,7 @@ The power symbols are drawn as crisp UI geometry by PowerIcon. The legacy PNG sl
 
 ## Status and scene maintenance
 
-This is an editable game foundation with 102 cards. Progress currently resets when Play mode ends. State and institutional systems are fictional abstractions, not a forecast. Physical iPhone testing and a signed iOS build remain to be done.
+This is an editable game foundation with 102 cards. Three local save slots preserve progress across Play sessions and app restarts. State and institutional systems are fictional abstractions, not a forecast. Physical iPhone testing and a signed iOS build remain to be done.
 
 The original Main scene is preserved. **Create Starter Scene** rebuilds the Presidency layout after confirmation while preserving content assets. Save custom layouts under a different scene name before rebuilding.
 
@@ -79,3 +79,15 @@ Eight new opposition-only cards cover four legislative blocking fights and four 
 
 Twelve new governing-policy proposals add transit, renter protection, food safety, disaster insurance, cybersecurity, small-business credit, veterans care, water conservation, public records, wage enforcement, rural clinics and mental-health access.
 
+
+## Start menu, party choice and saves
+
+Play opens the start menu. Each of three slots offers New Game or Continue. Starting in an occupied slot opens a party-selection screen with an explicit Replace & Start button; Back cancels without changing the existing save. Choose Democrat or Republican before starting. The selected team is shown on the in-game Save & Menu button.
+
+Party choice determines which side of the fictional state lean each player starts on, and blue/red affiliation in the map, Congress and support bars. Both parties use the same event deck and support rules. The state leans are fictional balancing data, not actual polling or an ideological model.
+
+Progress autosaves after a decision, consequence acknowledgement, election acknowledgement and court nomination. Save & Menu saves the active slot and returns to the slot list. Backgrounding or quitting also saves. Saves include the current event, next-draw random sequence, seen one-time events, four support meters, elapsed months, party, policies and their enactment dates, House and individual Senate seats, court seats, state outreach, control of the presidency, unread consequence and election results. Election reporting resumes from the saved number of reported states.
+
+Files live in Unity's persistentDataPath/CampaignSaves as slot-1.json through slot-3.json. Writes use a temporary file and preserve the previous save as a .bak file. Invalid or unsupported saves are marked unavailable and cannot be loaded; they are not silently replaced. Saves are local to this device, not cloud-synced.
+
+The menu is saved in the Presidency scene under Portrait Layout > Start Menu. Select Presidency • Portrait and use Preview start menu or Preview party selection in the Inspector to edit their objects before Play. Preview card returns to the game view. All labels, colors, positions and button sizes are normal scene UI objects.

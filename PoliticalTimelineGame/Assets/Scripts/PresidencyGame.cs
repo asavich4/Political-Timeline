@@ -16,6 +16,8 @@ namespace PoliticalTimeline
         public Image background;
         public Image[] powerIcons;
         public NationalPanels nationalPanels;
+        public FrontMenu frontMenu;
+        public bool HasUnreadOutcome => transitionPhase==1 || transitionPhase==2 || transitionPhase==4;
         public CampaignState State => state;
         public CanvasGroup choiceOverlay;
         public Image commitIndicator;
@@ -48,17 +50,20 @@ namespace PoliticalTimeline
         [SerializeField] TMP_Text outcomeText;
         public int Decisions => state == null ? 0 : state.decisions;
         float SwipeThreshold => cardTransform.rect.width * .22f;
-        bool HelpOpen => (helpPanel != null && helpPanel.activeSelf) || (nationalPanels != null && nationalPanels.IsOpen);
+        bool HelpOpen => (frontMenu!=null && frontMenu.IsOpen) || (helpPanel != null && helpPanel.activeSelf) || (nationalPanels != null && nationalPanels.IsOpen);
 
-        void Start() { if(Application.isPlaying) Initialize(); }
+        void Start() { if(Application.isPlaying) { Initialize(); frontMenu.ShowStart(); } }
         public void BuildEditablePresentation()
         {
             BuildCardFace(); BuildPowerIcons(); BuildOutcomePanel(); nationalPanels.BuildEditablePresentation();
-            editablePresentationVersion=2;
+            if(frontMenu==null) frontMenu=gameObject.GetComponent<FrontMenu>()??gameObject.AddComponent<FrontMenu>();
+            frontMenu.Build(this);
+            editablePresentationVersion=3;
         }
         public void PreviewCardForEditing(DecisionCard card)
         {
             editorPreviewCard=card; BuildEditablePresentation();
+            frontMenu.panel.SetActive(false);
             nationalPanels.gameObject.SetActive(false); helpPanel.SetActive(false); outcomePanel.SetActive(false);
             cardTransform.gameObject.SetActive(true); restartButton.gameObject.SetActive(false);
             choiceOverlay.alpha=0; RenderEditorCard();
@@ -66,6 +71,7 @@ namespace PoliticalTimeline
         public void PreviewOutcomeForEditing()
         {
             BuildEditablePresentation(); nationalPanels.gameObject.SetActive(false); helpPanel.SetActive(false);
+            frontMenu.panel.SetActive(false);
             cardTransform.gameObject.SetActive(false); outcomePanel.SetActive(true);
             outcomeText.text=editorPreviewCard!=null?editorPreviewCard.left.consequence:"Your decision's consequence appears here.";
         }
@@ -86,8 +92,10 @@ namespace PoliticalTimeline
             BuildCardFace();
             BuildPowerIcons();
             BuildOutcomePanel();
+            if(frontMenu==null) frontMenu=gameObject.GetComponent<FrontMenu>()??gameObject.AddComponent<FrontMenu>();
+            frontMenu.Build(this); frontMenu.Bind(); frontMenu.panel.SetActive(false);
             home = cardTransform.anchoredPosition;
-            restartButton.onClick.AddListener(Restart);
+            restartButton.onClick.AddListener(()=>frontMenu.ShowStart());
             for(int i=0;i<powerButtons.Length;i++)
             {
                 int power=i;
@@ -111,11 +119,20 @@ namespace PoliticalTimeline
             Render();
         }
         public void Refresh() { if(!IsTransitioning) Render(); }
+        public void UseCampaign(CampaignState restored,bool unread)
+        {
+            CancelDrag(); transitionPhase=0; transitionTime=0; inputReady=0;
+            state=restored; outcomePanel.SetActive(false); helpPanel.SetActive(false); nationalPanels.ResetElectionNight(); nationalPanels.gameObject.SetActive(false);
+            ResetCard(); ResetOutcome(); ClearFeedback(); Render();
+            if(unread) { transitionPhase=4; cardTransform.gameObject.SetActive(false); outcomeText.text=state.lastResult; outcomePanel.SetActive(true); }
+            else if(state.ElectionPending) nationalPanels.OpenElection();
+        }
         public void CancelInteraction() => CancelDrag();
 
         void Update()
         {
             if(!Application.isPlaying) { if(!initialized) RenderEditorCard(); return; }
+            if(frontMenu!=null && frontMenu.IsOpen) return;
             if(IsTransitioning && !AwaitingAcknowledgement) { AdvanceTransition(Time.unscaledDeltaTime); return; }
             if (!dragging && feedbackUntil > 0 && Time.unscaledTime >= feedbackUntil) ClearFeedback();
             if (state == null || state.current==null || (state.ended && !AwaitingAcknowledgement) || dragging || HelpOpen || Time.unscaledTime < inputReady) return;
@@ -197,6 +214,7 @@ namespace PoliticalTimeline
 
         public void Decide(bool right)
         {
+            if(frontMenu!=null && frontMenu.IsOpen) return;
             if(AwaitingAcknowledgement) { AcknowledgeOutcome(right); return; }
             if (state == null || state.current==null || state.ended || state.ElectionPending || IsTransitioning || HelpOpen || Time.unscaledTime < inputReady) return;
             var choice=right ? state.current.right : state.current.left;
@@ -215,6 +233,7 @@ namespace PoliticalTimeline
                 voterFeedback+=(voterFeedback==""?"":" · ")+state.nation.states[i].abbreviation+$" {delta:+0.0;-0.0;0}pp";
             }
             transitionPhase=1; transitionTime=0;
+            frontMenu?.Save();
             choiceOverlay.alpha=0; commitIndicator.enabled=false;
             ShowFeedback(change, true); feedbackUntil=0;
             for(int i=0;i<4;i++) { int delta=state.support[i]-Mathf.RoundToInt(previousSupport[i]*100); supportChanges[i].text=delta==0?"":delta>0?"+"+delta:delta.ToString(); }
@@ -227,6 +246,7 @@ namespace PoliticalTimeline
             departurePosition=rect.anchoredPosition; departureAngle=rect.localEulerAngles.z;
             departureDirection=right?1:-1; transitionPhase=5; transitionTime=0;
             dragging=false; keyboardDirection=0;
+            frontMenu?.Save();
         }
 
         // Explicit time steps keep playback deterministic and testable without real-time waits.

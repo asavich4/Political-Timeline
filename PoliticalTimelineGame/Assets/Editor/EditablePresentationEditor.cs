@@ -13,7 +13,7 @@ namespace PoliticalTimeline.Editor
         {
             if(Application.isBatchMode || EditorApplication.isPlayingOrWillChangePlaymode) return;
             var game=Object.FindFirstObjectByType<PresidencyGame>();
-            if(game==null || game.editablePresentationVersion>=2) return;
+            if(game==null || game.editablePresentationVersion>=3) return;
             bool dirty=game.gameObject.scene.isDirty;
             Upgrade(game);
             if(!dirty) EditorSceneManager.SaveScene(game.gameObject.scene);
@@ -32,6 +32,7 @@ namespace PoliticalTimeline.Editor
             game.BuildEditablePresentation(); game.nationalPanels.PreviewForEditing(1,game.campaign);
             foreach(var legacyArt in game.cardTransform.GetComponentsInChildren<AdvisorArt>(true)) Undo.DestroyObjectImmediate(legacyArt.gameObject);
             game.PreviewCardForEditing(game.editorPreviewCard!=null?game.editorPreviewCard:game.campaign.cards[0]);
+            game.frontMenu.panel.SetActive(true);
             EditorUtility.SetDirty(game); EditorUtility.SetDirty(game.nationalPanels);
             EditorSceneManager.MarkSceneDirty(game.gameObject.scene);
         }
@@ -64,10 +65,12 @@ namespace PoliticalTimeline.Editor
             EditorGUILayout.HelpBox("These visuals are saved in the scene. Preview a page, then edit its objects in the Hierarchy. Preview Card uses the asset assigned below.",MessageType.Info);
             using(new EditorGUI.DisabledScope(Application.isPlaying))
             {
+                if(GUILayout.Button("Preview start menu")) { game.BuildEditablePresentation(); game.frontMenu.panel.SetActive(true); game.frontMenu.slotsPage.SetActive(true); game.frontMenu.partyPage.SetActive(false); Dirty(game); }
+                if(GUILayout.Button("Preview party selection")) { game.BuildEditablePresentation(); game.frontMenu.panel.SetActive(true); game.frontMenu.slotsPage.SetActive(false); game.frontMenu.partyPage.SetActive(true); Dirty(game); }
                 if(GUILayout.Button("Preview card")) { Undo.RegisterFullObjectHierarchyUndo(game.gameObject,"Preview card"); game.PreviewCardForEditing(game.editorPreviewCard!=null?game.editorPreviewCard:game.campaign.cards[0]); Dirty(game); }
                 if(GUILayout.Button("Preview consequence")) { game.PreviewOutcomeForEditing(); Dirty(game); }
                 string[] pages={"Map","Congress","Court","Policies"};
-                using(new EditorGUILayout.HorizontalScope()) for(int i=0;i<pages.Length;i++) if(GUILayout.Button(pages[i])) { game.BuildEditablePresentation(); game.nationalPanels.PreviewForEditing(i,game.campaign); Dirty(game); }
+                using(new EditorGUILayout.HorizontalScope()) for(int i=0;i<pages.Length;i++) if(GUILayout.Button(pages[i])) { game.BuildEditablePresentation(); game.frontMenu.panel.SetActive(false); game.nationalPanels.PreviewForEditing(i,game.campaign); Dirty(game); }
             }
             DrawDefaultInspector();
         }

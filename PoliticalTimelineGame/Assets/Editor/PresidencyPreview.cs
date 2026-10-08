@@ -89,7 +89,8 @@ namespace PoliticalTimeline.Editor
             game.AdvanceTransition(2);
             Check(!game.IsTransitioning && game.cardTransform.gameObject.activeSelf,"New card finishes entering");
             for(int i=0;i<4;i++) Check(Mathf.Abs(game.supportFills[i].fillAmount-game.State.support[i]/100f)<.001f,"Animated meters reach exact support");
-            game.restartButton.onClick.Invoke(); Check(game.Decisions==0,"Restart");
+            game.restartButton.onClick.Invoke(); Check(game.frontMenu.IsOpen,"Restart opens slot menu");
+            game.frontMenu.panel.SetActive(false); game.Restart(); Check(game.Decisions==0,"Restart");
             Swipe(game,new Vector2(-110,0)); Check(game.Decisions==1,"Left swipe commits");
             released=game.cardTransform.anchoredPosition; game.AdvanceTransition(.15f);
             Check(game.cardTransform.anchoredPosition.x<released.x,"Left card travels left");

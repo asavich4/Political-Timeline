@@ -29,7 +29,9 @@ namespace PoliticalTimeline
         int policyPage;
         public ElectionNight Night { get; private set; }
         public bool IsOpen => gameObject.activeSelf;
-        static readonly Color Allied=new Color(.12f,.43f,.48f), Opposed=new Color(.73f,.30f,.22f), Tossup=new Color(.50f,.49f,.43f);
+        static readonly Color Blue=new Color(.18f,.40f,.70f), Red=new Color(.73f,.30f,.22f), Tossup=new Color(.50f,.49f,.43f);
+        Color Allied => game!=null && game.State!=null && game.State.Party==PartyTeam.Republican?Red:Blue;
+        Color Opposed => game!=null && game.State!=null && game.State.Party==PartyTeam.Republican?Blue:Red;
 
         public void Initialize(PresidencyGame owner)
         {
@@ -51,7 +53,7 @@ namespace PoliticalTimeline
             var nation=new NationalState(campaign.nation);
             HouseChart.Present(435,nation.houseSeats); SenateChart.Present(100,nation.SenateSeats);
             houseText.text=$"House · {nation.houseSeats} / 435 yours"; senateText.text=$"Senate · {nation.SenateSeats} / 100 yours";
-            congressNote.text="Each dot is one seat. Teal: you · Red: opposition\nHouse majority: 218 · Senate majority: 51";
+            congressNote.text="Each dot is one seat. Blue: Democrats · Red: Republicans\nHouse majority: 218 · Senate majority: 51";
             policiesText.text="<b>Policy list</b>\nEnacted policies and dates appear here.\n\nEdit event assets to choose which policies they enact.";
             policiesText.color=mapDetail.color;
             courtSummary.text="4 aligned · 4 opposed · 1 independent";
@@ -74,7 +76,7 @@ namespace PoliticalTimeline
             tab=results && !Night.Complete?0:page; gameObject.SetActive(true); Render();
         }
         public void ResetElectionNight() { Night=null; results=false; }
-        void Update() => AdvanceElectionNight(Time.unscaledDeltaTime);
+        void Update() { if(game!=null && (game.frontMenu==null || !game.frontMenu.IsOpen)) AdvanceElectionNight(Time.unscaledDeltaTime); }
         public void AdvanceElectionNight(float seconds)
         { if(results && Night!=null && !Night.Complete && Night.Advance(seconds)) Render(); }
         public void Close()
@@ -90,13 +92,14 @@ namespace PoliticalTimeline
             {
                 if(!Night.Complete) { Night.Finish(); Render(); return; }
                 if(tab==0) {tab=1; Render();}
-                else { game.State.AcknowledgeElection(); results=false; gameObject.SetActive(false); game.Refresh(); }
+                else { game.State.AcknowledgeElection(); results=false; gameObject.SetActive(false); game.Refresh(); game.frontMenu?.Save(); }
                 return;
             }
-            if(tab==2) { game.State.nation.Nominate(); Render(); }
+            if(tab==2) { game.State.nation.Nominate(); Render(); game.frontMenu?.Save(); }
         }
         void Render()
         {
+            StateSupportFill.color=Allied; supportBar.GetComponent<Image>().color=Opposed;
             var state=game.State; var nation=state.nation; var election=state.lastElection;
             bool white=state.IsElectionYear;
             background.color=white?new Color(.98f,.975f,.95f):new Color(.13f,.18f,.19f);
@@ -135,7 +138,7 @@ namespace PoliticalTimeline
                 mapSummary.text=$"You {votes}  ·  Opposition {538-votes}";
                 mapDetail.text=results
                     ? $"House: {election.houseSeats}/435\nSenate: {election.senateSeats}/100\n"+(election.presidential?(votes>=270?"Your coalition wins.":"Opposition wins."):"Congress has been elected.")
-                    : "Teal: you · Red: opposition\nGray: close race\nTap a state for its outlook.";
+                    : "Blue: Democrats · Red: Republicans\nGray: close race\nTap a state for its outlook.";
                 if(results && !election.presidential) mapSummary.text="Presidential outlook";
             }
             if(tab==1)
@@ -143,10 +146,10 @@ namespace PoliticalTimeline
                 int house=results?election.houseSeats:nation.houseSeats, senate=results?election.senateSeats:nation.SenateSeats;
                 houseText.text=$"House · {house} / 435 yours"; houseFill.fillAmount=house/435f;
                 senateText.text=$"Senate · {senate} / 100 yours"; senateFill.fillAmount=senate/100f;
-                HouseChart.Present(435,house); SenateChart.Present(100,senate);
-                congressNote.text="Each dot is one seat. Teal: you · Red: opposition\n"+
+                HouseChart.coalitionColor=SenateChart.coalitionColor=Allied; HouseChart.oppositionColor=SenateChart.oppositionColor=Opposed; HouseChart.Present(435,house); SenateChart.Present(100,senate);
+                congressNote.text="Each dot is one seat. Blue: Democrats · Red: Republicans\n"+
                     $"House majority: 218 · Senate majority: 51\n"+(house>=218 && senate>=51?"You control both chambers.":"You need a deal across the aisle.");
-                if(!nation.HoldsPresidency) congressNote.text=$"Opposition can block with the House or 41 senators.\nBills blocked by your party: {nation.BlockedGovernmentBills}\nTeal: your seats · Red: government";
+                if(!nation.HoldsPresidency) congressNote.text=$"Opposition can block with the House or 41 senators.\nBills blocked by your party: {nation.BlockedGovernmentBills}\nYour party versus the government";
             }
             if(tab==2)
             {

@@ -121,6 +121,7 @@ namespace PoliticalTimeline.Editor
             game.BuildEditablePresentation();
             game.nationalPanels.PreviewForEditing(1,campaign);
             game.PreviewCardForEditing(campaign.cards[0]);
+            game.frontMenu.panel.SetActive(true);
             new GameObject("Event System",typeof(EventSystem),typeof(InputSystemUIInputModule));
             PlayerSettings.defaultInterfaceOrientation=UIOrientation.Portrait;
             PlayerSettings.allowedAutorotateToPortrait=true;

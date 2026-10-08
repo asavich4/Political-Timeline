@@ -2,7 +2,7 @@ using System;
 
 namespace PoliticalTimeline
 {
-    public sealed class ElectionResult
+    [Serializable] public sealed class ElectionResult
     {
         public int year, electoralVotes, houseSeats, senateSeats;
         public bool presidential;
@@ -18,6 +18,7 @@ namespace PoliticalTimeline
         readonly float advantage;
         readonly int retirementMonths;
         readonly float resistance, sensitivity;
+        readonly PartyTeam party;
         public bool HoldsPresidency { get; set; } = true;
         readonly float[] voterSupport;
         public int BlockedGovernmentBills { get; private set; }
@@ -45,8 +46,9 @@ namespace PoliticalTimeline
             (condition==EventCondition.InOpposition && !HoldsPresidency) ||
             condition==EventCondition.CampaignSeason || (condition==EventCondition.InGovernment && HoldsPresidency);
         public int AlignedJustices { get { int n=0; foreach(int seat in court) if(seat==1) n++; return n; } }
-        public NationalState(NationalDefinition config)
+        public NationalState(NationalDefinition config,PartyTeam party=PartyTeam.Democrat)
         {
+            this.party=party;
             states=config!=null ? config.states : NationalDefinition.CreateStates();
             voterSupport=new float[states.Length];
             advantage=config!=null ? config.incumbentAdvantage : 2;
@@ -61,7 +63,7 @@ namespace PoliticalTimeline
             var p=states[index]; var w=p.interests;
             float sum=Math.Max(.01f,w.x+w.y+w.z+w.w);
             float approval=(support[0]*w.x+support[1]*w.y+support[2]*w.z+support[3]*w.w)/sum;
-            return Math.Max(-49,Math.Min(49,p.startingLean*1.15f+(HoldsPresidency?advantage:-advantage)-resistance+(approval-50)*sensitivity+2*voterSupport[index]));
+            return Math.Max(-49,Math.Min(49,p.startingLean*(party==PartyTeam.Republican?-1.15f:1.15f)+(HoldsPresidency?advantage:-advantage)-resistance+(approval-50)*sensitivity+2*voterSupport[index]));
         }
         public int ProjectedVotes(int[] support)
         { int total=0; for(int i=0;i<states.Length;i++) if(Margin(i,support)>=0) total+=states[i].electoralVotes; return total; }
@@ -92,5 +94,7 @@ namespace PoliticalTimeline
         }
         public bool Nominate()
         { int seat=Vacancy; if(seat<0 || SenateSeats<51 || !HoldsPresidency) return false; court[seat]=1; return true; }
+        public void Export(CampaignSave save) { save.senate=(bool[])senate.Clone(); save.court=(int[])court.Clone(); save.voterSupport=(float[])voterSupport.Clone(); save.houseSeats=houseSeats; save.holdsPresidency=HoldsPresidency; save.blocked=BlockedGovernmentBills; }
+        public void Restore(CampaignSave save) { Array.Copy(save.senate,senate,100); Array.Copy(save.court,court,9); Array.Copy(save.voterSupport,voterSupport,voterSupport.Length); houseSeats=save.houseSeats; HoldsPresidency=save.holdsPresidency; BlockedGovernmentBills=save.blocked; }
     }
 }

@@ -39,6 +39,7 @@ namespace PoliticalTimeline
             return Count!=before;
         }
         public void Finish() { while(!Complete) ReportNext(); }
+        public void RestoreReports(int count) { while(Count<Math.Min(count,order.Length)) ReportNext(); }
         void ReportNext()
         {
             int i=order[Count++]; called[i]=true; Latest=i;

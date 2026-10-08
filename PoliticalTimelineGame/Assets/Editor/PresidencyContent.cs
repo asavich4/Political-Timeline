@@ -37,6 +37,7 @@ namespace PoliticalTimeline.Editor
             Add(campaign, "diplomacy", "A seat at the table", "A rival offers peace talks. Accept?", "Begin talks", new SupportChange(4,6,-8,3), "Markets settle. Hawks accuse you of giving too much away.", "Impose sanctions", new SupportChange(-4,-5,8,-3), "Security allies approve. Exporters count their losses.");
             InstitutionalContent.Ensure(campaign);
             ExpansionContent.Ensure(campaign);
+            CastEventContent.Ensure(campaign);
             EditorUtility.SetDirty(campaign); AssetDatabase.SaveAssets(); return campaign;
         }
 

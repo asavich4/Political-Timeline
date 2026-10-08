@@ -17,7 +17,7 @@ MonoBehaviour:
   category: GENERAL
   headline: An apprentice wants to speak at the conference.
   briefing: An apprentice wants to speak at the conference.
-  portrait: {fileID: -8140706219470489119, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  portrait: {fileID: 21300000, guid: 922661b617e58994a8ba1a3bd337caca, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1
@@ -30,6 +30,7 @@ MonoBehaviour:
   sourceUrl: 
   followUpOnly: 0
   design: 0
+  castRevision: 1
   left:
     label: Give them the stage
     consequence: A practical speech lands well. Senior figures lose speaking time.

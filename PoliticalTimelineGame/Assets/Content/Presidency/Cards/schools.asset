@@ -17,13 +17,15 @@ MonoBehaviour:
   category: DOMESTIC POLICY
   headline: Tomorrow's voters
   briefing: Our schools need repairs. Invest now?
-  portrait: {fileID: 21300000, guid: 8c4551f518af4f240bd8ec481bdb6cee, type: 3}
+  portrait: {fileID: 21300000, guid: b4c66cb7526ad6349a86a5db53007d73, type: 3}
   artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0
   condition: 0
   requiredPolicy: 0
+  castRevision: 1
+  usePortraitSprite: 1
   left:
     label: Fund the repairs
     consequence: Classrooms receive new equipment. Budget hearings turn hostile.

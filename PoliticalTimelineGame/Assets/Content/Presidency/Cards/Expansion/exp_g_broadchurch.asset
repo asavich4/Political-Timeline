@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: exp_g_broadchurch
   m_EditorClassIdentifier: 
   id: exp_g_broadchurch
-  advisor: Chief of Staff
+  advisor: Head of Russia
   category: GENERAL
-  headline: Two party factions refuse to share a panel.
-  briefing: Two party factions refuse to share a panel.
-  portrait: {fileID: 21300000, guid: 8c4551f518af4f240bd8ec481bdb6cee, type: 3}
+  headline: I offer a summit. Public talks or private meetings?
+  briefing: I offer a summit. Public talks or private meetings?
+  portrait: {fileID: 21300000, guid: 63237455eb6253945b29f138c16de1a6, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1
@@ -30,9 +30,11 @@ MonoBehaviour:
   sourceUrl: 
   followUpOnly: 0
   design: 0
+  castRevision: 1
   left:
-    label: Put both onstage
-    consequence: The argument is messy but members hear both sides.
+    label: Insist on public talks
+    consequence: Voters hear the arguments. Your allies dislike the messy public
+      disputes.
     change:
       workers: 2
       middleClass: 2
@@ -53,8 +55,8 @@ MonoBehaviour:
       economy: 0
     blockedConsequence: 
   right:
-    label: Hold separate meetings
-    consequence: Both factions relax. Critics say the party has two manifestos.
+    label: Meet behind closed doors
+    consequence: Negotiators speak freely. Critics suspect a secret bargain.
     change:
       workers: 1
       middleClass: -2

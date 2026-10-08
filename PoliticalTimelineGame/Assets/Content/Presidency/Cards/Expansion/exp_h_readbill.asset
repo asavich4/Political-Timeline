@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: exp_h_readbill
   m_EditorClassIdentifier: 
   id: exp_h_readbill
-  advisor: Congressional Clerk
+  advisor: Old Senator
   category: CONGRESS
-  headline: Nobody has read all 900 pages of the bill.
-  briefing: Nobody has read all 900 pages of the bill.
-  portrait: {fileID: -1275117128306786066, guid: 878db280f2a863f4d8e289c4ad699fc1, type: 3}
+  headline: Nine hundred pages? My spectacles have resigned.
+  briefing: Nine hundred pages? My spectacles have resigned.
+  portrait: {fileID: 21300000, guid: 621dbf3e0d4e9cf4899bb79f2f53d3ec, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1
@@ -30,6 +30,7 @@ MonoBehaviour:
   sourceUrl: 
   followUpOnly: 0
   design: 0
+  castRevision: 1
   left:
     label: Request more time
     consequence: Staff find a costly clause. Leaders accuse you of stalling.

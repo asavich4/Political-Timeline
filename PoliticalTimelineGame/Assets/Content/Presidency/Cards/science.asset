@@ -17,13 +17,15 @@ MonoBehaviour:
   category: DOMESTIC POLICY
   headline: A longer horizon
   briefing: Invest in new clean technology?
-  portrait: {fileID: 21300000, guid: f7c8e291b05e7af4abb637e16f7ed81a, type: 3}
+  portrait: {fileID: 21300000, guid: f7ad9fb8519c0414bb1f367a7cef0614, type: 3}
   artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0
   condition: 0
   requiredPolicy: 0
+  castRevision: 1
+  usePortraitSprite: 1
   left:
     label: Fund the research
     consequence: Universities begin hiring. Critics call it a distant promise.

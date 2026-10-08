@@ -173,7 +173,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      exp_law_DepositInsurancePreview_0: -5797826104684486257
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

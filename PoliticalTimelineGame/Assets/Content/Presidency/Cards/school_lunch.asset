@@ -17,13 +17,15 @@ MonoBehaviour:
   category: CONGRESS
   headline: An empty lunch tray
   briefing: Ask Congress to fund school meals?
-  portrait: {fileID: 3521880612142288986, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  portrait: {fileID: 21300000, guid: 8ecf7d464a8501d489e5794302464a7c, type: 3}
   artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0
   condition: 0
   requiredPolicy: 0
+  castRevision: 1
+  usePortraitSprite: 1
   left:
     label: Fund school meals
     consequence: Congress funds meals. Cafeterias reopen.

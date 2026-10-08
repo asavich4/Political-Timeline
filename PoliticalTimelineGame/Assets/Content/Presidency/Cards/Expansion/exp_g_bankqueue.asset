@@ -17,7 +17,7 @@ MonoBehaviour:
   category: GENERAL
   headline: Bank queues are growing. Address the panic?
   briefing: Bank queues are growing. Address the panic?
-  portrait: {fileID: 21300000, guid: f3b86bea61f4d754ca6f9d8365d322f9, type: 3}
+  portrait: {fileID: 21300000, guid: 2b64beb7d5d89da4586b60e57521b5aa, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1
@@ -31,6 +31,7 @@ MonoBehaviour:
   sourceUrl: https://www.federalreservehistory.org/essays/banking-panics-1931-33
   followUpOnly: 0
   design: 0
+  castRevision: 1
   left:
     label: Explain safeguards
     consequence: A calm briefing reassures savers. Bankers dislike the scrutiny.

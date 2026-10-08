@@ -13,17 +13,19 @@ MonoBehaviour:
   m_Name: trade
   m_EditorClassIdentifier: 
   id: trade
-  advisor: Labor Secretary
+  advisor: Head of China
   category: DOMESTIC POLICY
-  headline: Across the negotiating table
-  briefing: Cheaper imports could cost jobs. Sign the deal?
-  portrait: {fileID: 21300000, guid: 73c3a57ac1445be428055797d31f3a1a, type: 3}
+  headline: Our trade offer cuts prices. What about your workers?
+  briefing: Our trade offer cuts prices. What about your workers?
+  portrait: {fileID: 21300000, guid: 9fadc2ecffb7eca4ea87397d9c642d07, type: 3}
   artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0
   condition: 0
   requiredPolicy: 0
+  castRevision: 1
+  usePortraitSprite: 1
   left:
     label: Protect local jobs
     consequence: Factory towns celebrate. Shoppers face higher prices.

@@ -17,7 +17,7 @@ MonoBehaviour:
   category: POLICY AGENDA
   headline: Workers fear reporting serious wrongdoing.
   briefing: Workers fear reporting serious wrongdoing.
-  portrait: {fileID: -8688392447183608358, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  portrait: {fileID: 21300000, guid: 84e23fadf46481241b74e7064bdb13b2, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1
@@ -30,6 +30,7 @@ MonoBehaviour:
   sourceUrl: 
   followUpOnly: 0
   design: 0
+  castRevision: 1
   left:
     label: Protect reporting
     consequence: Congress enacts whistleblower protections.

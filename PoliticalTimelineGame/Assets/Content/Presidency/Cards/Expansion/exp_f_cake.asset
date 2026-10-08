@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: exp_f_cake
   m_EditorClassIdentifier: 
   id: exp_f_cake
-  advisor: Treasury Secretary
+  advisor: Wealthy Donor
   category: PARTY NONSENSE
-  headline: A donor cake says Happy Bribeday.
-  briefing: A donor cake says Happy Bribeday.
-  portrait: {fileID: 21300000, guid: f3b86bea61f4d754ca6f9d8365d322f9, type: 3}
+  headline: My cake says Happy Bribeday. Surely a bakery error?
+  briefing: My cake says Happy Bribeday. Surely a bakery error?
+  portrait: {fileID: 21300000, guid: c43ba816619246543b9a988782824726, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1
@@ -30,6 +30,7 @@ MonoBehaviour:
   sourceUrl: 
   followUpOnly: 0
   design: 0
+  castRevision: 1
   left:
     label: Return it
     consequence: Nobody can accuse you of eating the evidence. The donor sulks.

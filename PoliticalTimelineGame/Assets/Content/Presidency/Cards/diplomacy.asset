@@ -13,16 +13,18 @@ MonoBehaviour:
   m_Name: diplomacy
   m_EditorClassIdentifier: 
   id: diplomacy
-  advisor: Secretary of State
+  advisor: UN Diplomat
   category: FOREIGN AFFAIRS
-  headline: A seat at the table
-  briefing: A rival offers peace talks. Accept?
-  portrait: {fileID: 21300000, guid: 5bf4d51012a88a145aada2d83185b0fa, type: 3}
+  headline: A rival wants peace talks. Will your party engage?
+  briefing: A rival wants peace talks. Will your party engage?
+  portrait: {fileID: 21300000, guid: 7004f63d3d957364e95aaac975b1b547, type: 3}
   artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0
   condition: 0
+  castRevision: 1
+  usePortraitSprite: 1
   left:
     label: Begin talks
     consequence: Markets settle. Hawks accuse you of giving too much away.

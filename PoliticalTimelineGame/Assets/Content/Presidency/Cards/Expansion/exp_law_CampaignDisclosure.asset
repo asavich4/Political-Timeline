@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: exp_law_CampaignDisclosure
   m_EditorClassIdentifier: 
   id: exp_law_CampaignDisclosure
-  advisor: Congressional Clerk
+  advisor: Congress Head
   category: POLICY AGENDA
-  headline: Publish the names of major campaign donors?
-  briefing: Publish the names of major campaign donors?
-  portrait: {fileID: -1275117128306786066, guid: 878db280f2a863f4d8e289c4ad699fc1, type: 3}
+  headline: Show voters our major donors. Will you back a law?
+  briefing: Show voters our major donors. Will you back a law?
+  portrait: {fileID: 21300000, guid: 8ecf7d464a8501d489e5794302464a7c, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1
@@ -30,6 +30,7 @@ MonoBehaviour:
   sourceUrl: 
   followUpOnly: 0
   design: 0
+  castRevision: 1
   left:
     label: Require disclosure
     consequence: Congress requires large-donor disclosure. Some patrons withdraw.

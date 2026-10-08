@@ -17,13 +17,15 @@ MonoBehaviour:
   category: THE COURT
   headline: A locked phone
   briefing: Defend your new data privacy rule?
-  portrait: {fileID: -8688392447183608358, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  portrait: {fileID: 21300000, guid: 84e23fadf46481241b74e7064bdb13b2, type: 3}
   artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0
   condition: 0
   requiredPolicy: 0
+  castRevision: 1
+  usePortraitSprite: 1
   left:
     label: Fight in court
     consequence: The court upholds the rule. Personal data is protected.

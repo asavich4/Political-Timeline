@@ -17,12 +17,14 @@ MonoBehaviour:
   category: DOMESTIC POLICY
   headline: The docks fall silent
   briefing: The docks are on strike. Back the workers?
-  portrait: {fileID: 21300000, guid: 73c3a57ac1445be428055797d31f3a1a, type: 3}
+  portrait: {fileID: 21300000, guid: 922661b617e58994a8ba1a3bd337caca, type: 3}
   artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0
   condition: 0
+  castRevision: 1
+  usePortraitSprite: 1
   left:
     label: Back the workers
     consequence: Workers cheer. Importers warn of empty shelves.

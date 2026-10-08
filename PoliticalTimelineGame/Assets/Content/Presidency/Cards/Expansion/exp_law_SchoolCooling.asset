@@ -17,7 +17,7 @@ MonoBehaviour:
   category: POLICY AGENDA
   headline: Classrooms overheat. Fund cooling upgrades?
   briefing: Classrooms overheat. Fund cooling upgrades?
-  portrait: {fileID: 4395305070045058485, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  portrait: {fileID: 21300000, guid: 4f67ced7e8f396f49902a656d81e1be2, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1
@@ -30,6 +30,7 @@ MonoBehaviour:
   sourceUrl: 
   followUpOnly: 0
   design: 0
+  castRevision: 1
   left:
     label: Fund cool classrooms
     consequence: Congress funds school cooling and ventilation.

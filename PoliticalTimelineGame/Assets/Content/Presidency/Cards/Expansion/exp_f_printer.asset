@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: exp_f_printer
   m_EditorClassIdentifier: 
   id: exp_f_printer
-  advisor: Congressional Clerk
+  advisor: Party Intern
   category: PARTY NONSENSE
-  headline: The printer has eaten the entire manifesto.
-  briefing: The printer has eaten the entire manifesto.
-  portrait: {fileID: -1275117128306786066, guid: 878db280f2a863f4d8e289c4ad699fc1, type: 3}
+  headline: The printer ate your manifesto. I saved the stapler.
+  briefing: The printer ate your manifesto. I saved the stapler.
+  portrait: {fileID: 21300000, guid: 693c5e55b09635245a7fc1839f13960b, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1
@@ -30,6 +30,7 @@ MonoBehaviour:
   sourceUrl: 
   followUpOnly: 0
   design: 0
+  castRevision: 1
   left:
     label: Publish it online
     consequence: The manifesto survives. The printer is reassigned to envelopes.

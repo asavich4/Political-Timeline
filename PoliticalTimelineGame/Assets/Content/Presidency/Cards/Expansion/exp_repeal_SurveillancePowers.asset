@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: exp_repeal_SurveillancePowers
   m_EditorClassIdentifier: 
   id: exp_repeal_SurveillancePowers
-  advisor: Policy Director
+  advisor: Feminist Activist
   category: POLICY REPEAL
-  headline: Civil groups demand an end to expanded spying.
-  briefing: Civil groups demand an end to expanded spying.
-  portrait: {fileID: 21300000, guid: ee574eb795a528d4a9466c557597b0d0, type: 3}
+  headline: Expanded spying chills protest. End these powers.
+  briefing: Expanded spying chills protest. End these powers.
+  portrait: {fileID: 21300000, guid: 2e78ed18c6fa760459a7bb0fc2936976, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1
@@ -30,6 +30,7 @@ MonoBehaviour:
   sourceUrl: 
   followUpOnly: 0
   design: 0
+  castRevision: 1
   left:
     label: Repeal surveillance
     consequence: Congress repeals the expanded surveillance powers.

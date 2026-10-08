@@ -17,13 +17,15 @@ MonoBehaviour:
   category: PARTY STRATEGY
   headline: A broader movement
   briefing: Work with a rival grassroots group?
-  portrait: {fileID: -8140706219470489119, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  portrait: {fileID: 21300000, guid: e17b58c15c323704187d80a1e8e0f87c, type: 3}
   artwork: {fileID: 0}
   earliestDecision: 1
   weight: 3
   oncePerRun: 0
   condition: 3
   requiredPolicy: 0
+  castRevision: 1
+  usePortraitSprite: 1
   left:
     label: Build a coalition
     consequence: Your movement grows beyond its old base.

@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: exp_c_steps
   m_EditorClassIdentifier: 
   id: exp_c_steps
-  advisor: Solicitor General
+  advisor: Feminist Activist
   category: THE COURT
-  headline: Supporters want a rally on courthouse steps.
-  briefing: Supporters want a rally on courthouse steps.
-  portrait: {fileID: -8688392447183608358, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  headline: Our supporters want a peaceful courthouse rally.
+  briefing: Our supporters want a peaceful courthouse rally.
+  portrait: {fileID: 21300000, guid: 2e78ed18c6fa760459a7bb0fc2936976, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1
@@ -30,6 +30,7 @@ MonoBehaviour:
   sourceUrl: 
   followUpOnly: 0
   design: 0
+  castRevision: 1
   left:
     label: Hold a peaceful rally
     consequence: Supporters gather without disrupting the hearing. Critics call it

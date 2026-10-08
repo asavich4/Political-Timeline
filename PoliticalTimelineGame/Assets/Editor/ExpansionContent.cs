@@ -10,6 +10,8 @@ namespace PoliticalTimeline.Editor
         public const string Folder="Assets/Content/Presidency/Cards/Expansion";
         static Sprite Portrait(CampaignDefinition deck,string advisor)
         {
+            var cast=CharacterCastEditor.ForAdvisor(advisor);
+            if(cast!=null) return cast;
             string file=advisor=="Congressional Clerk"?"Clerk":advisor=="Park Ranger"?"Ranger":advisor=="Party Goose"?"Goose":null;
             if(file!=null) return AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/CharacterSprites/"+file+".png");
             return deck.cards.First(c=>c.advisor==advisor && c.portrait!=null).portrait;

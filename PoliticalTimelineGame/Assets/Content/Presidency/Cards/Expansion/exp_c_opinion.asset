@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: exp_c_opinion
   m_EditorClassIdentifier: 
   id: exp_c_opinion
-  advisor: Congressional Clerk
+  advisor: News Lady
   category: THE COURT
-  headline: A court opinion is 200 pages. Explain it how?
-  briefing: A court opinion is 200 pages. Explain it how?
-  portrait: {fileID: -1275117128306786066, guid: 878db280f2a863f4d8e289c4ad699fc1, type: 3}
+  headline: Two hundred pages of legalese. How do we explain it?
+  briefing: Two hundred pages of legalese. How do we explain it?
+  portrait: {fileID: 21300000, guid: 74d7768e5cb6e5543bee76e455bb6569, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1
@@ -30,6 +30,7 @@ MonoBehaviour:
   sourceUrl: 
   followUpOnly: 0
   design: 0
+  castRevision: 1
   left:
     label: Publish a plain guide
     consequence: More members understand it. Lawyers argue over every simplified

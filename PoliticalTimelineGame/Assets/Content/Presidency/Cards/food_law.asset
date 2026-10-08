@@ -17,7 +17,7 @@ MonoBehaviour:
   category: POLICY AGENDA
   headline: Food inspectors cannot cover every plant.
   briefing: Food inspectors cannot cover every plant.
-  portrait: {fileID: 21300000, guid: ee574eb795a528d4a9466c557597b0d0, type: 3}
+  portrait: {fileID: 21300000, guid: b2a3dec849686ed4e9686372f5f221b7, type: 3}
   artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
@@ -26,6 +26,8 @@ MonoBehaviour:
   requiredPolicy: 0
   followUpOnly: 0
   design: 2
+  castRevision: 1
+  usePortraitSprite: 1
   left:
     label: Hire more inspectors
     consequence: Congress enacts food safety inspections.

@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: exp_g_donoraccess
   m_EditorClassIdentifier: 
   id: exp_g_donoraccess
-  advisor: Treasury Secretary
+  advisor: Wealthy Donor
   category: GENERAL
-  headline: A donor asks for a private policy dinner.
-  briefing: A donor asks for a private policy dinner.
-  portrait: {fileID: 21300000, guid: f3b86bea61f4d754ca6f9d8365d322f9, type: 3}
+  headline: Dinner with me? I have several very profitable ideas.
+  briefing: Dinner with me? I have several very profitable ideas.
+  portrait: {fileID: 21300000, guid: c43ba816619246543b9a988782824726, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1
@@ -30,6 +30,7 @@ MonoBehaviour:
   sourceUrl: 
   followUpOnly: 0
   design: 0
+  castRevision: 1
   left:
     label: Insist on open minutes
     consequence: The discussion becomes public. The donor trims their contribution.

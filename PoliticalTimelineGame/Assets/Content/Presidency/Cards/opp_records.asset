@@ -17,7 +17,7 @@ MonoBehaviour:
   category: OPPOSITION
   headline: The government wants to seal public records.
   briefing: The government wants to seal public records.
-  portrait: {fileID: -8140706219470489119, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  portrait: {fileID: 21300000, guid: e17b58c15c323704187d80a1e8e0f87c, type: 3}
   artwork: {fileID: 0}
   earliestDecision: 1
   weight: 4
@@ -26,6 +26,8 @@ MonoBehaviour:
   requiredPolicy: 0
   followUpOnly: 0
   design: 6
+  castRevision: 1
+  usePortraitSprite: 1
   left:
     label: Block the secrecy bill
     consequence: Your party blocks the bill. Local supporters welcome the stand.

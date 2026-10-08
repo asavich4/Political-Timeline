@@ -17,7 +17,7 @@ MonoBehaviour:
   category: GENERAL
   headline: An oily river caught fire. Visit the banks?
   briefing: An oily river caught fire. Visit the banks?
-  portrait: {fileID: -5081659279774951377, guid: 579dbfa04bf9e3e428672932f1d49c42, type: 3}
+  portrait: {fileID: 21300000, guid: cbb21474fdebaa547a96a56fd01e486d, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1
@@ -31,6 +31,7 @@ MonoBehaviour:
   sourceUrl: https://www.epa.gov/sciencematters/putting-out-fire-50-years-science-protect-americas-water
   followUpOnly: 0
   design: 0
+  castRevision: 1
   left:
     label: Meet the residents
     consequence: Residents show the damage. Industrial donors brace for scrutiny.

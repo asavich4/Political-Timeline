@@ -13,15 +13,17 @@ MonoBehaviour:
   m_Name: defense
   m_EditorClassIdentifier: 
   id: defense
-  advisor: Security Adviser
+  advisor: Head of NATO
   category: NATIONAL SECURITY
-  headline: The procurement file
-  briefing: The fleet is over budget. Approve it?
-  portrait: {fileID: 21300000, guid: 5392be1f37fab5149bfeb3219d39833f, type: 3}
+  headline: Our allies need ships. Back the over-budget fleet?
+  briefing: Our allies need ships. Back the over-budget fleet?
+  portrait: {fileID: 21300000, guid: f465ae9a1dc759645b67953eac3b57b2, type: 3}
   artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0
+  castRevision: 1
+  usePortraitSprite: 1
   left:
     label: Order an audit
     consequence: The auditors arrive. Defense contractors call your office.

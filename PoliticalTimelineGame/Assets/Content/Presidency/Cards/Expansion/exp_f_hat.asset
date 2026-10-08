@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: exp_f_hat
   m_EditorClassIdentifier: 
   id: exp_f_hat
-  advisor: Party Organizer
+  advisor: Wife
   category: PARTY NONSENSE
-  headline: A donor sent 400 hats in the wrong party color.
-  briefing: A donor sent 400 hats in the wrong party color.
-  portrait: {fileID: -8140706219470489119, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  headline: Four hundred hats. Wrong party color. Your plan?
+  briefing: Four hundred hats. Wrong party color. Your plan?
+  portrait: {fileID: 21300000, guid: 2a81aef8116da6d40b98457d52771f66, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1
@@ -30,6 +30,7 @@ MonoBehaviour:
   sourceUrl: 
   followUpOnly: 0
   design: 0
+  castRevision: 1
   left:
     label: Donate them unbranded
     consequence: A shelter gets warm hats. The donor gets a careful thank-you.

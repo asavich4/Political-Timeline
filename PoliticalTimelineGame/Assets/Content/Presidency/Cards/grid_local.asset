@@ -17,7 +17,7 @@ MonoBehaviour:
   category: PARTY & COMMUNITY
   headline: The utility wants more time. Press them?
   briefing: The utility wants more time. Press them?
-  portrait: {fileID: 21300000, guid: 73c3a57ac1445be428055797d31f3a1a, type: 3}
+  portrait: {fileID: 21300000, guid: 922661b617e58994a8ba1a3bd337caca, type: 3}
   artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
@@ -26,6 +26,8 @@ MonoBehaviour:
   requiredPolicy: 0
   followUpOnly: 1
   design: 1
+  castRevision: 1
+  usePortraitSprite: 1
   left:
     label: Demand a deadline
     consequence: The utility publishes a repair schedule.

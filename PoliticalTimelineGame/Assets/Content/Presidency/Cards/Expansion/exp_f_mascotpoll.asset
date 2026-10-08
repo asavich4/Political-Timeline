@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: exp_f_mascotpoll
   m_EditorClassIdentifier: 
   id: exp_f_mascotpoll
-  advisor: Campaign Chair
+  advisor: Ghost of Washington
   category: PARTY NONSENSE
-  headline: Our mascot polls better than our candidate.
-  briefing: Our mascot polls better than our candidate.
-  portrait: {fileID: -8140706219470489119, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  headline: I poll above your candidate. Must I haunt a poster?
+  briefing: I poll above your candidate. Must I haunt a poster?
+  portrait: {fileID: 21300000, guid: 950407e17878baf449665eddacfb5b5c, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1
@@ -30,9 +30,10 @@ MonoBehaviour:
   sourceUrl: 
   followUpOnly: 0
   design: 0
+  castRevision: 1
   left:
-    label: Put it on posters
-    consequence: The posters sell. Commentators ask about the mascot's tax plan.
+    label: Put him on posters
+    consequence: The posters sell. Reporters ask about the ghost's very old tax plan.
     change:
       workers: 3
       middleClass: 2
@@ -54,7 +55,7 @@ MonoBehaviour:
     blockedConsequence: 
   right:
     label: Keep a serious tone
-    consequence: Donors relax. The mascot starts an unofficial fan club.
+    consequence: Donors relax. Washington starts an unofficial spectral fan club.
     change:
       workers: -2
       middleClass: -1

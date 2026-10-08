@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: leaked_memo
   m_EditorClassIdentifier: 
   id: leaked_memo
-  advisor: Investigative Reporter
+  advisor: Spy
   category: PARTY & COMMUNITY
-  headline: An internal party memo has leaked.
-  briefing: An internal party memo has leaked.
-  portrait: {fileID: 21300000, guid: 85d26ca92f1c1c846bb1390c4a4fb37a, type: 3}
+  headline: Your private memo is public. Shall we find the leak?
+  briefing: Your private memo is public. Shall we find the leak?
+  portrait: {fileID: 21300000, guid: a72dfda052ad50840b9cb1029c47318d, type: 3}
   artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
@@ -26,6 +26,8 @@ MonoBehaviour:
   requiredPolicy: 0
   followUpOnly: 0
   design: 4
+  castRevision: 1
+  usePortraitSprite: 1
   left:
     label: Explain the memo
     consequence: An honest explanation limits the damage.

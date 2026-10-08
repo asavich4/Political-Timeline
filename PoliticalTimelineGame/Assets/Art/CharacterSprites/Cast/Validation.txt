@@ -1,0 +1,1 @@
+PASS: all 182 cards use the new cast; all 37 characters appear in the deck. Idempotent migration and later author edits verified. Full expansion, policy, linked-story, election, save-slot and card layout checks passed.

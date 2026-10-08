@@ -17,7 +17,7 @@ MonoBehaviour:
   category: POLICY AGENDA
   headline: Insure household deposits against bank failure?
   briefing: Insure household deposits against bank failure?
-  portrait: {fileID: 21300000, guid: f3b86bea61f4d754ca6f9d8365d322f9, type: 3}
+  portrait: {fileID: 21300000, guid: 2b64beb7d5d89da4586b60e57521b5aa, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1
@@ -31,6 +31,7 @@ MonoBehaviour:
   sourceUrl: https://www.fdic.gov/history/1930-1939
   followUpOnly: 0
   design: 0
+  castRevision: 1
   left:
     label: Back deposit cover
     consequence: Congress enacts deposit insurance. Savers welcome protection.

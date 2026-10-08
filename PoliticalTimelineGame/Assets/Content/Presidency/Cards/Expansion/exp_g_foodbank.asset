@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: exp_g_foodbank
   m_EditorClassIdentifier: 
   id: exp_g_foodbank
-  advisor: Community Nurse
+  advisor: Religious Leader
   category: GENERAL
-  headline: A food bank asks for help without party branding.
-  briefing: A food bank asks for help without party branding.
-  portrait: {fileID: 4125771497919127614, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  headline: Our food bank needs help. Please leave party logos out.
+  briefing: Our food bank needs help. Please leave party logos out.
+  portrait: {fileID: 21300000, guid: 264ad4b940719944fb3cc2cdb61b2a43, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1
@@ -30,6 +30,7 @@ MonoBehaviour:
   sourceUrl: 
   followUpOnly: 0
   design: 0
+  castRevision: 1
   left:
     label: Send quiet volunteers
     consequence: Families get help. Your publicity team has nothing to post.

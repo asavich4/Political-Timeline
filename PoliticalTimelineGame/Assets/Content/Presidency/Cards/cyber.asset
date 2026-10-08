@@ -13,16 +13,18 @@ MonoBehaviour:
   m_Name: cyber
   m_EditorClassIdentifier: 
   id: cyber
-  advisor: Security Adviser
+  advisor: Tech Guy
   category: NATIONAL SECURITY
-  headline: The servers go dark
-  briefing: A cyberattack has shut down hospitals.
-  portrait: {fileID: 21300000, guid: 5392be1f37fab5149bfeb3219d39833f, type: 3}
+  headline: Hospital computers are locked. We need a response.
+  briefing: Hospital computers are locked. We need a response.
+  portrait: {fileID: 21300000, guid: 55ebf23808f491d41ad8a38d67c925fc, type: 3}
   artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0
   condition: 0
+  castRevision: 1
+  usePortraitSprite: 1
   left:
     label: Send federal teams
     consequence: Federal teams restore hospital systems.

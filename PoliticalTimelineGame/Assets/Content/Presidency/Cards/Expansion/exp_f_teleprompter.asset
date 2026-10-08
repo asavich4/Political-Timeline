@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: exp_f_teleprompter
   m_EditorClassIdentifier: 
   id: exp_f_teleprompter
-  advisor: Press Secretary
+  advisor: Party Deputy
   category: PARTY NONSENSE
-  headline: The teleprompter says insert inspiring story.
-  briefing: The teleprompter says insert inspiring story.
-  portrait: {fileID: 21300000, guid: 85d26ca92f1c1c846bb1390c4a4fb37a, type: 3}
+  headline: My script says insert inspiring story. Any ideas?
+  briefing: My script says insert inspiring story. Any ideas?
+  portrait: {fileID: 21300000, guid: b4c66cb7526ad6349a86a5db53007d73, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1
@@ -30,6 +30,7 @@ MonoBehaviour:
   sourceUrl: 
   followUpOnly: 0
   design: 0
+  castRevision: 1
   left:
     label: Tell the truth
     consequence: A short honest admission gets a laugh. The speechwriter hides.

@@ -17,11 +17,13 @@ MonoBehaviour:
   category: THE ECONOMY
   headline: Midnight on Capitol Hill
   briefing: A shutdown looms. Accept a compromise?
-  portrait: {fileID: 21300000, guid: f3b86bea61f4d754ca6f9d8365d322f9, type: 3}
+  portrait: {fileID: 21300000, guid: 2b64beb7d5d89da4586b60e57521b5aa, type: 3}
   artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0
+  castRevision: 1
+  usePortraitSprite: 1
   left:
     label: Accept the deal
     consequence: Government stays open. Security leaders demand guarantees.

@@ -17,7 +17,7 @@ MonoBehaviour:
   category: PARTY & COMMUNITY
   headline: Trainees cannot afford unpaid work.
   briefing: Trainees cannot afford unpaid work.
-  portrait: {fileID: -8140706219470489119, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  portrait: {fileID: 21300000, guid: 922661b617e58994a8ba1a3bd337caca, type: 3}
   artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
@@ -26,6 +26,8 @@ MonoBehaviour:
   requiredPolicy: 0
   followUpOnly: 0
   design: 1
+  castRevision: 1
+  usePortraitSprite: 1
   left:
     label: Fund paid training
     consequence: Congress funds paid apprenticeship places.

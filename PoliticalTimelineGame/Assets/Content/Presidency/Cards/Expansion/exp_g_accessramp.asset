@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: exp_g_accessramp
   m_EditorClassIdentifier: 
   id: exp_g_accessramp
-  advisor: Field Organizer
+  advisor: Secret Service
   category: GENERAL
-  headline: Wheelchair users cannot enter our branch hall.
-  briefing: Wheelchair users cannot enter our branch hall.
-  portrait: {fileID: -8140706219470489119, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  headline: The hall has stairs. We need an accessible entrance.
+  briefing: The hall has stairs. We need an accessible entrance.
+  portrait: {fileID: 21300000, guid: b289396070cc792449bb095388fd833b, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1
@@ -30,6 +30,7 @@ MonoBehaviour:
   sourceUrl: 
   followUpOnly: 0
   design: 0
+  castRevision: 1
   left:
     label: Move to an accessible hall
     consequence: More members can attend. Rent rises.

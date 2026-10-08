@@ -17,13 +17,15 @@ MonoBehaviour:
   category: THE ECONOMY
   headline: The price of prosperity
   briefing: Tax the wealthy to help families?
-  portrait: {fileID: 21300000, guid: f3b86bea61f4d754ca6f9d8365d322f9, type: 3}
+  portrait: {fileID: 21300000, guid: 2b64beb7d5d89da4586b60e57521b5aa, type: 3}
   artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
   oncePerRun: 0
   condition: 0
   requiredPolicy: 0
+  castRevision: 1
+  usePortraitSprite: 1
   left:
     label: Tax the wealthy
     consequence: Households get breathing room. Wealthy backers close their wallets.

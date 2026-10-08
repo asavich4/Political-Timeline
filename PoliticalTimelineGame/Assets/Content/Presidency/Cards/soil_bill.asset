@@ -17,7 +17,7 @@ MonoBehaviour:
   category: PARTY & COMMUNITY
   headline: Fund a national soil restoration program?
   briefing: Fund a national soil restoration program?
-  portrait: {fileID: 2438354146590935778, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  portrait: {fileID: 21300000, guid: 694592f92853df04b83939b4a51a60e3, type: 3}
   artwork: {fileID: 0}
   earliestDecision: 1
   weight: 1
@@ -26,6 +26,8 @@ MonoBehaviour:
   requiredPolicy: 0
   followUpOnly: 1
   design: 3
+  castRevision: 1
+  usePortraitSprite: 1
   left:
     label: Ask Congress
     consequence: Congress funds soil restoration and cover crops.

@@ -62,7 +62,7 @@ namespace PoliticalTimeline.Editor
                     default: selected=Existing("01_32_56 PM"); break;
                 }
                 Undo.RecordObject(card,"Assign character sprite");
-                card.portrait=selected; card.usePortraitSprite=true; card.artwork=null; EditorUtility.SetDirty(card);
+                card.portrait=CharacterCastEditor.ForAdvisor(card.advisor) ?? selected; card.usePortraitSprite=true; card.artwork=null; EditorUtility.SetDirty(card);
             }
             AssetDatabase.SaveAssets();
         }

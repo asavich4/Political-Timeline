@@ -173,7 +173,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      exp_g_burningriverPreview_0: -8001471697571030036
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

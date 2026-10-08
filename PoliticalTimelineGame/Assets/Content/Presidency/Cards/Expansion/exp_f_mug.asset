@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: exp_f_mug
   m_EditorClassIdentifier: 
   id: exp_f_mug
-  advisor: Congressional Clerk
+  advisor: Party Intern
   category: PARTY NONSENSE
-  headline: The office mug says World's Best Opposition.
-  briefing: The office mug says World's Best Opposition.
-  portrait: {fileID: -1275117128306786066, guid: 878db280f2a863f4d8e289c4ad699fc1, type: 3}
+  headline: Our mugs say World's Best Opposition. Excellent timing.
+  briefing: Our mugs say World's Best Opposition. Excellent timing.
+  portrait: {fileID: 21300000, guid: 693c5e55b09635245a7fc1839f13960b, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1
@@ -30,6 +30,7 @@ MonoBehaviour:
   sourceUrl: 
   followUpOnly: 0
   design: 0
+  castRevision: 1
   left:
     label: Use it anyway
     consequence: Members appreciate thrift. The press photographs it immediately.

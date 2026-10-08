@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: exp_repeal_RightToRepair
   m_EditorClassIdentifier: 
   id: exp_repeal_RightToRepair
-  advisor: Policy Director
+  advisor: Tech Guy
   category: POLICY REPEAL
-  headline: Manufacturers want repair access reversed.
-  briefing: Manufacturers want repair access reversed.
-  portrait: {fileID: 21300000, guid: ee574eb795a528d4a9466c557597b0d0, type: 3}
+  headline: Our devices, our repair shops. Reverse that law?
+  briefing: Our devices, our repair shops. Reverse that law?
+  portrait: {fileID: 21300000, guid: 55ebf23808f491d41ad8a38d67c925fc, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1
@@ -30,6 +30,7 @@ MonoBehaviour:
   sourceUrl: 
   followUpOnly: 0
   design: 0
+  castRevision: 1
   left:
     label: Repeal repair rights
     consequence: Congress removes repair access rights. Shops lose guaranteed manuals.

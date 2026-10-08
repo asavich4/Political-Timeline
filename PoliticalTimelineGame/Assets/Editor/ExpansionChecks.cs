@@ -41,7 +41,8 @@ namespace PoliticalTimeline.Editor
             }
             var testDeck=ScriptableObject.CreateInstance<CampaignDefinition>(); testDeck.startYear=2025; testDeck.startingSupport=50; testDeck.nation=deck.nation;
             var neutral=UnityEngine.Object.Instantiate(added.First(c=>c.category=="GENERAL")); neutral.id="neutral-test"; neutral.left.change=new SupportChange();
-            var law=added.First(c=>c.left.enactPolicy!=PolicyId.None); var repeal=added.First(c=>c.left.repealPolicy==law.left.enactPolicy);
+            var law=added.First(c=>c.left.enactPolicy!=PolicyId.None && added.Any(r=>r.left.repealPolicy==c.left.enactPolicy));
+            var repeal=added.First(c=>c.left.repealPolicy==law.left.enactPolicy);
             testDeck.cards.Add(neutral); testDeck.cards.Add(law); testDeck.cards.Add(repeal);
             var absent=State(testDeck,neutral);
             for(int i=0;i<100;i++) { absent.current=neutral; absent.Choose(false); if(absent.ElectionPending) absent.AcknowledgeElection(); Check(absent.current!=repeal,"Repeal appeared without its law"); }

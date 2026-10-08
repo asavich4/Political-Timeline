@@ -173,7 +173,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      exp_f_goosePreview_0: -2198572176016906108
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

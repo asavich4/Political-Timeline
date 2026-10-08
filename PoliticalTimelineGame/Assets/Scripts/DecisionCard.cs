@@ -37,6 +37,7 @@ namespace PoliticalTimeline
     public class DecisionCard : ScriptableObject
     {
         public string id;
+        [HideInInspector] public int castRevision;
         public string advisor = "Chief of Staff";
         public string category = "DOMESTIC POLICY";
         public string headline = "A decision awaits";

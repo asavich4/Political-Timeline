@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: exp_f_dance
   m_EditorClassIdentifier: 
   id: exp_f_dance
-  advisor: Campaign Organizer
+  advisor: Cult Leader
   category: PARTY NONSENSE
-  headline: A volunteer invented a party dance.
-  briefing: A volunteer invented a party dance.
-  portrait: {fileID: -8140706219470489119, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  headline: My followers invented a party dance. Join the circle?
+  briefing: My followers invented a party dance. Join the circle?
+  portrait: {fileID: 21300000, guid: 1010d90d6ef0206449320cd1465b59c8, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1
@@ -30,9 +30,10 @@ MonoBehaviour:
   sourceUrl: 
   followUpOnly: 0
   design: 0
+  castRevision: 1
   left:
     label: Try it once
-    consequence: Young volunteers cheer. Your knees submit a formal protest.
+    consequence: Volunteers cheer. Your knees reject the movement's founding principles.
     change:
       workers: 3
       middleClass: 2
@@ -54,7 +55,7 @@ MonoBehaviour:
     blockedConsequence: 
   right:
     label: Let volunteers lead
-    consequence: The dance spreads without you. The leader looks slightly wooden.
+    consequence: The dance spreads. The cult leader calls it grassroots recruitment.
     change:
       workers: 1
       middleClass: -1

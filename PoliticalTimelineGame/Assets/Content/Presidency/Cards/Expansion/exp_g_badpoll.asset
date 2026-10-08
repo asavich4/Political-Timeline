@@ -17,7 +17,7 @@ MonoBehaviour:
   category: GENERAL
   headline: A terrible poll lands before the party meeting.
   briefing: A terrible poll lands before the party meeting.
-  portrait: {fileID: -8140706219470489119, guid: b5e80443210b92d4b90b6bcc0414bb84, type: 3}
+  portrait: {fileID: 21300000, guid: fffaf5c45366daf41bc11b497cdab666, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1
@@ -30,6 +30,7 @@ MonoBehaviour:
   sourceUrl: 
   followUpOnly: 0
   design: 0
+  castRevision: 1
   left:
     label: Publish it
     consequence: Members face the problem. Some donors become nervous.

@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: exp_f_mutebutton
   m_EditorClassIdentifier: 
   id: exp_f_mutebutton
-  advisor: Press Secretary
+  advisor: Online Influencer
   category: PARTY NONSENSE
-  headline: Our leader gave a whole interview on mute.
-  briefing: Our leader gave a whole interview on mute.
-  portrait: {fileID: 21300000, guid: 85d26ca92f1c1c846bb1390c4a4fb37a, type: 3}
+  headline: Your leader was on mute. I have the whole video.
+  briefing: Your leader was on mute. I have the whole video.
+  portrait: {fileID: 21300000, guid: dc4c565b842a3f448983e7cc6acc3668, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1
@@ -30,6 +30,7 @@ MonoBehaviour:
   sourceUrl: 
   followUpOnly: 0
   design: 0
+  castRevision: 1
   left:
     label: Release the outtakes
     consequence: The laugh helps. One donor says leadership should have sound.

@@ -17,7 +17,7 @@ MonoBehaviour:
   category: POLICY REPEAL
   headline: Officials say the gift ban is too strict.
   briefing: Officials say the gift ban is too strict.
-  portrait: {fileID: 21300000, guid: ee574eb795a528d4a9466c557597b0d0, type: 3}
+  portrait: {fileID: 21300000, guid: b2a3dec849686ed4e9686372f5f221b7, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1
@@ -30,6 +30,7 @@ MonoBehaviour:
   sourceUrl: 
   followUpOnly: 0
   design: 0
+  castRevision: 1
   left:
     label: Repeal the ban
     consequence: Congress repeals the gift ban. Ethics groups condemn the decision.

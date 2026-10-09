@@ -1,8 +1,9 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace PoliticalTimeline
 {
+    public enum CampaignRace { All, Presidency, House, Senate }
     public enum InstitutionRule { None, Congress, CourtReview, ConfirmJustice, BlockGovernment }
     public enum EventCondition { Always, DividedCongress, CourtVacancy, InOpposition, CampaignSeason, InGovernment }
     public enum PortraitDesign { Default, Engineer, Medic, Farmer, Reporter, Teacher, Organizer }
@@ -29,6 +30,7 @@ namespace PoliticalTimeline
         [Tooltip("Rival law passes unless a BlockGovernment choice succeeds while in opposition.")] public PolicyId rivalEnactPolicy;
         public PolicyId rivalRepealPolicy;
         [Tooltip("A court defeat can strike down this law even while the party is in opposition.")] public PolicyId blockedRepealPolicy;
+        public CampaignRace campaignRace;
         public string[] voterStates = new string[0];
         [Range(-12,12)] public float voterSupportChange;
         public SupportChange blockedChange;
@@ -56,6 +58,7 @@ namespace PoliticalTimeline
         [TextArea(2,4)] public string historicalNote;
         public string sourceUrl;
         public bool followUpOnly;
+        public bool presidentialCampaignOnly;
         public PortraitDesign design;
         public PolicyChoice left = new PolicyChoice();
         public PolicyChoice right = new PolicyChoice();

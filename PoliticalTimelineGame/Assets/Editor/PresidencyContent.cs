@@ -1,4 +1,4 @@
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace PoliticalTimeline.Editor
@@ -39,6 +39,7 @@ namespace PoliticalTimeline.Editor
             ExpansionContent.Ensure(campaign);
             CastEventContent.Ensure(campaign);
             OppositionContent.Ensure(campaign);
+            CampaignRaceContent.Ensure(campaign);
             EditorUtility.SetDirty(campaign); AssetDatabase.SaveAssets(); return campaign;
         }
 

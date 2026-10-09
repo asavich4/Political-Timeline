@@ -1492,8 +1492,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: d3a46b95bad451c4cb406005b5c78fc1, type: 3}
-  m_Resource: {fileID: 8300000, guid: d3a46b95bad451c4cb406005b5c78fc1, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 21189ca87b2b4ec18dc606e6c4140714, type: 3}
+  m_Resource: {fileID: 8300000, guid: 21189ca87b2b4ec18dc606e6c4140714, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.32
   m_Pitch: 1
@@ -23701,7 +23701,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 580d344b4452e084dab57c0d9fb385c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backgroundMusic: {fileID: 8300000, guid: d3a46b95bad451c4cb406005b5c78fc1, type: 3}
+  backgroundMusic: {fileID: 8300000, guid: 21189ca87b2b4ec18dc606e6c4140714, type: 3}
   swipeClips:
   - {fileID: 8300000, guid: 6fab32323f352cd4280e4d5c7b347703, type: 3}
   - {fileID: 8300000, guid: 9f129b1552543514fa4fc17d114dcb49, type: 3}

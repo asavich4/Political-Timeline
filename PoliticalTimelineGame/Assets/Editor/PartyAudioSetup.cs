@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using UnityEditor;
@@ -31,7 +31,7 @@ namespace PoliticalTimeline.Editor
                 game.partyAudio=root.AddComponent<PartyAudio>();
             }
             var audio=game.partyAudio;
-            if(audio.backgroundMusic==null) audio.backgroundMusic=Clip("BehindTheParty_Loop");
+            if(audio.backgroundMusic==null) audio.backgroundMusic=Clip("QuietChambers_Loop");
             if(audio.swipeClips==null || audio.swipeClips.Length==0)
                 audio.swipeClips=new[]{Clip("Card_Swipe_01"),Clip("Card_Swipe_02"),Clip("Card_Swipe_03")};
             if(audio.acknowledgeClip==null) audio.acknowledgeClip=Clip("Card_Confirm");

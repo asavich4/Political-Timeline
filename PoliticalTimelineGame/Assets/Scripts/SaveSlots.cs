@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using UnityEngine;
 
@@ -17,6 +17,8 @@ namespace PoliticalTimeline
         public bool unreadPolicies;
         public bool[] senate;
         public float[] voterSupport;
+        public float[] presidentialCampaign, houseCampaign, senateCampaign;
+        public string pendingStory;
         public string[] usedCards;
         public ElectionResult election;
         public int electionReports;

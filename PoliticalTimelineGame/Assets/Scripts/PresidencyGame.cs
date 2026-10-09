@@ -221,7 +221,7 @@ namespace PoliticalTimeline
             var choice=right ? state.current.right : state.current.left;
             var change = state.nation.CanResolve(choice)?choice.change:choice.blockedChange;
             bool passed=state.nation.CanResolve(choice); var localBefore=new float[state.nation.states.Length];
-            for(int i=0;i<localBefore.Length;i++) localBefore[i]=state.nation.VoterSupportBonus(i);
+            for(int i=0;i<localBefore.Length;i++) localBefore[i]=state.nation.ChoiceBonus(i,choice.campaignRace);
             for(int i=0;i<4;i++) previousSupport[i]=supportFills[i].fillAmount;
             departurePosition=cardTransform.anchoredPosition;
             departureAngle=cardTransform.localEulerAngles.z;
@@ -231,7 +231,7 @@ namespace PoliticalTimeline
             voterFeedback="";
             if(passed && choice.voterStates!=null) for(int i=0;i<localBefore.Length;i++) if(System.Array.IndexOf(choice.voterStates,state.nation.states[i].abbreviation)>=0)
             {
-                float delta=(state.nation.VoterSupportBonus(i)-localBefore[i]*.97f)*.375f;
+                float delta=(state.nation.ChoiceBonus(i,choice.campaignRace)-localBefore[i]*.97f)*state.nation.CampaignInfluence/2;
                 voterFeedback+=(voterFeedback==""?"":" · ")+state.nation.states[i].abbreviation+$" {delta:+0.0;-0.0;0}pp";
             }
             transitionPhase=1; transitionTime=0;

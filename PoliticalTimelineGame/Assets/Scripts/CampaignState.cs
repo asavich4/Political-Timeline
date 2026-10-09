@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,12 +24,13 @@ namespace PoliticalTimeline
         readonly int seed;
         int draws;
         int startYear;
+        DecisionCard pendingStory;
         public PartyTeam Party { get; private set; }
         readonly HashSet<DecisionCard> used=new HashSet<DecisionCard>();
         public DateTime CurrentMonth => new DateTime(startYear,1,1).AddMonths(decisions);
         public DateTime DisplayMonth => ElectionPending ? CurrentMonth.AddMonths(-1) : CurrentMonth;
         public bool IsElectionYear => DisplayMonth.Year%2==0;
-        public bool IsCampaignSeason => CurrentMonth.Year%2==0 && CurrentMonth.Month<=11;
+        public bool IsCampaignSeason => CurrentMonth.Year%2==0;
         public string ElectionYearLabel => !IsElectionYear?"":DisplayMonth.Year%4==0?"Presidential election year":"Midterm election year";
         public int Term => decisions/48+1;
         public int Approval => (support[0]+support[1]+support[2]+support[3])/4;
@@ -93,8 +94,16 @@ namespace PoliticalTimeline
         bool OppositionCard(DecisionCard c) => c.condition==EventCondition.InOpposition || c.condition==EventCondition.CampaignSeason;
         void Draw(DecisionCard followUp)
         {
+            bool campaignOnly=IsCampaignSeason && definition.cards.Any(c=>c!=null && c.condition==EventCondition.CampaignSeason);
+            if(campaignOnly && followUp!=null && followUp.condition!=EventCondition.CampaignSeason) { pendingStory=followUp; followUp=null; }
+            if(!campaignOnly && followUp==null && pendingStory!=null)
+            {
+                var resume=pendingStory; pendingStory=null;
+                if(nation.HoldsPresidency && nation.Allows(resume.condition) && (resume.requiredPolicy==PolicyId.None || policies.Any(p=>p.Id==resume.requiredPolicy)) && (resume.excludedPolicy==PolicyId.None || !policies.Any(p=>p.Id==resume.excludedPolicy))) followUp=resume;
+            }
             if(followUp!=null && (nation.HoldsPresidency || OppositionCard(followUp))) { current=followUp; return; }
             var eligible=definition.cards.Where(c=>c!=null && !c.followUpOnly && c.earliestDecision<=decisions+1 && nation.Allows(c.condition) && (c.condition!=EventCondition.CampaignSeason || IsCampaignSeason || !nation.HoldsPresidency) && (nation.HoldsPresidency || (c.left.enactPolicy==PolicyId.None && c.right.enactPolicy==PolicyId.None)) && (c.requiredPolicy==PolicyId.None || policies.Any(p=>p.Id==c.requiredPolicy)) && (!c.oncePerRun||!used.Contains(c))).ToList();
+            eligible.RemoveAll(c=>(campaignOnly && c.condition!=EventCondition.CampaignSeason) || (c.presidentialCampaignOnly && CurrentMonth.Year%4!=0));
             eligible.RemoveAll(c=>c.excludedPolicy!=PolicyId.None && policies.Any(p=>p.Id==c.excludedPolicy));
             if(!nation.HoldsPresidency && eligible.Any(OppositionCard)) eligible=eligible.Where(OppositionCard).ToList();
             if(eligible.Count>1) eligible.Remove(current);
@@ -109,6 +118,7 @@ namespace PoliticalTimeline
             var save=new CampaignSave { party=(int)Party, seed=seed, draws=draws, decisions=decisions, support=(int[])support.Clone(), currentCard=current?.id,
                 lastResult=lastResult, ended=ended, ending=ending, election=lastElection, electionPending=ElectionPending, unreadOutcome=unread,
                 usedCards=used.Select(c=>c.id).ToArray(), policies=policies.Select(p=>(int)p.Id).ToArray(), policyDates=policies.Select(p=>p.Enacted.Ticks).ToArray() };
+            save.pendingStory=pendingStory?.id;
             save.policyParties=policies.Select(p=>(int)p.Party).ToArray(); save.policyHistory=PolicyHistory.ToArray(); save.unreadPolicies=UnreadPolicies;
             save.startYear=startYear; nation.Export(save); return save;
         }
@@ -128,7 +138,11 @@ namespace PoliticalTimeline
             if(save.policyHistory!=null) state.PolicyHistory.AddRange(save.policyHistory);
             else foreach(var policy in state.policies) state.PolicyHistory.Add(new PolicyRecord {id=policy.Id,party=policy.Party,date=policy.Enacted.Ticks,action="Enacted"});
             state.UnreadPolicies=save.unreadPolicies;
-            state.nation.Restore(save); return state;
+            state.nation.Restore(save);
+            state.pendingStory=definition.cards.Find(c=>c.id==save.pendingStory);
+            if(!state.ended && state.IsCampaignSeason && state.current!=null && state.current.condition!=EventCondition.CampaignSeason && definition.cards.Any(c=>c.condition==EventCondition.CampaignSeason))
+            { if(state.current.followUpOnly) state.pendingStory=state.current; state.Draw(null); }
+            return state;
         }
     }
 }

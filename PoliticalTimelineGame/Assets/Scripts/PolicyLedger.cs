@@ -7,7 +7,12 @@ namespace PoliticalTimeline
     {
         public PolicyId Id { get; }
         public DateTime Enacted { get; }
-        public EnactedPolicy(PolicyId id,DateTime date) { Id=id; Enacted=date; }
+        public PartyTeam Party { get; }
+        public EnactedPolicy(PolicyId id,DateTime date,PartyTeam party=PartyTeam.Democrat) { Id=id; Enacted=date; Party=party; }
+    }
+    [Serializable] public class PolicyRecord
+    {
+        public PolicyId id; public PartyTeam party; public string action; public long date;
     }
     public static class PolicyLedger
     {

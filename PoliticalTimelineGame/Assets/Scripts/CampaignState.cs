@@ -14,6 +14,8 @@ namespace PoliticalTimeline
         public string lastResult="Lead the party from behind the scenes. Keep your coalition alive.";
         readonly List<EnactedPolicy> policies=new List<EnactedPolicy>();
         public IReadOnlyList<EnactedPolicy> Policies => policies.AsReadOnly();
+        public readonly List<PolicyRecord> PolicyHistory=new List<PolicyRecord>();
+        public bool UnreadPolicies;
         public DecisionCard current;
         public ElectionResult lastElection;
         public bool ElectionPending { get; private set; }
@@ -48,17 +50,23 @@ namespace PoliticalTimeline
             bool passed=nation.CanResolve(choice);
             if(passed && choice.institution==InstitutionRule.ConfirmJustice) nation.Nominate();
             var deltas=(passed?choice.change:choice.blockedChange).Values;
-            for(int i=0;i<4;i++) support[i]=Math.Max(0,Math.Min(100,support[i]+deltas[i]));
+            for(int i=0;i<4;i++) support[i]=Math.Max(0,Math.Min(100,support[i]+(int)Math.Round(deltas[i]*definition.decisionImpact,MidpointRounding.AwayFromZero)));
             var month=CurrentMonth; decisions++; lastResult=passed?choice.consequence:choice.blockedConsequence;
             if(!passed && !nation.HoldsPresidency && (choice.institution==InstitutionRule.Congress || choice.institution==InstitutionRule.ConfirmJustice || choice.enactPolicy!=PolicyId.None || choice.repealPolicy!=PolicyId.None))
                 lastResult="Your party is in opposition. The administration blocks your proposal.";
             if(passed)
             {
-                if(choice.repealPolicy!=PolicyId.None) policies.RemoveAll(p=>p.Id==choice.repealPolicy);
-                if(choice.enactPolicy!=PolicyId.None && !policies.Any(p=>p.Id==choice.enactPolicy)) policies.Add(new EnactedPolicy(choice.enactPolicy,month));
+                ChangePolicy(choice.repealPolicy,false,Party,month);
+                ChangePolicy(choice.enactPolicy,true,Party,month);
             }
             else if(choice.institution==InstitutionRule.CourtReview && choice.blockedRepealPolicy!=PolicyId.None)
-                policies.RemoveAll(p=>p.Id==choice.blockedRepealPolicy);
+                ChangePolicy(choice.blockedRepealPolicy,false,Party,month,"Court struck down");
+            if(!nation.HoldsPresidency && !(passed && choice.institution==InstitutionRule.BlockGovernment))
+            {
+                var rival=Party==PartyTeam.Democrat?PartyTeam.Republican:PartyTeam.Democrat;
+                ChangePolicy(choice.rivalRepealPolicy,false,rival,month);
+                ChangePolicy(choice.rivalEnactPolicy,true,rival,month);
+            }
             nation.AdvanceMonth(decisions);
             if(passed) nation.ApplyVoterEffect(choice);
             string[] losses={"A nation on strike","The center collapses","Economic collapse","The donors walk away"};
@@ -73,11 +81,22 @@ namespace PoliticalTimeline
             }
             Draw(passed?choice.followUp:choice.blockedFollowUp);
         }
+        void ChangePolicy(PolicyId id,bool enact,PartyTeam actor,DateTime date,string action=null)
+        {
+            if(id==PolicyId.None || policies.Any(p=>p.Id==id)==enact) return;
+            if(enact) policies.Add(new EnactedPolicy(id,date,actor)); else policies.RemoveAll(p=>p.Id==id);
+            action=action ?? (enact?"Enacted":"Repealed");
+            PolicyHistory.Insert(0,new PolicyRecord {id=id,party=actor,date=date.Ticks,action=action});
+            UnreadPolicies=true;
+            lastResult=action+": "+PolicyLedger.Title(id)+".\n"+(action=="Court struck down"?"Supreme Court ruling.":actor+" government.")+" See Policies.";
+        }
+        bool OppositionCard(DecisionCard c) => c.condition==EventCondition.InOpposition || c.condition==EventCondition.CampaignSeason;
         void Draw(DecisionCard followUp)
         {
-            if(followUp!=null) { current=followUp; return; }
-            var eligible=definition.cards.Where(c=>c!=null && !c.followUpOnly && c.earliestDecision<=decisions+1 && nation.Allows(c.condition) && (c.condition!=EventCondition.CampaignSeason || IsCampaignSeason) && (nation.HoldsPresidency || (c.left.enactPolicy==PolicyId.None && c.right.enactPolicy==PolicyId.None)) && (c.requiredPolicy==PolicyId.None || policies.Any(p=>p.Id==c.requiredPolicy)) && (!c.oncePerRun||!used.Contains(c))).ToList();
+            if(followUp!=null && (nation.HoldsPresidency || OppositionCard(followUp))) { current=followUp; return; }
+            var eligible=definition.cards.Where(c=>c!=null && !c.followUpOnly && c.earliestDecision<=decisions+1 && nation.Allows(c.condition) && (c.condition!=EventCondition.CampaignSeason || IsCampaignSeason || !nation.HoldsPresidency) && (nation.HoldsPresidency || (c.left.enactPolicy==PolicyId.None && c.right.enactPolicy==PolicyId.None)) && (c.requiredPolicy==PolicyId.None || policies.Any(p=>p.Id==c.requiredPolicy)) && (!c.oncePerRun||!used.Contains(c))).ToList();
             eligible.RemoveAll(c=>c.excludedPolicy!=PolicyId.None && policies.Any(p=>p.Id==c.excludedPolicy));
+            if(!nation.HoldsPresidency && eligible.Any(OppositionCard)) eligible=eligible.Where(OppositionCard).ToList();
             if(eligible.Count>1) eligible.Remove(current);
             if(eligible.Count==0) { current=null; lastResult="No events are available. Check the campaign deck."; return; }
             int roll=random.Next(eligible.Sum(DrawWeight)); draws++;
@@ -90,6 +109,7 @@ namespace PoliticalTimeline
             var save=new CampaignSave { party=(int)Party, seed=seed, draws=draws, decisions=decisions, support=(int[])support.Clone(), currentCard=current?.id,
                 lastResult=lastResult, ended=ended, ending=ending, election=lastElection, electionPending=ElectionPending, unreadOutcome=unread,
                 usedCards=used.Select(c=>c.id).ToArray(), policies=policies.Select(p=>(int)p.Id).ToArray(), policyDates=policies.Select(p=>p.Enacted.Ticks).ToArray() };
+            save.policyParties=policies.Select(p=>(int)p.Party).ToArray(); save.policyHistory=PolicyHistory.ToArray(); save.unreadPolicies=UnreadPolicies;
             save.startYear=startYear; nation.Export(save); return save;
         }
         public static CampaignState Restore(CampaignDefinition definition,CampaignSave save)
@@ -104,7 +124,10 @@ namespace PoliticalTimeline
             state.lastResult=save.lastResult; state.ended=save.ended; state.ending=save.ending;
             state.lastElection=save.election; state.ElectionPending=save.electionPending;
             foreach(var id in save.usedCards) { var c=definition.cards.Find(card=>card.id==id); if(c!=null) state.used.Add(c); }
-            for(int i=0;i<save.policies.Length;i++) state.policies.Add(new EnactedPolicy((PolicyId)save.policies[i],new DateTime(save.policyDates[i])));
+            for(int i=0;i<save.policies.Length;i++) state.policies.Add(new EnactedPolicy((PolicyId)save.policies[i],new DateTime(save.policyDates[i]),save.policyParties!=null && i<save.policyParties.Length?(PartyTeam)save.policyParties[i]:state.Party));
+            if(save.policyHistory!=null) state.PolicyHistory.AddRange(save.policyHistory);
+            else foreach(var policy in state.policies) state.PolicyHistory.Add(new PolicyRecord {id=policy.Id,party=policy.Party,date=policy.Enacted.Ticks,action="Enacted"});
+            state.UnreadPolicies=save.unreadPolicies;
             state.nation.Restore(save); return state;
         }
     }

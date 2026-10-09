@@ -8,7 +8,7 @@ namespace PoliticalTimeline.Editor
     {
         public static void Run()
         {
-            var config=ScriptableObject.CreateInstance<CampaignDefinition>();
+            var config=ScriptableObject.CreateInstance<CampaignDefinition>(); config.decisionImpact=1;
             var nationConfig=ScriptableObject.CreateInstance<NationalDefinition>(); nationConfig.startingHouseSeats=222; nationConfig.startingSenateSeats=52; config.nation=nationConfig;
             var card=ScriptableObject.CreateInstance<DecisionCard>();
             var followUp=ScriptableObject.CreateInstance<DecisionCard>();
@@ -29,7 +29,7 @@ namespace PoliticalTimeline.Editor
                 int month=state.decisions; state.Choose(false); Check(state.decisions==month,"Election report blocks swipes");
                 Check(state.lastElection.houseSeats>=0&&state.lastElection.houseSeats<=435&&state.lastElection.senateSeats<=100,"Congress bounds");
                 state.AcknowledgeElection(); Check(!state.ElectionPending && state.CurrentMonth.Month==12,"Election dismissal");
-                config.startingSupport=70; state=new CampaignState(config,1); Advance(state,47);
+                config.startingSupport=95; state=new CampaignState(config,1); Advance(state,47);
                 Check(state.ElectionPending && state.lastElection.presidential && state.lastElection.electoralVotes>=270 && !state.ended,"Presidential reelection");
                 Advance(state,1); Check(state.Term==2 && state.CurrentMonth.Year==2029,"Second term starts in January");
                 Advance(state,48); Check(!state.ended && state.decisions==96,"Party continues beyond two terms");

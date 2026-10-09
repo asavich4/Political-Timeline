@@ -195,7 +195,24 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3cd941bdcf3103947a04e0b2547b917d, type: 2}
   - {fileID: 11400000, guid: a90af0850ade4fe4691e2d177ec126a3, type: 2}
   - {fileID: 11400000, guid: 14a96545801a7124cb82cd73356a8d23, type: 2}
+  - {fileID: 11400000, guid: 28f71063beb07fc47a1520ab5d0d38a2, type: 2}
+  - {fileID: 11400000, guid: 1b86f84591aaf28448dadacbc22ead6e, type: 2}
+  - {fileID: 11400000, guid: 62b0d341714ad9345816f0a2b10a82a6, type: 2}
+  - {fileID: 11400000, guid: 39175bb829215af49a7b6dcedd13f7e8, type: 2}
+  - {fileID: 11400000, guid: 4c2c473b5c8588c49b5e3efcae1846d7, type: 2}
+  - {fileID: 11400000, guid: 3a841c343ed406a4f8f097f0787dc578, type: 2}
+  - {fileID: 11400000, guid: 6bf0f7faf8f48be478432ca5d657fc9b, type: 2}
+  - {fileID: 11400000, guid: edbb63f0baebc254b898f194ac1fe817, type: 2}
+  - {fileID: 11400000, guid: 855807b49372bbd4daa93898093f4ee5, type: 2}
+  - {fileID: 11400000, guid: 2ae6189da00b49641865b793bb5710b7, type: 2}
+  - {fileID: 11400000, guid: 8704d01d45f557f4992b5e87c9b9723e, type: 2}
+  - {fileID: 11400000, guid: d0abe0cab1df4e14aab8316b1c432111, type: 2}
+  - {fileID: 11400000, guid: 1f16b008485c5994090a78918a141cce, type: 2}
+  - {fileID: 11400000, guid: 4f853ac8c9c2c1642819deb8ef8053a5, type: 2}
+  - {fileID: 11400000, guid: 8d856f730b30cc74e8e9a82f73003a6a, type: 2}
+  - {fileID: 11400000, guid: 932b4f7adbedfac43ac3f2c959da884a, type: 2}
   startingSupport: 50
   startYear: 2025
   nation: {fileID: 11400000, guid: fa31a48ce04320c49ac2ae7a8d033be0, type: 2}
+  decisionImpact: 1.75
   termLimit: 2

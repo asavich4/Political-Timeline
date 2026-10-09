@@ -11,7 +11,7 @@ namespace PoliticalTimeline.Editor
             var nation=new NationalState(null); int pa=Array.FindIndex(nation.states,s=>s.abbreviation=="PA"), ca=Array.FindIndex(nation.states,s=>s.abbreviation=="CA");
             int[] neutral={50,50,50,50}; float before=nation.Margin(pa,neutral), untouched=nation.Margin(ca,neutral);
             var effect=new PolicyChoice {voterStates=new[]{"PA"},voterSupportChange=4}; nation.ApplyVoterEffect(effect);
-            Check(Math.Abs(nation.Margin(pa,neutral)-before-8)<.001f,"Four support points move the margin by eight");
+            Check(Math.Abs(nation.Margin(pa,neutral)-before-3)<.001f,"Four organizing points move the margin by three");
             Check(nation.Margin(ca,neutral)==untouched,"Untargeted states do not move");
             Check(nation.Elect(2028,neutral).margins[pa]==nation.Margin(pa,neutral),"Local support reaches election results");
             nation.AdvanceMonth(1); Check(Math.Abs(nation.VoterSupportBonus(pa)-3.88f)<.001f,"Local gains fade gradually");
@@ -36,7 +36,7 @@ namespace PoliticalTimeline.Editor
                 {
                     if(state.ElectionPending) state.AcknowledgeElection();
                     Check(state.current!=null,"Expanded deck stays available");
-                    if(state.current.condition==EventCondition.CampaignSeason) { campaigns++; Check(state.IsCampaignSeason,"Campaign cards only appear January-November in even years"); }
+                    if(state.current.condition==EventCondition.CampaignSeason) { campaigns++; Check(state.IsCampaignSeason || !state.nation.HoldsPresidency,"Campaign cards are seasonal in government and year-round in opposition"); }
                     if(state.current.condition==EventCondition.InOpposition) { oppositions++; Check(!state.nation.HoldsPresidency,"Opposition cards only appear out of power"); }
                     for(int i=0;i<4;i++) state.support[i]=35;
                     state.Choose(month%2==0);

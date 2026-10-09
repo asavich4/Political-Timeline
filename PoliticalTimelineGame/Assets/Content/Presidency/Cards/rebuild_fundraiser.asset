@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 419f0aa0370f329488c33c094f0c53c2, type: 3}
+  m_Name: rebuild_fundraiser
+  m_EditorClassIdentifier: 
+  id: rebuild_fundraiser
+  castRevision: 1
+  advisor: Opposition Leader
+  category: OPPOSITION
+  headline: Donors offer chocolate fountains. And demands.
+  briefing: Donors offer chocolate fountains. And demands.
+  portrait: {fileID: 21300000, guid: b4f096b77b4f8d94792e1bdfd7b94adf, type: 3}
+  artwork: {fileID: 0}
+  usePortraitSprite: 1
+  earliestDecision: 1
+  weight: 8
+  oncePerRun: 0
+  condition: 3
+  requiredPolicy: 0
+  excludedPolicy: 0
+  historicalNote: 
+  sourceUrl: 
+  followUpOnly: 0
+  design: 0
+  left:
+    label: Take small donations
+    consequence: The party regroups. Your next campaign has a stronger foundation.
+    change:
+      workers: 3
+      middleClass: 1
+      elites: 4
+      economy: 2
+    followUp: {fileID: 0}
+    blockedFollowUp: {fileID: 0}
+    institution: 0
+    enactPolicy: 0
+    repealPolicy: 0
+    rivalEnactPolicy: 0
+    rivalRepealPolicy: 0
+    blockedRepealPolicy: 0
+    voterStates: []
+    voterSupportChange: 0
+    blockedChange:
+      workers: 0
+      middleClass: 0
+      elites: 0
+      economy: 0
+    blockedConsequence: 
+  right:
+    label: Work the donor tables
+    consequence: New backing keeps the party in the fight. Not everyone likes the
+      bargain.
+    change:
+      workers: -3
+      middleClass: -2
+      elites: 7
+      economy: 3
+    followUp: {fileID: 0}
+    blockedFollowUp: {fileID: 0}
+    institution: 0
+    enactPolicy: 0
+    repealPolicy: 0
+    rivalEnactPolicy: 0
+    rivalRepealPolicy: 0
+    blockedRepealPolicy: 0
+    voterStates: []
+    voterSupportChange: 0
+    blockedChange:
+      workers: 0
+      middleClass: 0
+      elites: 0
+      economy: 0
+    blockedConsequence: 

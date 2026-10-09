@@ -17,7 +17,7 @@ MonoBehaviour:
   category: POLICY REPEAL
   headline: Officials say the gift ban is too strict.
   briefing: Officials say the gift ban is too strict.
-  portrait: {fileID: 21300000, guid: b2a3dec849686ed4e9686372f5f221b7, type: 3}
+  portrait: {fileID: 21300000, guid: 8ecf7d464a8501d489e5794302464a7c, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1

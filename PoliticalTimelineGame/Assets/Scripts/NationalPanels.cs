@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
@@ -48,7 +48,7 @@ namespace PoliticalTimeline
         {
             BuildEditablePresentation(); gameObject.SetActive(true);
             mapGroup.SetActive(page==0); congressGroup.SetActive(page==1); courtGroup.SetActive(page==2); policiesGroup.SetActive(page==3);
-            title.text=new[]{"Election map","Congress","Supreme Court","Enacted policies"}[page];
+            title.text=new[]{"Election map","Congress","Supreme Court","Policy record"}[page];
             subtitle.text="Editor preview · Starting party"; closeButton.gameObject.SetActive(true); actionButton.gameObject.SetActive(false);
             var nation=new NationalState(campaign.nation);
             HouseChart.Present(435,nation.houseSeats); SenateChart.Present(100,nation.SenateSeats);
@@ -73,9 +73,12 @@ namespace PoliticalTimeline
             selectedState=-1;
             policyPage=0;
             if(results && (Night==null || Night.result!=game.State.lastElection)) Night=new ElectionNight(game.State.lastElection,game.State.nation.states);
-            tab=results && !Night.Complete?0:page; gameObject.SetActive(true); Render();
+            tab=results && !Night.Complete?0:page;
+            if(tab==3) { game.State.UnreadPolicies=false; RefreshPolicyNotice(); game.frontMenu?.Save(); }
+            gameObject.SetActive(true); Render();
         }
         public void ResetElectionNight() { Night=null; results=false; }
+        public void RefreshPolicyNotice() { if(game!=null && game.State!=null && navigation.Length>3) navigation[3].GetComponentInChildren<TMP_Text>().text=game.State.UnreadPolicies?"Policies *":"Policies"; }
         void Update() { if(game!=null && (game.frontMenu==null || !game.frontMenu.IsOpen)) AdvanceElectionNight(Time.unscaledDeltaTime); }
         public void AdvanceElectionNight(float seconds)
         { if(results && Night!=null && !Night.Complete && Night.Advance(seconds)) Render(); }
@@ -87,7 +90,7 @@ namespace PoliticalTimeline
         public void OpenElection() => Open(0,true);
         void Action()
         {
-            if(!results && tab==3) { policyPage=(policyPage+1)%Mathf.Max(1,(game.State.Policies.Count+2)/3); Render(); return; }
+            if(!results && tab==3) { policyPage=(policyPage+1)%Mathf.Max(1,(game.State.PolicyHistory.Count+2)/3); Render(); return; }
             if(results)
             {
                 if(!Night.Complete) { Night.Finish(); Render(); return; }
@@ -110,21 +113,25 @@ namespace PoliticalTimeline
             supportBar.SetActive(false); supportLabel.gameObject.SetActive(false);
             Place(mapDetail.rectTransform,24,437,342,80);
             closeButton.gameObject.SetActive(!results);
-            title.text=tab==0 ? (results?"Election results":"Election map") : tab==1?"Congress":tab==2?"Supreme Court":"Enacted policies";
+            title.text=tab==0 ? (results?"Election results":"Election map") : tab==1?"Congress":tab==2?"Supreme Court":"Policy record";
             subtitle.text=results ? $"November {election.year} · "+(election.presidential?"Presidential election":"Midterm election") : state.DisplayMonth.ToString("MMMM yyyy");
             footnote.text=tab==2?"Policy reviews need 5 aligned justices.":"Fictional game simulation";
             if(tab==3)
             {
                 policiesText.color=ink;
-                var policies=state.Policies; int pages=Mathf.Max(1,(policies.Count+2)/3);
+                var policies=state.PolicyHistory; int pages=Mathf.Max(1,(policies.Count+2)/3);
                 policyPage=Mathf.Clamp(policyPage,0,pages-1);
                 policiesText.text=policies.Count==0?"No policies enacted yet.\n\nPass a policy through an event to add it here.\n\nLaws stay in place across elections until a repeal event succeeds.":"";
                 for(int i=policyPage*3;i<Mathf.Min(policies.Count,policyPage*3+3);i++)
                 {
-                    var p=policies[i]; policiesText.text+=$"<b>{PolicyLedger.Title(p.Id)}</b>\n<size=15>Enacted {p.Enacted:MMMM yyyy}</size>\n{PolicyLedger.Description(p.Id)}\n\n";
+                    var p=policies[i];
+                    string actor=p.action=="Court struck down"?"Supreme Court":p.party.ToString();
+                    string color=p.party==PartyTeam.Democrat?(white?"285CA0":"83B8FF"):(white?"A93229":"FF9A87");
+                    bool active=false; foreach(var law in state.Policies) if(law.Id==p.id) active=true;
+                    policiesText.text+=$"<b>{PolicyLedger.Title(p.id)}</b>\n<color=#{color}><size=15>{actor} · {p.action}\n{new System.DateTime(p.date):MMM yyyy} · {(active?"Currently active":"Not in force")}</size></color>\n{PolicyLedger.Description(p.id)}\n\n";
                 }
-                subtitle.text=$"{policies.Count} active · Page {policyPage+1} of {pages}";
-                footnote.text="Enact or repeal policies through events only.";
+                subtitle.text=$"{state.Policies.Count} active · Page {policyPage+1} of {pages}";
+                footnote.text="Blue: Democrats · Red: Republicans\nNewest policy changes first";
             }
             if(tab==0)
             {
@@ -162,7 +169,7 @@ namespace PoliticalTimeline
                 courtSummary.text=$"{nation.AlignedJustices} of 9 justices aligned\n\n"+(nation.Vacancy<0?"No vacancies right now.":!nation.HoldsPresidency?"Your party is in opposition.\nWin the presidency to nominate.":nation.SenateSeats>=51?"A vacancy is open.\nThe Senate can confirm your nominee.":"A vacancy is open.\nYou need a Senate majority.");
             }
             bool nomination=tab==2 && nation.Vacancy>=0;
-            actionButton.gameObject.SetActive(results||nomination||(tab==3 && state.Policies.Count>3));
+            actionButton.gameObject.SetActive(results||nomination||(tab==3 && state.PolicyHistory.Count>3));
             actionButton.interactable=results || tab==3 || (nation.SenateSeats>=51 && nation.HoldsPresidency);
             actionLabel.text=results ? (tab==0?"View Congress":"Continue as the party") : tab==3?"Next page":"Nominate a justice";
             if(results && tab==0) RenderElectionNight();

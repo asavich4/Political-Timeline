@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -119,6 +119,7 @@ namespace PoliticalTimeline.Editor
             help.gameObject.SetActive(false);
             game.nationalPanels=BuildNationalPanels(root,campaign,navigation);
             game.BuildEditablePresentation();
+            PartyAudioSetup.Ensure(game);
             game.nationalPanels.PreviewForEditing(1,campaign);
             game.PreviewCardForEditing(campaign.cards[0]);
             game.frontMenu.panel.SetActive(true);

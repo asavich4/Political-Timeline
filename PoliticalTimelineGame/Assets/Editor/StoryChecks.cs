@@ -17,13 +17,13 @@ namespace PoliticalTimeline.Editor
                 var result=deck.cards.Find(c=>c.id==id+"_result");
                 Check(start!=null && bill.followUpOnly && local.followUpOnly && result.followUpOnly,"Chapters only appear through their story");
                 state.current=start; state.Choose(false); Check(state.current==bill,"Investigating opens policy proposal");
-                state.nation.HoldsPresidency=true; state.nation.Elect(2026,new[]{95,95,95,95});
+                state.nation.HoldsPresidency=true; var seats=state.Export(); seats.houseSeats=230; seats.senate=Enumerable.Repeat(true,100).ToArray(); state.nation.Restore(seats);
                 state.Choose(false); Check(state.current==result && state.Policies.Any(p=>p.Id==bill.left.enactPolicy),"Passed bill unlocks enacted-policy aftermath");
                 state=new CampaignState(deck,17); state.current=start; state.Choose(true); Check(state.current==local,"Alternate opening branches to local response");
                 state=new CampaignState(deck,17); state.current=bill; state.nation.houseSeats=100; state.Choose(false);
                 Check(state.current==local && state.Policies.Count==0,"Blocked bill uses local branch without enacting law");
                 state=new CampaignState(deck,17); state.current=bill; state.nation.HoldsPresidency=false; state.Choose(false);
-                Check(state.current==local && state.Policies.Count==0,"Opposition gets blocked branch");
+                Check(!state.current.followUpOnly && state.Policies.Count==0,"Opposition returns to rebuilding instead of governing chapters");
                 // Election-night interruption must not discard the next chapter.
                 state=new CampaignState(deck,17); state.decisions=22; state.current=start; state.Choose(false);
                 Check(state.ElectionPending && state.current==bill,"Story survives November election");

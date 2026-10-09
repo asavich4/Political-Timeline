@@ -16,7 +16,8 @@ namespace PoliticalTimeline
     public class NationalDefinition : ScriptableObject
     {
         public StateProfile[] states=CreateStates();
-        [Range(0,10)] public float incumbentAdvantage=2;
+        [UnityEngine.Serialization.FormerlySerializedAs("incumbentAdvantage")]
+        [Range(0,10), Tooltip("Voter fatigue penalizes the governing party and helps a challenger.")] public float incumbentFatigue=2;
         [Min(1)] public int courtRetirementMonths=18;
         [Range(0,435)] public int startingHouseSeats=210;
         [Range(0,100)] public int startingSenateSeats=48;

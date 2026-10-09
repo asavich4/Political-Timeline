@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 419f0aa0370f329488c33c094f0c53c2, type: 3}
+  m_Name: rival_enact_CleanAir
+  m_EditorClassIdentifier: 
+  id: rival_enact_CleanAir
+  castRevision: 1
+  advisor: Opposition Leader
+  category: OPPOSITION
+  headline: They want to pass clean-air standards. Block it?
+  briefing: They want to pass clean-air standards. Block it?
+  portrait: {fileID: 21300000, guid: b4f096b77b4f8d94792e1bdfd7b94adf, type: 3}
+  artwork: {fileID: 0}
+  usePortraitSprite: 1
+  earliestDecision: 1
+  weight: 4
+  oncePerRun: 0
+  condition: 3
+  requiredPolicy: 0
+  excludedPolicy: 6
+  historicalNote: 
+  sourceUrl: 
+  followUpOnly: 0
+  design: 0
+  left:
+    label: Organize a blockade
+    consequence: Your party blocks the government's bill. The law stays unchanged.
+    change:
+      workers: 3
+      middleClass: 2
+      elites: -3
+      economy: -2
+    followUp: {fileID: 0}
+    blockedFollowUp: {fileID: 0}
+    institution: 4
+    enactPolicy: 0
+    repealPolicy: 0
+    rivalEnactPolicy: 6
+    rivalRepealPolicy: 0
+    blockedRepealPolicy: 0
+    voterStates: []
+    voterSupportChange: 0
+    blockedChange:
+      workers: -3
+      middleClass: -2
+      elites: 1
+      economy: 1
+    blockedConsequence: The government has the votes to proceed.
+  right:
+    label: Campaign against it
+    consequence: Your organizers take the fight to voters.
+    change:
+      workers: 2
+      middleClass: 3
+      elites: -2
+      economy: -1
+    followUp: {fileID: 0}
+    blockedFollowUp: {fileID: 0}
+    institution: 0
+    enactPolicy: 0
+    repealPolicy: 0
+    rivalEnactPolicy: 6
+    rivalRepealPolicy: 0
+    blockedRepealPolicy: 0
+    voterStates:
+    - PA
+    - WI
+    - MI
+    - AZ
+    - GA
+    - NC
+    voterSupportChange: 2
+    blockedChange:
+      workers: 0
+      middleClass: 0
+      elites: 0
+      economy: 0
+    blockedConsequence: 

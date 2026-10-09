@@ -12,6 +12,9 @@ namespace PoliticalTimeline
         public bool ended, holdsPresidency, electionPending, unreadOutcome;
         public int[] support, court, policies;
         public long[] policyDates;
+        public int[] policyParties;
+        public PolicyRecord[] policyHistory;
+        public bool unreadPolicies;
         public bool[] senate;
         public float[] voterSupport;
         public string[] usedCards;

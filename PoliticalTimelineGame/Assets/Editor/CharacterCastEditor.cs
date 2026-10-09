@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using UnityEditor;
@@ -76,7 +76,7 @@ namespace PoliticalTimeline.Editor
                 case "Security Adviser": name = "AngryGeneral"; break;
                 case "Secretary of State": name = "UNDiplomat"; break;
                 case "Chief of Staff": name = "VicePresident"; break;
-                case "Policy Director": name = "MaskedFigure"; break;
+                case "Policy Director": name = "CongressHead"; break;
                 case "Campaign Chair": name = "NormalGuy"; break;
                 case "Campaign Organizer": case "Field Organizer": case "Party Organizer": name = "Protester"; break;
                 default: return null;

@@ -38,6 +38,7 @@ namespace PoliticalTimeline.Editor
             InstitutionalContent.Ensure(campaign);
             ExpansionContent.Ensure(campaign);
             CastEventContent.Ensure(campaign);
+            OppositionContent.Ensure(campaign);
             EditorUtility.SetDirty(campaign); AssetDatabase.SaveAssets(); return campaign;
         }
 

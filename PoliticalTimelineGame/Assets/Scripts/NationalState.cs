@@ -51,7 +51,7 @@ namespace PoliticalTimeline
             this.party=party;
             states=config!=null ? config.states : NationalDefinition.CreateStates();
             voterSupport=new float[states.Length];
-            advantage=config!=null ? config.incumbentAdvantage : 2;
+            advantage=config!=null ? config.incumbentFatigue : 2;
             retirementMonths=config!=null ? Math.Max(1,config.courtRetirementMonths) : 18;
             resistance=config!=null?config.electoralResistance:4;
             sensitivity=config!=null?config.supportSensitivity:.55f;
@@ -63,7 +63,7 @@ namespace PoliticalTimeline
             var p=states[index]; var w=p.interests;
             float sum=Math.Max(.01f,w.x+w.y+w.z+w.w);
             float approval=(support[0]*w.x+support[1]*w.y+support[2]*w.z+support[3]*w.w)/sum;
-            return Math.Max(-49,Math.Min(49,p.startingLean*(party==PartyTeam.Republican?-1.15f:1.15f)+(HoldsPresidency?advantage:-advantage)-resistance+(approval-50)*sensitivity+2*voterSupport[index]));
+            return Math.Max(-49,Math.Min(49,p.startingLean*(party==PartyTeam.Republican?-1.15f:1.15f)+(HoldsPresidency?-advantage:advantage)-resistance+6*(float)Math.Tanh((approval-50)*sensitivity/8)+.75f*voterSupport[index]));
         }
         public int ProjectedVotes(int[] support)
         { int total=0; for(int i=0;i<states.Length;i++) if(Margin(i,support)>=0) total+=states[i].electoralVotes; return total; }

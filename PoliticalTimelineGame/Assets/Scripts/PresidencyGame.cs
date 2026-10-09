@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.InputSystem;
@@ -17,6 +17,7 @@ namespace PoliticalTimeline
         public Image[] powerIcons;
         public NationalPanels nationalPanels;
         public FrontMenu frontMenu;
+        public PartyAudio partyAudio;
         public bool HasUnreadOutcome => transitionPhase==1 || transitionPhase==2 || transitionPhase==4;
         public CampaignState State => state;
         public CanvasGroup choiceOverlay;
@@ -225,11 +226,12 @@ namespace PoliticalTimeline
             departurePosition=cardTransform.anchoredPosition;
             departureAngle=cardTransform.localEulerAngles.z;
             departureDirection=right?1:-1;
-            state.Choose(right); dragging = false; keyboardDirection=0;
+            partyAudio?.PlaySwipe(right);
+            state.Choose(right); nationalPanels.RefreshPolicyNotice(); dragging = false; keyboardDirection=0;
             voterFeedback="";
             if(passed && choice.voterStates!=null) for(int i=0;i<localBefore.Length;i++) if(System.Array.IndexOf(choice.voterStates,state.nation.states[i].abbreviation)>=0)
             {
-                float delta=state.nation.VoterSupportBonus(i)-localBefore[i]*.97f;
+                float delta=(state.nation.VoterSupportBonus(i)-localBefore[i]*.97f)*.375f;
                 voterFeedback+=(voterFeedback==""?"":" · ")+state.nation.states[i].abbreviation+$" {delta:+0.0;-0.0;0}pp";
             }
             transitionPhase=1; transitionTime=0;
@@ -242,6 +244,7 @@ namespace PoliticalTimeline
         public void AcknowledgeOutcome(bool right)
         {
             if(!AwaitingAcknowledgement) return;
+            partyAudio?.PlaySwipe(right,true);
             var rect=(RectTransform)outcomePanel.transform;
             departurePosition=rect.anchoredPosition; departureAngle=rect.localEulerAngles.z;
             departureDirection=right?1:-1; transitionPhase=5; transitionTime=0;
@@ -338,6 +341,7 @@ namespace PoliticalTimeline
 
         void Render()
         {
+            nationalPanels.RefreshPolicyNotice();
             bool electionYear=state.IsElectionYear;
             background.color=electionYear?new Color(.98f,.975f,.95f):new Color(.13f,.18f,.19f);
             var ink=electionYear?new Color(.10f,.15f,.16f):new Color(.96f,.93f,.83f);

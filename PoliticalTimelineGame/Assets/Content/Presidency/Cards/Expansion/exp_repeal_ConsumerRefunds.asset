@@ -17,7 +17,7 @@ MonoBehaviour:
   category: POLICY REPEAL
   headline: Retailers lobby to remove refund guarantees.
   briefing: Retailers lobby to remove refund guarantees.
-  portrait: {fileID: 21300000, guid: b2a3dec849686ed4e9686372f5f221b7, type: 3}
+  portrait: {fileID: 21300000, guid: 8ecf7d464a8501d489e5794302464a7c, type: 3}
   artwork: {fileID: 0}
   usePortraitSprite: 1
   earliestDecision: 1

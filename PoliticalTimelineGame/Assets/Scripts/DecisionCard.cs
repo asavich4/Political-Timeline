@@ -26,6 +26,8 @@ namespace PoliticalTimeline
         public InstitutionRule institution;
         public PolicyId enactPolicy;
         public PolicyId repealPolicy;
+        [Tooltip("Rival law passes unless a BlockGovernment choice succeeds while in opposition.")] public PolicyId rivalEnactPolicy;
+        public PolicyId rivalRepealPolicy;
         [Tooltip("A court defeat can strike down this law even while the party is in opposition.")] public PolicyId blockedRepealPolicy;
         public string[] voterStates = new string[0];
         [Range(-12,12)] public float voterSupportChange;
